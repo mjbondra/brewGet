@@ -1,0 +1,4 @@
+{
+  "name": "brewGet",
+  "description": "a node/express app that facilitates the trading of beer"
+}

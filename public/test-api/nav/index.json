@@ -1,0 +1,30 @@
+{
+	"content": [
+		{
+			"title": "Posts",
+			"href": "#/"
+		},
+		{
+			"title": "Users",
+			"href": "#/users"
+		},
+		{
+			"title": "Beers",
+			"href": "#/beers"
+		},
+		{
+			"title": "Breweries",
+			"href": "#/breweries"
+		}
+	],
+	"actions": [
+		{
+			"title": "Sign up",
+			"href": "#/users/new"
+		},
+		{
+			"title": "Sign in",
+			"href": "#/users/login"
+		}
+	]
+}

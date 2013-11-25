@@ -1,7 +1,7 @@
 
 /**
  * Express core
- * 3.4.x
+ * 3.x
  */
 var express = require('express');
 
@@ -17,6 +17,7 @@ module.exports = function (app, config, passport) {
   /** allow reverse proxying via nginx */
   app.enable('trust proxy');
 
+  /** set max listeners; 0 is */
   app.setMaxListeners(0);
 
   /** set port for listening; default to port 3000 */

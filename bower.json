@@ -4,8 +4,12 @@
   "dependencies": {
     "angular": "1.x",
     "angular-route": "1.x",
+    "angular-resource": "1.x",
+    "font-awesome": "4.x",
     "jquery": "2.x",
+    "normalize-css": "2.x",
     "requirejs": "2.x",
+    "skeleton": "*",
     "socket.io": "0.x",
     "underscore": "1.x"
   }
