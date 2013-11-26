@@ -24,12 +24,26 @@ var brewGet = angular.module('brewGet', [
   'brewGetServices'
 ]);
 
-/** routes */
+/** 
+ * Routes 
+ */
 brewGet.config(['$routeProvider', function ($routeProvider) {
     $routeProvider.when('/', {
       templateUrl: '/partials/home.html',
       controller: 'HomeCtrl'
     });
+
+    /* user routes */
+    $routeProvider.when('/users/signup', {
+      templateUrl: '/partials/users/form.html',
+      controller: 'SignUpCtrl'
+    });
+    $routeProvider.when('/users/signin', {
+      templateUrl: '/partials/users/form.html',
+      controller: 'SignInCtrl'
+    });
+
+    /* default route */
     $routeProvider.otherwise({ 
       redirectTo: '/' 
     });

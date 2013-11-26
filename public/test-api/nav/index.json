@@ -20,11 +20,11 @@
 	"actions": [
 		{
 			"title": "Sign up",
-			"href": "#/users/new"
+			"href": "#/users/signup"
 		},
 		{
 			"title": "Sign in",
-			"href": "#/users/login"
+			"href": "#/users/signin"
 		}
 	]
 }

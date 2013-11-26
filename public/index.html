@@ -7,7 +7,6 @@
     <meta name="description" ng-attr-content="{{ Head.getDescription() }}">
     <script src="//use.typekit.net/uby8kic.js"></script>
     <script>try{Typekit.load();}catch(e){}</script>
-    <link rel="stylesheet" href="css/main.css">
     <title>{{ Head.getTitle() }}</title>
   </head>
   <body>
@@ -23,14 +22,11 @@
               </li>
             </ul>
           </li>
-          <li class="tree search-menu-tree">
-            <span>Search</span>
-            <div class="search-menu-item">
-              <form>
-                <input type="text" ng-model="search">
-                <button>Search</button>
-              </form>
-            </div>
+          <li class="search-menu-item">
+            <form>
+              <label>Search<input type="text" ng-model="search"></label>
+              <button>Search</button>
+            </form>
           </li>
           <li class="action-menu-item" ng-repeat="navItem in Nav.actions">
             <a ng-href="{{ navItem.href }}">{{ navItem.title }}</a>
