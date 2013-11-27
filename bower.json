@@ -3,11 +3,10 @@
   "version": "0.0.1",
   "dependencies": {
     "angular": "1.x",
-    "angular-route": "1.x",
     "angular-resource": "1.x",
+    "angular-route": "1.x",
     "font-awesome": "4.x",
-    "jquery": "2.x",
-    "normalize-css": "2.x",
+    "html5-boilerplate": "4.x",
     "requirejs": "2.x",
     "socket.io": "0.x",
     "susy": "1.x",

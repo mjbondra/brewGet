@@ -5,31 +5,44 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width">
     <meta name="description" ng-attr-content="{{ Head.getDescription() }}">
+    <link rel="stylesheet" href="css/main.css">
     <script src="//use.typekit.net/uby8kic.js"></script>
     <script>try{Typekit.load();}catch(e){}</script>
     <title>{{ Head.getTitle() }}</title>
   </head>
   <body>
     <header>
-      <h1 class="logo">brewGet</h1>
+      <a href="#/" class="logo"><img src="img/brewGetLogo@2x.png" alt="brewGet"></a>
       <nav ng-controller="NavCtrl">
         <ul>
-          <li class="tree content-menu-tree">
-            <span>Menu</span>
+          <li class="tree content-nav-tree">
+            <span>Content</span>
             <ul>
-              <li class="content-menu-item" ng-repeat="navItem in Nav.content">
+              <li class="content-nav-item" ng-repeat="navItem in Nav.content">
                 <a ng-href="{{ navItem.href }}">{{ navItem.title }}</a>
               </li>
             </ul>
           </li>
-          <li class="search-menu-item">
+          <li class="tree search-nav-tree">
             <form>
-              <label>Search<input type="text" ng-model="search"></label>
-              <button>Search</button>
+              <label for="search">Search</label>
+              <ul>
+                <li>
+                  <input type="text" id="search" ng-model="search">
+                </li>
+                <li>
+                  <button>Search</button>
+                </li>
+              </ul>
             </form>
           </li>
-          <li class="action-menu-item" ng-repeat="navItem in Nav.actions">
-            <a ng-href="{{ navItem.href }}">{{ navItem.title }}</a>
+          <li class="tree action-nav-tree">
+            <span>Actions</span>
+            <ul>
+              <li class="action-nav-item" ng-repeat="navItem in Nav.actions">
+                <a ng-href="{{ navItem.href }}">{{ navItem.title }}</a>
+              </li>
+            </ul>
           </li>
         </ul>
       </nav>

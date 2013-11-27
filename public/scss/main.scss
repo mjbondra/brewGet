@@ -14,15 +14,29 @@
  *
  */
 
+/*------------------------------------*\
+    TABLE OF CONTENTS
+\*------------------------------------*/
 /**
- * Table of Contents
- *
- * Base...................Brings in Compass, Variables and Mixins
+ * BASE...................Imports Normalize.css, HTML5 Boilerplate, Compass, Susy, Font-Awesome, Variables and Mixins
  *
  */
 
-/** 
- * Base 
- */
+/*------------------------------------*\
+    BASE
+\*------------------------------------*/
 
 @import 'base';
+
+/*------------------------------------*\
+    HEADER
+\*------------------------------------*/
+
+header {
+  .logo {
+    img {
+      width: 340px;
+      height: 75px;
+    }
+  }
+}

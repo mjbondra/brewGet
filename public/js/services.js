@@ -7,7 +7,8 @@ var brewGetServices = angular.module('brewGetServices', ['ngResource']);
 
 /** service for getting and setting values within the html head element */
 brewGetServices.factory('Head', function() {
-  var title = 'brewGet';
+  var defaultTitle = 'brewGet';
+  var title = defaultTitle;
   var description = 'brewGet is a web application designed to support the beer trading community';
   return {
     getDescription: function () {
@@ -20,7 +21,7 @@ brewGetServices.factory('Head', function() {
       description = newDescription;
     },
     setTitle: function (newTitle) { 
-      title = newTitle;
+      title = ( newTitle == defaultTitle ? defaultTitle : newTitle + ' || brewGet' );
     }
   };
 });

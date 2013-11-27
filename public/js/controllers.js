@@ -30,16 +30,14 @@ brewGetControllers.controller('HomeCtrl', ['$scope', 'Head', 'MikeData', functio
 
 /** sign up controller */
 brewGetControllers.controller('SignUpCtrl', ['$scope', 'Head', function ($scope, Head) {
-  Head.setTitle('Sign Up || brewGet');
+  $scope.title = 'Sign up';
+  Head.setTitle($scope.title);
   Head.setDescription('Sign up for an account on brewGet.');
-  $scope.mainHeading = 'Sign up';
-  $scope.buttonText = 'Sign up';
 }]);
 
 /** sign in controller */
 brewGetControllers.controller('SignInCtrl', ['$scope', 'Head', function ($scope, Head) {
-  Head.setTitle('Sign In || brewGet');
+  $scope.title = 'Sign in';
+  Head.setTitle($scope.title);
   Head.setDescription('Sign in to your brewGet account.');
-  $scope.mainHeading = 'Sign in';
-  $scope.buttonText = 'Sign in';
 }]);
