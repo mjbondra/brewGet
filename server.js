@@ -24,7 +24,8 @@ var express = require('express')
 /**
  * Module dependencies
  */
-var io = require('socket.io')
+var fs = require('fs')
+  , io = require('socket.io')
   , mongoose = require('mongoose')
   , passport = require('passport');
 
@@ -39,6 +40,12 @@ var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function callback () {
   console.log('Connected to MongoDB -- host: ' + config.db.host + ', name: ' + config.db.name);
+});
+
+/** load document models */
+var modelsPath = __dirname + '/app/models'
+fs.readdirSync(modelsPath).forEach(function (file) {
+  if (~file.indexOf('.js')) require(modelsPath + '/' + file);
 });
 
 /** Express configuration */
