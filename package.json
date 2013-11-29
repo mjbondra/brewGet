@@ -10,10 +10,15 @@
   },
   "scripts": {
     "start": "NODE_ENV=development nodemon server.js",
-    "install": "bower install"
+    "install": "grunt"
   },
   "devDependencies": {
-    "uglify-js": "latest"
+    "bower": "1.x",
+    "grunt": "0.x",
+    "grunt-bower-task": "0.x",
+    "grunt-cli": "0.x",
+    "grunt-contrib-uglify": "0.x",
+    "nodemon": "0.x"
   },
   "dependencies": {
     "connect-flash": "0.x",

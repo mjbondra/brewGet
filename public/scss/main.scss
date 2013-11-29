@@ -96,9 +96,18 @@ nav.primary-nav {
       float: left;
       width: 25%;
       text-align: center;
-      a, span, label {
+      h2 {
+        margin: 0;
+        color: white;
+        label {
+          display: block;
+        }
+      }
+      a {
         display: block;
         color: white;
+        font-size: 1.5em;
+        font-weight: bold;
         text-decoration: none;
       }
       &.tree {
@@ -115,7 +124,7 @@ nav.primary-nav {
         }
         &.action-nav-tree {
           width: 50%;
-          span {
+          h2 {
             display: none;
           }
           ul {
