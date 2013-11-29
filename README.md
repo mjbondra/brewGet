@@ -1,6 +1,5 @@
 brewGet
 ===
-##About
 
 brewGet is a web application that supports the non-monetary exchange of regionally-limited or otherwise difficult to acquire beer.
 
