@@ -12,6 +12,9 @@
     "start": "NODE_ENV=development nodemon server.js",
     "install": "bower install"
   },
+  "devDependencies": {
+    "uglify-js": "latest"
+  },
   "dependencies": {
     "connect-flash": "0.x",
     "connect-mongo": "0.x",

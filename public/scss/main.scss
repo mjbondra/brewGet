@@ -36,8 +36,10 @@
     e. Footer...................Footer Content
   5. MEDIA QUERIES..............Media Queries
     a. Screen Width.............Imports Screen Width Stylesheet(s)
-    b. Pixel Density............Imports Pixel Desity Stylesheet(s)
+    b. Pixel Density............Imports HiDPI Stylesheet(s)
     c. Print....................Imports Print Stylesheet(s)
+  6. APPENDIX...................Additional Information
+    a. Rule Structure...........Heirarchy of CSS Rules
 
 \*---------------------------------------------------------------------*/
 
@@ -70,7 +72,7 @@
 
 /*--Branding--*/
 
-h1.brand {
+h1.branding {
   margin: 0;
   a {
     @extend .ir;
@@ -83,10 +85,48 @@ h1.brand {
 
 /*--Navigation--*/
 
-nav {
+nav.primary-nav {
+  @extend .clearfix;
+  background-color: $brown;
   ul {
+    margin: 0;
+    padding: 0;
     li {
       display: inline;
+      float: left;
+      width: 25%;
+      text-align: center;
+      a, span, label {
+        display: block;
+        color: white;
+        text-decoration: none;
+      }
+      &.tree {
+        ul {
+          display: none;
+        }
+        &.content-nav-tree, &.search-nav-tree {
+          ul {
+            position: absolute;
+            left: 0;
+            width: 100%;
+            background-color: $lt-brown;
+          }
+        }
+        &.action-nav-tree {
+          width: 50%;
+          span {
+            display: none;
+          }
+          ul {
+            display: block;
+            li {
+              float: left;
+              width: 50%;
+            }
+          }
+        }
+      }
     }
   }
 }
@@ -98,7 +138,7 @@ nav {
 /*--Footer--*/
 
 /*------------------------------------*\
-    MEDIA
+    MEDIA QUERIES
 \*------------------------------------*/
 
 /*--Screen Width--*/
@@ -106,9 +146,33 @@ nav {
 /*--Pixel Density--*/
 
 @media only screen and (-webkit-min-device-pixel-ratio: 1.3), 
+  only screen and (min--moz-device-pixel-ratio: 1.3),
   only screen and (-o-min-device-pixel-ratio: 13/10),
   only screen and (min-resolution: 1.3dppx) { 
   @import 'high-pixel-density';
 }
 
 /*--Print--*/
+
+/*------------------------------------*\
+    APPENDIX
+\*------------------------------------*/
+
+/*--Rule Structure--*/
+
+/*
+html-selector {
+  display:
+  float: 
+  position:
+  top: [right: bottom: left:]
+  margin:
+  border:
+  padding:
+  width: [height:]
+  overflow:
+  background:
+  font: 
+  text-*:
+}
+*/
