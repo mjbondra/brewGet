@@ -59,6 +59,7 @@ The MIT License (MIT)
 * [Q](http://documentup.com/kriskowal/q/)
 * [RequireJS](http://requirejs.org/)
 * [Socket.IO](http://socket.io/)
+* [Sass](http://sass-lang.com/)
 * [Susy](http://susy.oddbird.net/)
 * [UglifyJS](http://lisperator.net/uglifyjs/)
 * [Underscore](http://underscorejs.org/)
@@ -120,7 +121,7 @@ brewGet
 |	|--scss
 |	|	|--_desktop.scss
 |	|	|--_high-pixel-density.scss
-|	|	|--_html-boilerplate.sccs
+|	|	|--_html5-boilerplate.sccs
 |	|	|--_mixins.scss
 |	|	|--_mobile-landscape.scss
 |	|	|--_normalize.scss
