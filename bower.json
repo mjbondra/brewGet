@@ -11,6 +11,6 @@
     "requirejs": "2.x",
     "socket.io": "0.x",
     "susy": "1.x",
-    "underscore": "1.x",
+    "underscore": "1.x"
   }
 }
