@@ -22,7 +22,6 @@ module.exports = {
   /*
    * Field validation messages
    */
-
   body: {
     isNull: 'Body field cannot be empty' 
   },
@@ -60,5 +59,20 @@ module.exports = {
   },
   username: {
     isNull: 'Username cannot be empty'
+  },
+
+  /**
+   * Unbound validation messages
+   */
+  default: 'Sorry! There was an error',
+  notUnique: function (collectionField, fieldValue) { return collectionField + ' \'' + fieldValue + '\' already exists, please enter another'; },
+
+  /**
+   * HTTP status code messages
+   */
+  status: {
+    403: 'Forbidden! You are not authorized to view this page.',
+    404: 'Oh, no! That page was not found.',
+    500: 'Whoa! There was an error while processing your request.'
   }
 }

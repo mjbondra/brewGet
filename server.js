@@ -48,6 +48,9 @@ fs.readdirSync(modelsPath).forEach(function (file) {
   if (~file.indexOf('.js')) require(modelsPath + '/' + file);
 });
 
+/** passport configuration */
+require('./config/passport')(passport);
+
 /** Express configuration */
 require('./config/express')(app, config, passport);
 

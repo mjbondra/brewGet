@@ -21,7 +21,8 @@
 var brewGet = angular.module('brewGet', [
   'ngRoute',
   'brewGetControllers',
-  'brewGetServices'
+  'brewGetServices',
+  'brewGetDirectives'
 ]);
 
 /** 
@@ -34,13 +35,17 @@ brewGet.config(['$routeProvider', function ($routeProvider) {
     });
 
     /* user routes */
-    $routeProvider.when('/users/signup', {
-      templateUrl: '/partials/users/form.html',
-      controller: 'SignUpCtrl'
+    $routeProvider.when('/users', {
+      templateUrl: 'partials/users/index.html',
+      controller: 'UserIndexCtrl'
     });
-    $routeProvider.when('/users/signin', {
-      templateUrl: '/partials/users/form.html',
-      controller: 'SignInCtrl'
+    $routeProvider.when('/users/new', {
+      templateUrl: '/partials/users/new.html',
+      controller: 'UserNewCtrl'
+    });
+    $routeProvider.when('/users/auth', {
+      templateUrl: '/partials/users/auth.html',
+      controller: 'UserAuthCtrl'
     });
 
     /* default route */

@@ -5,6 +5,21 @@
  */
 var brewGetServices = angular.module('brewGetServices', ['ngResource']);
 
+/** global service for backend validation/unqiqueness failures */
+brewGetServices.config(function ($provide, $httpProvider) { 
+  $provide.factory('brewGetInterceptor', function ($rootScope, $q) {
+    return {
+      responseError: function (res) {
+        if ((res.status === 409 || res.status === 422) && res.data && res.data.fieldValidationErrors) {
+          $rootScope.$broadcast('validationErrors', res.data.fieldValidationErrors);
+        }
+        return $q.reject(res);
+      }
+    };
+  });
+  $httpProvider.interceptors.push('brewGetInterceptor');
+});
+
 /** service for getting and setting values within the html head element */
 brewGetServices.factory('Head', function() {
   var defaultTitle = 'brewGet';
@@ -34,4 +49,11 @@ brewGetServices.factory('Nav', ['$http', function ($http) {
 /** test service for bringing in JSON */
 brewGetServices.factory('MikeData', ['$resource', function ($resource) {
   return $resource('test-api/:resourceId.json');
+}]);
+
+/** user service for JSON API */
+brewGetServices.factory('User', ['$rootScope', '$resource', function ($rootScope, $resource) {
+  return $resource('users/:userId', {}, {
+    save: { method:'POST', params: { userId: 'new' }}
+  });
 }]);

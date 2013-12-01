@@ -13,7 +13,8 @@ require.config({
     angularResource: ['angular'],
     app: ['angular'],
     controllers: ['angular'],
-    services: ['angular']
+    services: ['angular'],
+    directives: ['angular']
   }
 });
 
@@ -26,8 +27,9 @@ require([
   'angularResource',
   'app',
   'controllers',
-  'services'
-], function (angular, angularRoute, angularResource, app, controllers, services) {
+  'services',
+  'directives'
+], function (angular, angularRoute, angularResource, app, controllers, services, directives) {
   'use strict';
   angular.resumeBootstrap();
 });

@@ -10,7 +10,7 @@ var express = require('express');
  */
 var mongoStore = require('connect-mongo')(express)
   , flash = require('connect-flash')
-  , gzippo = require('gzippo');
+  , middleware = require('../app/middleware');
 
 module.exports = function (app, config, passport) {
 
@@ -23,17 +23,14 @@ module.exports = function (app, config, passport) {
   /** set port for listening; default to port 3000 */
   app.set('port', process.env.PORT || 3000);
 
-  /** static content and compression */
-  // app.use(express.favicon(config.root + '/public/favicon.ico', { maxAge: 86400000 })); add favicon
-  app.use(gzippo.staticGzip(config.root + '/public', { maxAge: 86400000 }));
-
-  /** stream compression */
-  app.use(gzippo.compress());
-
   /** don't use logger for test env */
   if (process.env.NODE_ENV !== 'test') {
     app.use(express.logger('dev'));
   }
+
+  /** compression and static content */
+  app.use(express.compress());
+  app.use(express.static(config.root + '/public'));
 
   app.use(express.cookieParser());
   app.use(express.json());
@@ -50,5 +47,15 @@ module.exports = function (app, config, passport) {
     })
   }));
 
+  /** use passport session */
+  app.use(passport.initialize());
+  app.use(passport.session());
+
+  /** use flash for messages */
+  app.use(flash());
+
+  app.use(middleware.helpers);
+  app.use(app.router);
+  app.use(middleware.validationErrorHandler);
 }
 

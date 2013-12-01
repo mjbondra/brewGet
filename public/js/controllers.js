@@ -28,16 +28,22 @@ brewGetControllers.controller('HomeCtrl', ['$scope', 'Head', 'MikeData', functio
  * User controllers
  */
 
-/** sign up controller */
-brewGetControllers.controller('SignUpCtrl', ['$scope', 'Head', function ($scope, Head) {
-  $scope.title = 'Sign up';
-  Head.setTitle($scope.title);
-  Head.setDescription('Sign up for an account on brewGet.');
+/** user:index */
+brewGetControllers.controller('UserIndexCtrl', ['$scope', 'Head', 'User', function ($scope, Head, User) {
+  Head.setTitle('Users');
+  Head.setDescription('An index of users on brewGet.');
+  $scope.users = User.query();
 }]);
 
-/** sign in controller */
-brewGetControllers.controller('SignInCtrl', ['$scope', 'Head', function ($scope, Head) {
-  $scope.title = 'Sign in';
-  Head.setTitle($scope.title);
+/** user:new */
+brewGetControllers.controller('UserNewCtrl', ['$scope', 'Head', 'User', function ($scope, Head, User) {
+  Head.setTitle('Sign up');
+  Head.setDescription('Sign up for an account on brewGet.');
+  $scope.user = new User();
+}]);
+
+/** user:auth */
+brewGetControllers.controller('UserAuthCtrl', ['$scope', 'Head', function ($scope, Head) {
+  Head.setTitle('Sign in');
   Head.setDescription('Sign in to your brewGet account.');
 }]);
