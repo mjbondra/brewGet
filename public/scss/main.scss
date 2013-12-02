@@ -48,26 +48,42 @@
 \*------------------------------------*/
 
 /*--Third Party Libraries--*/
-@import 'normalize'; // symlinked css as scss from ../lib/html5-boilerplate/css/normalize.css
-@import 'html5-boilerplate'; // symlinked css as scss from ../lib/html5-boilerplate/css/main.css
-@import 'compass'; // requires compass -- 'gem install compass', or use CodeKit
-@import '../lib/susy/sass/susy';
-@import '../lib/font-awesome/scss/font-awesome';
+@import "normalize"; // symlinked css as scss from ../lib/normalize-css/normalize.css
+@import "html5-boilerplate"; // symlinked css as scss from ../lib/html5-boilerplate/css/main.css
+@import "compass"; // requires compass -- 'gem install compass', or use CodeKit
+@import "../lib/susy/sass/susy";
+@import "../lib/font-awesome/scss/font-awesome";
 
 /*--brewGet Libraries--*/
-@import 'vars';
-@import 'mixins';
+@import "vars";
+@import "mixins";
 
 /*------------------------------------*\
     ELEMENTAL STYLES
 \*------------------------------------*/
 
 html, body {
-  @include meta-serif(16px, $black, 500);
+  @include meta-serif(16px, $black, 500); // only place we will use 'px' for font-size; relative 'em' everywhere else
+}
+
+body {
+  @include container;
 }
 
 h1, h2, h3, h4, h5, h6 {
   @include enzo();
+}
+
+h1 {
+  @include font-details(null, $brown, 300);
+}
+
+h2 {
+  color: $brown;
+}
+
+h3 {
+  color: $lt-brown;
 }
 
 /*------------------------------------*\

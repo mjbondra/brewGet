@@ -21,12 +21,25 @@
 @mixin font-details($size: null, $color: null, $weight: null, $height: null, $family: null) {
   @if $family != null {
     @if $height != null {
-      font: $weight #{$size} / #{$height} $family;
-    } @else {
-      @if $weight != null or $size != null {
-        font: $weight $size $family;
+      @if $size != null {
+        font: $weight #{$size} / #{$height} $family;
       } @else {
         font-family: $family;
+        line-height: $height;
+        @if $weight != null {
+          font-weight: $weight;
+        }
+      }      
+    } @else {
+      @if $weight != null and $size != null {
+        font: $weight $size $family;
+      } @else if $size != null {
+        font: $size $family;          
+      } @else {
+        font-family: $family;
+        @if $weight != null {
+          font-weight: $weight;
+        }
       }
     }
   } @else {

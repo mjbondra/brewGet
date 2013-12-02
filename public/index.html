@@ -11,39 +11,7 @@
   <body>
     <header>
       <h1 class="branding"><a href="#/">brewGet</a></h1>
-      <nav class="primary-nav" ng-controller="NavCtrl" ng-show="Nav.content">
-        <ul>
-          <li class="tree content-nav-tree">
-            <h2>Content</h2>
-            <ul>
-              <li class="content-nav-item" ng-repeat="navItem in Nav.content">
-                <a ng-href="{{ navItem.href }}" ng-bind="navItem.title"></a>
-              </li>
-            </ul>
-          </li>
-          <li class="tree search-nav-tree">
-            <form>
-              <h2><label for="search">Search</label></h2>
-              <ul>
-                <li>
-                  <input type="text" id="search" ng-model="search">
-                </li>
-                <li>
-                  <button>Search</button>
-                </li>
-              </ul>
-            </form>
-          </li>
-          <li class="tree action-nav-tree">
-            <h2>Actions</h2>
-            <ul>
-              <li class="action-nav-item" ng-repeat="navItem in Nav.actions">
-                <a ng-href="{{ navItem.href }}" ng-bind="navItem.title"></a>
-              </li>
-            </ul>
-          </li>
-        </ul>
-      </nav>
+      <nav class="primary-nav" ng-include="'partials/nav/index.html'" ng-controller="NavCtrl"></nav>
     </header>
     <global-messages></global-messages>
     <main ng-view></main>
