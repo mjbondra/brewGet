@@ -5,11 +5,15 @@
  */
 var brewGetServices = angular.module('brewGetServices', ['ngResource']);
 
-/** global service for backend validation/unqiqueness failures */
+/** global service for handling backend responses */
 brewGetServices.config(function ($provide, $httpProvider) { 
   $provide.factory('brewGetInterceptor', function ($rootScope, $q) {
     return {
+      // response: function (res) {
+      //   return res || $q.when(res);
+      // },
       responseError: function (res) {
+        /** response for validation and uniqueness errors */
         if ((res.status === 409 || res.status === 422) && res.data && res.data.fieldValidationErrors) {
           $rootScope.$broadcast('validationErrors', res.data.fieldValidationErrors);
         }
@@ -54,6 +58,14 @@ brewGetServices.factory('MikeData', ['$resource', function ($resource) {
 /** user service for JSON API */
 brewGetServices.factory('User', ['$rootScope', '$resource', function ($rootScope, $resource) {
   return $resource('users/:userId', {}, {
-    save: { method:'POST', params: { userId: 'new' }}
+    save: { 
+      method:'POST', 
+      params: { userId: 'new' }, 
+      interceptor: {
+        response: function (res) {
+          console.log('added', res);
+        }
+      }
+    }
   });
 }]);

@@ -40,6 +40,7 @@ brewGetControllers.controller('UserNewCtrl', ['$scope', 'Head', 'User', function
   Head.setTitle('Sign up');
   Head.setDescription('Sign up for an account on brewGet.');
   $scope.user = new User();
+  // $scope.validationErrors = [{ field: 'test', message: 'test '}];
 }]);
 
 /** user:auth */

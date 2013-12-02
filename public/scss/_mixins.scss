@@ -1,3 +1,68 @@
   ////////////
  // MIXINS //
 ////////////
+
+/*------------------------------------*\
+    FONTS
+\*------------------------------------*/
+
+/*--General--*/
+
+/**
+ * Font mixin designed for easily adding individual attributes,
+ * without including those that are unneccesary or unstated.
+ *
+ * Priority is given to size and color, though any attribute can
+ * be targeted through the use of the 'null' value.
+ *
+ * ex. font-weight: 300 and line-height: 1
+ * @include font-details(null, null, 300, 1);
+ */
+@mixin font-details($size: null, $color: null, $weight: null, $height: null, $family: null) {
+  @if $family != null {
+    @if $height != null {
+      font: $weight #{$size} / #{$height} $family;
+    } @else {
+      @if $weight != null or $size != null {
+        font: $weight $size $family;
+      } @else {
+        font-family: $family;
+      }
+    }
+  } @else {
+    @if $size != null {
+      font-size: $size;
+    } 
+    @if $weight != null {
+      font-weight: $weight;
+    }
+    @if $height != null {
+      line-height: $height;
+    }
+  }
+  @if $color != null {
+    color: $color;
+  }
+}
+
+/*--Specific--*/
+
+/**
+ * The following mixins are subsets of the font-details mixin,
+ * differentiated by the fact that they are populated with
+ * specific font-families, and do not accept a $family parameter
+ */
+@mixin enzo($size: null, $color: null, $weight: null, $height: null) {
+  $family: "ff-enzo-web", sans-serif;
+  @include font-details($size, $color, $weight, $height, $family);
+}
+
+@mixin meta-serif($size: null, $color: null, $weight: null, $height: null) {
+  $family: "ff-meta-serif-web-pro", serif;
+  @include font-details($size, $color, $weight, $height, $family);
+}
+
+@mixin more-pro($size: null, $color: null, $weight: null, $height: null) {
+  $family: "ff-more-web-pro", serif;
+  @include font-details($size, $color, $weight, $height, $family);
+}

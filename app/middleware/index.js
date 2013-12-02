@@ -39,7 +39,7 @@ exports.validationErrorHandler = function (err, req, res, next) {
       var fieldValue = ( mongoError ? mongoError[3] : 'value' );
       var mongoErrorObj = { field: collectionField, message: msg.notUnique(collectionField, fieldValue) }
       errJSON.fieldValidationErrors = [ mongoErrorObj ];
-    } 
+    }
 
   /** Mongoose validation errors */
   } else if (err.name === 'ValidationError' && err.errors) {

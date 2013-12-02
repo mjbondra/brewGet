@@ -62,6 +62,14 @@
     ELEMENTAL STYLES
 \*------------------------------------*/
 
+html, body {
+  @include meta-serif(16px, $black, 500);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  @include enzo();
+}
+
 /*------------------------------------*\
     UTILITIES
 \*------------------------------------*/
@@ -77,9 +85,9 @@ h1.branding {
   a {
     @extend .ir;
     display: block;
-    width: 340px;
-    height: 75px;
-    background: url(../img/brewGet-logo-transparent.png) no-repeat 0 0 / 100% 100%;
+    width: 200px;
+    height: 42px;
+    background: url(../img/brewGet-logo-mobile-transparent.png) no-repeat 0 0 / 100% 100%;
   }
 }
 
@@ -92,22 +100,23 @@ nav.primary-nav {
     margin: 0;
     padding: 0;
     li {
-      display: inline;
+      display: block;
       float: left;
       width: 25%;
       text-align: center;
+      h2, a {
+        border: 1px solid white;
+        height: 43px;
+        @include enzo(1.125em, white, 300, 43px);
+      }
       h2 {
         margin: 0;
-        color: white;
         label {
           display: block;
         }
       }
       a {
         display: block;
-        color: white;
-        font-size: 1.5em;
-        font-weight: bold;
         text-decoration: none;
       }
       &.tree {
