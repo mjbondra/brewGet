@@ -17,7 +17,7 @@ module.exports = function (app, config, passport) {
   /** allow reverse proxying via nginx */
   app.enable('trust proxy');
 
-  /** set max listeners; 0 is */
+  /** set max listeners */
   app.setMaxListeners(0);
 
   /** set port for listening; default to port 3000 */

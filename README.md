@@ -12,6 +12,14 @@ Instructions and requirements for installing this web application.
 [Node.js](https://nodejs.org/)  
 [MongoDB](http://www.mongodb.org/)  
 
+######Optional
+
+If you would like to use `npm start` to launch this application, install [Nodemon](http://remy.github.io/nodemon/) globally.
+
+```
+npm install nodemon -g
+```
+
 ###Getting Started
 
 While in the project directory...   
@@ -92,6 +100,9 @@ brewGet
 |	|--passport.js
 |	+--routes.js
 |
+|--lib
+|	+--mongoose-validator.js
+|
 |--node_modules
 |	+--[npm installed libraries]
 |
@@ -134,8 +145,6 @@ brewGet
 |	+--index.html
 |
 |--tmp
-|--utils
-|	+--index.js
 |  
 |--.bowerrc
 |--.gitignore

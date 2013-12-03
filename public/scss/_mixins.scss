@@ -22,7 +22,7 @@
   @if $family != null {
     @if $height != null {
       @if $size != null {
-        font: $weight #{$size} / #{$height} $family;
+        font: $weight #{$size}/#{$height} $family; // this will work even if $weight == null
       } @else {
         font-family: $family;
         line-height: $height;
@@ -31,10 +31,8 @@
         }
       }      
     } @else {
-      @if $weight != null and $size != null {
-        font: $weight $size $family;
-      } @else if $size != null {
-        font: $size $family;          
+      @if $size != null {
+        font: $weight $size $family; // this will work even if $weight == null
       } @else {
         font-family: $family;
         @if $weight != null {

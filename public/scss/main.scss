@@ -40,6 +40,7 @@
     c. Print....................Imports Print Stylesheet(s)
   6. APPENDIX...................Additional Information
     a. Rule Structure...........Heirarchy of CSS Rules
+    b. Citations................Giving Credit Where Credit is Due
 
 \*---------------------------------------------------------------------*/
 
@@ -67,7 +68,7 @@ html, body {
 }
 
 body {
-  @include container;
+  // @include container;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -84,6 +85,12 @@ h2 {
 
 h3 {
   color: $lt-brown;
+}
+
+label {
+  input {
+    display: block;
+  }
 }
 
 /*------------------------------------*\
@@ -210,3 +217,11 @@ html-selector {
   text-*:
 }
 */
+
+/*--Citations--*/
+
+/**
+ * This stylesheet's structure was inspired by the work of Scott Tolinski
+ * http://scotttolinski.com/
+ * http://leveluptuts.com/
+ */

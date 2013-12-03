@@ -2,7 +2,7 @@
 /**
  * Module dependencies
  */
-var check = require('../../utils/mongoose-validator').check
+var check = require('../../lib/mongoose-validator').check
   , crypto = require('crypto')
   , mongoose = require('mongoose')
   , msg = require('../../config/messages')

@@ -47,7 +47,7 @@ brewGetServices.factory('Head', function() {
 
 /** service for getting and setting values within the primary html nav element */
 brewGetServices.factory('Nav', ['$http', function ($http) {
-  return $http.get('test-api/nav/index.json');
+  return $http.get('nav');
 }]);
 
 /** test service for bringing in JSON */
