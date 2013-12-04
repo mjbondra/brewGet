@@ -3,6 +3,7 @@ require.config({
     angular: '../lib/angular/angular.min',
     angularRoute: '../lib/angular-route/angular-route.min',
     angularResource: '../lib/angular-resource/angular-resource.min',
+    angularTouch: '../lib/angular-touch/angular-touch.min',
     typeKit: '//use.typekit.net/uby8kic'
   },
   shim: {
@@ -11,6 +12,7 @@ require.config({
     },
     angularRoute: ['angular'],
     angularResource: ['angular'],
+    angularTouch: ['angular'],
     app: ['angular'],
     controllers: ['angular'],
     services: ['angular'],
@@ -25,6 +27,7 @@ require([
   'angular',
   'angularRoute',
   'angularResource',
+  'angularTouch',
   'app',
   'controllers',
   'services',

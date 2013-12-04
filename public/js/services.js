@@ -1,8 +1,9 @@
 'use strict';
 
-/** 
- * Services
- */
+  //////////////
+ // SERVICES //
+//////////////
+
 var brewGetServices = angular.module('brewGetServices', ['ngResource']);
 
 /** global service for handling backend responses */

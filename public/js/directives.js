@@ -1,8 +1,9 @@
 'use strict';
 
-/** 
- * Directives
- */
+  ////////////////
+ // DIRECTIVES //
+////////////////
+
 var brewGetDirectives = angular.module('brewGetDirectives', []);
 
 /** globally visible container for messages */

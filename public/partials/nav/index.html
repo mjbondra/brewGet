@@ -1,7 +1,7 @@
 <ul>
   <li class="tree content-nav-tree">
-    <h2>Content</h2>
-    <ul>
+    <h2 ng-click="showNavTree('content')">Content</h2>
+    <ul ng-class="{ active: activeTree == 'content' }">
       <li class="content-nav-item" ng-repeat="navItem in Nav.content">
         <a ng-href="{{ navItem.href }}">{{ navItem.title }}</a>
       </li>
@@ -9,8 +9,8 @@
   </li>
   <li class="tree search-nav-tree">
     <form>
-      <h2><label for="search">Search</label></h2>
-      <ul>
+      <h2><label for="search" ng-click="showNavTree('search')">Search</label></h2>
+      <ul ng-class="{ active: activeTree == 'search' }">
         <li>
           <input type="text" id="search" ng-model="search">
         </li>

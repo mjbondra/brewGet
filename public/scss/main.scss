@@ -72,7 +72,7 @@ body {
 }
 
 h1, h2, h3, h4, h5, h6 {
-  @include enzo();
+  @include enzo;
 }
 
 h1 {
@@ -133,8 +133,11 @@ nav.primary-nav {
         @include enzo(1.125em, white, 300, 43px);
       }
       h2 {
+        @include user-select;
+        cursor: pointer;
         margin: 0;
         label {
+          cursor: pointer;
           display: block;
         }
       }
@@ -145,6 +148,9 @@ nav.primary-nav {
       &.tree {
         ul {
           display: none;
+          &.active {
+            display: block;
+          }
         }
         &.content-nav-tree, &.search-nav-tree {
           ul {

@@ -5,6 +5,7 @@
     "angular": "1.x",
     "angular-resource": "1.x",
     "angular-route": "1.x",
+    "angular-touch": "1.x",
     "font-awesome": "4.x",
     "html5-boilerplate": "4.x",
     "normalize-css": "2.x",
