@@ -22,11 +22,17 @@ npm install nodemon -g
 
 ###Getting Started
 
-While in the project directory...   
+While in the project directory (with [Nodemon](http://remy.github.io/nodemon/)):   
 
 ```
 npm install
 npm start
+```
+OR (without [Nodemon](http://remy.github.io/nodemon/)):  
+
+```
+npm install
+node server.js
 ```
 
 ##Appendix

@@ -43,12 +43,12 @@ brewGetControllers.controller('NavCtrl', ['$scope', 'Nav', function ($scope, Nav
 
 /** 
  * Homepage Controller !!! This is temporary and will be removed !!!
- * GET /
+ * ROUTE /#!/
  * TEMPLATE /partials/home.html
  */
 brewGetControllers.controller('HomeCtrl', ['$scope', 'Head', 'MikeData', function ($scope, Head, MikeData) {
-  Head.setTitle('brewGet');
-  Head.setDescription('brewGet is a web application designed to support the beer trading community');
+  Head.title('brewGet');
+  Head.description('brewGet is a web application that supports the non-monetary exchange of regionally-limited or otherwise difficult to acquire beer.');
   $scope.mikedata = MikeData.get({ resourceId: 'test' });
 }]);
 
@@ -58,33 +58,33 @@ brewGetControllers.controller('HomeCtrl', ['$scope', 'Head', 'MikeData', functio
 
 /**
  * Index
- * GET /#/users
+ * ROUTE /#!/users
  * TEMPLATE /partials/users/index.html
  */
 brewGetControllers.controller('UserIndexCtrl', ['$scope', 'Head', 'User', function ($scope, Head, User) {
-  Head.setTitle('Users');
-  Head.setDescription('An index of users on brewGet.');
+  Head.title('Users');
+  Head.description('An index of users on brewGet.');
   $scope.users = User.query();
 }]);
 
 /**
  * New
- * GET /#/users/new
+ * ROUTE /#!/users/new
  * TEMPLATE /partials/users/new.html
  */
 brewGetControllers.controller('UserNewCtrl', ['$scope', 'Head', 'User', function ($scope, Head, User) {
-  Head.setTitle('Sign up');
-  Head.setDescription('Sign up for an account on brewGet.');
+  Head.title('Sign up');
+  Head.description('Sign up for an account on brewGet.');
   $scope.user = new User();
-  // $scope.validationErrors = [{ field: 'test', message: 'test '}];
 }]);
 
 /**
  * Authentication
- * GET /#/users/auth
+ * ROUTE /#!/users/auth
  * TEMPLATE /partials/users/auth.html
  */
-brewGetControllers.controller('UserAuthCtrl', ['$scope', 'Head', function ($scope, Head) {
-  Head.setTitle('Sign in');
-  Head.setDescription('Sign in to your brewGet account.');
+brewGetControllers.controller('UserAuthCtrl', ['$scope', 'Head', 'User', function ($scope, Head, User) {
+  Head.title('Sign in');
+  Head.description('Sign in to your brewGet account.');
+  $scope.user = new User();
 }]);

@@ -9,8 +9,15 @@ module.exports = function (app, passport) {
     res.json({ this: 'works', test: req.body });
   });
 
-  app.get('/nav', navigation.items);
+  /** navigation */
+  app.get('/api/nav', navigation.items);
 
-  app.get('/users', users.index);
-  app.post('/users/new', users.create);
+  /** users */
+  app.get('/api/users', users.index);
+  app.post('/api/users/new', users.create);
+
+  /** redirect all remaining routes to angular router */
+  app.get('*', function (req, res, next) {
+    res.redirect('/#!' + req.url);
+  });
 }

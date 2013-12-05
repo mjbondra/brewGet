@@ -1,16 +1,18 @@
 <!DOCTYPE html>
 <html lang="en" ng-app="brewGet">
   <head ng-controller="HeadCtrl">
+    <base href="/">
+    <meta name="fragment" content="!">
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=0, width=device-width">
-    <meta name="description" ng-attr-content="{{ Head.getDescription() }}">
+    <meta name="description" ng-attr-content="{{ Head.description() }}">
     <link href="css/main.css" rel="stylesheet">
-    <title ng-bind="Head.getTitle()">brewGet</title>
+    <title ng-bind="Head.title()">brewGet</title>
   </head>
   <body>
     <header>
-      <h1 class="branding"><a href="#/">brewGet</a></h1>
+      <h1 class="branding"><a href="#!/">brewGet</a></h1>
       <nav class="primary-nav" ng-include="'partials/nav/index.html'" ng-controller="NavCtrl"></nav>
     </header>
     <global-messages></global-messages>

@@ -13,29 +13,29 @@ exports.items = function (req, res, next) {
     content: [
       {
         title: 'Posts',
-        href: '#/'
+        href: '/'
       },
       {
         title: 'Users',
-        href: '#/users'
+        href: '/users'
       },
       {
         title: 'Beers',
-        href: '#/beers'
+        href: '/beers'
       },
       {
         title: 'Breweries',
-        href: '#/breweries'
+        href: '/breweries'
       }
     ],
     actions: [
       {
         title: 'Sign up',
-        href: '#/users/new'
+        href: '/users/new'
       },
       {
         title: 'Sign in',
-        href: '#/users/auth'
+        href: '/users/auth'
       }
     ]
   };

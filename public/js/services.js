@@ -31,24 +31,20 @@ brewGetServices.factory('Head', function() {
   var title = defaultTitle;
   var description = 'brewGet is a web application designed to support the beer trading community';
   return {
-    getDescription: function () {
-      return description;
+    description: function (newDescription) {
+      if (typeof newDescription !== 'undefined') description = newDescription;
+      else return description;
     },
-    getTitle: function () { 
-      return title; 
-    },
-    setDescription: function (newDescription) {
-      description = newDescription;
-    },
-    setTitle: function (newTitle) { 
-      title = ( newTitle == defaultTitle ? defaultTitle : newTitle + ' || brewGet' );
+    title: function (newTitle) {
+      if (typeof newTitle !== 'undefined') title = ( newTitle === defaultTitle ? defaultTitle : newTitle + ' || brewGet' );
+      else return title;
     }
   };
 });
 
 /** service for getting and setting values within the primary html nav element */
 brewGetServices.factory('Nav', ['$http', function ($http) {
-  return $http.get('nav');
+  return $http.get('api/nav');
 }]);
 
 /** test service for bringing in JSON */
@@ -58,7 +54,7 @@ brewGetServices.factory('MikeData', ['$resource', function ($resource) {
 
 /** user service for JSON API */
 brewGetServices.factory('User', ['$rootScope', '$resource', function ($rootScope, $resource) {
-  return $resource('users/:userId', {}, {
+  return $resource('api/users/:userId', {}, {
     save: { 
       method:'POST', 
       params: { userId: 'new' }, 

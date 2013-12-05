@@ -28,28 +28,31 @@ var brewGet = angular.module('brewGet', [
 /** 
  * Routes 
  */
-brewGet.config(['$routeProvider', function ($routeProvider) {
-    $routeProvider.when('/', {
-      templateUrl: '/partials/home.html',
-      controller: 'HomeCtrl'
-    });
+brewGet.config(['$routeProvider', '$locationProvider', function ($routeProvider, $locationProvider) {
+  $locationProvider.html5Mode(true);
+  $locationProvider.hashPrefix('!');
 
-    /* user routes */
-    $routeProvider.when('/users', {
-      templateUrl: 'partials/users/index.html',
-      controller: 'UserIndexCtrl'
-    });
-    $routeProvider.when('/users/new', {
-      templateUrl: '/partials/users/new.html',
-      controller: 'UserNewCtrl'
-    });
-    $routeProvider.when('/users/auth', {
-      templateUrl: '/partials/users/auth.html',
-      controller: 'UserAuthCtrl'
-    });
+  $routeProvider.when('/', {
+    templateUrl: '/partials/home.html',
+    controller: 'HomeCtrl'
+  });
 
-    /* default route */
-    $routeProvider.otherwise({ 
-      redirectTo: '/' 
-    });
+  /* user routes */
+  $routeProvider.when('/users', {
+    templateUrl: '/partials/users/index.html',
+    controller: 'UserIndexCtrl'
+  });
+  $routeProvider.when('/users/new', {
+    templateUrl: '/partials/users/new.html',
+    controller: 'UserNewCtrl'
+  });
+  $routeProvider.when('/users/auth', {
+    templateUrl: '/partials/users/auth.html',
+    controller: 'UserAuthCtrl'
+  });
+
+  /* default route */
+  $routeProvider.otherwise({ 
+    redirectTo: '/'
+  });
 }]);

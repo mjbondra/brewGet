@@ -42,7 +42,6 @@ UserSchema.virtual('password')
     this._password = sanitize(password).escape();
     this.salt = this.makeSalt();
     this.hash = this.encrypt(this._password, this.salt);
-    console.log(this.hash);
   })
   .get(function () { 
     return this._password; 
