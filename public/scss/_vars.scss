@@ -9,6 +9,16 @@
 $black: #222222;
 $brown: #554236;
 $lt-brown: #a17357;
+$ltr-brown: #e4d7ce;
+$green: #d1cc35;
+$lt-green: #eae6ae;
+
+/*------------------------------------*\
+    COMPASS
+\*------------------------------------*/
+
+/** Support for khtml in experimental css3 properties (-khtml) */
+$experimental-support-for-khtml: true;
 
 /*------------------------------------*\
     SUSY

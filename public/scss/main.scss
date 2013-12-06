@@ -27,6 +27,9 @@
     a. 3rd Party Libraries......Non-Native Stylesheets and Mixins
     b. brewGet Libraries........brewGet Specific Variables and Mixins
   2. ELEMENTAL STYLES...........Styles for HTML Elements
+    a. General Elements.........Styles for General Elements
+    b. Heading Tags.............Styles for Heading Tags
+    c. Form Elements............Styles for Form Elements
   3. UTILITIES..................Reusable Utility Classes
   4. CONTENT....................Page Content
     a. Branding.................Styles for Brand Images and Headings
@@ -63,6 +66,8 @@
     ELEMENTAL STYLES
 \*------------------------------------*/
 
+/*--General Elements--*/
+
 html, body {
   @include meta-serif(16px, $black, 500); // only place we will use 'px' for font-size; relative 'em' everywhere else
 }
@@ -70,6 +75,8 @@ html, body {
 body {
   // @include container;
 }
+
+/*--Heading Tags--*/
 
 h1, h2, h3, h4, h5, h6 {
   @include enzo;
@@ -87,10 +94,60 @@ h3 {
   color: $lt-brown;
 }
 
+/*--Form Elements--*/
+
 label {
+  display: block;
   input {
     display: block;
   }
+}
+
+input[type=text],
+input[type=url],
+input[type=tel],
+input[type=number],
+input[type=color],
+input[type=email], 
+input[type=password], 
+input[type=submit], 
+button {
+  @include appearance(none);
+  @include box-sizing(border-box);
+  @include border-radius(0);
+  padding: 0 10px;
+  height: 45px;
+  @include font-details(1.125em);
+}
+
+input[type=text],
+input[type=url],
+input[type=tel],
+input[type=number],
+input[type=color],
+input[type=email], 
+input[type=password] {
+  @include single-transition(background-color, 500ms, ease-out);
+  border: 1px solid $lt-brown;
+  background-color: $ltr-brown;
+  @include input-placeholder {
+    @include single-transition(color, 500ms, ease-out);
+    color: $lt-brown;
+  }
+  &:focus {
+    outline: 0;
+    background-color: $lt-green;
+    @include input-placeholder {
+      color: $brown;
+    }
+  }
+}
+
+input[type=submit], 
+button {
+  border: 2px solid $brown;
+  background-color: $lt-brown;
+  @include enzo(null, white);
 }
 
 /*------------------------------------*\
@@ -118,7 +175,6 @@ h1.branding {
 
 nav.primary-nav {
   @extend .clearfix;
-  background-color: $brown;
   ul {
     margin: 0;
     padding: 0;
@@ -126,19 +182,19 @@ nav.primary-nav {
       display: block;
       float: left;
       width: 25%;
-      text-align: center;
+      background-color: $brown;
+      @include no-select;
       h2, a {
         border: 1px solid white;
         height: 43px;
         @include enzo(1.125em, white, 300, 43px);
+        text-align: center;
       }
       h2 {
-        @include user-select;
         cursor: pointer;
         margin: 0;
         label {
           cursor: pointer;
-          display: block;
         }
       }
       a {
@@ -146,18 +202,53 @@ nav.primary-nav {
         text-decoration: none;
       }
       &.tree {
-        ul {
-          display: none;
-          &.active {
-            display: block;
-          }
-        }
         &.content-nav-tree, &.search-nav-tree {
+          @include single-transition(all, 250ms, ease-out);
           ul {
             position: absolute;
             left: 0;
             width: 100%;
+            li {
+              @include single-transition(all, 250ms, ease-out);
+              height: 0;
+              overflow: hidden;
+              &.search-nav-item {
+                &.input-item {
+                  width: 75%;
+                  input {
+                    border: 1px solid white;
+                    width: 100%;
+                  }
+                }
+                &.button-item {
+                  width: 25%;
+                  button {
+                    @include single-transition(background-color, 250ms, ease-out);
+                    border: 1px solid white;
+                    width: 100%;
+                    background-color: $brown;
+                  }
+                }
+              }
+            }
+          }
+          &.active-tree {
+            margin: 0 0 45px;
             background-color: $lt-brown;
+            ul {
+              z-index: 1;
+              li {
+                height: 45px;
+                background-color: $lt-brown;
+                &.search-nav-item {
+                  &.button-item {
+                    button {
+                      background-color: $lt-brown;
+                    }
+                  }
+                }
+              }
+            }
           }
         }
         &.action-nav-tree {
@@ -166,9 +257,7 @@ nav.primary-nav {
             display: none;
           }
           ul {
-            display: block;
             li {
-              float: left;
               width: 50%;
             }
           }

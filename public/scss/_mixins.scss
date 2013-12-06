@@ -2,15 +2,6 @@
  // MIXINS //
 ////////////
 
-@mixin user-select($value: none) {
-  -webkit-touch-callout: $value;
-    -webkit-user-select: $value;
-     -khtml-user-select: $value;
-       -moz-user-select: $value;
-        -ms-user-select: $value;
-            user-select: $value;
-}
-
 /*------------------------------------*\
     FONTS
 \*------------------------------------*/
@@ -85,4 +76,37 @@
 @mixin more-pro($size: null, $color: null, $weight: null, $height: null) {
   $family: "ff-more-web-pro", serif;
   @include font-details($size, $color, $weight, $height, $family);
+}
+
+/*------------------------------------*\
+    TEXT SELECTION
+\*------------------------------------*/
+
+/*--General--*/
+
+/**
+ * This user-select mixin, which controls the ability of a user to select text, is used instead of the less robust Compass variant
+ */
+@mixin user-select($value: text) {
+  @include experimental(user-select, $value, -moz, -webkit, not -o, -ms, -khtml, official);
+  -webkit-touch-callout: $value;
+}
+
+/*--Specific--*/
+
+/**
+ * This user-select mixin is pre-populated with a value of 'none'
+ */
+@mixin no-select {
+  @include user-select(none);
+}
+
+
+/** https://github.com/michaelsacca/Compass-Placeholder-Text-Mixin */
+@mixin input-placeholder {
+    &.placeholder { @content; }
+    &:-moz-placeholder { @content; }
+    &::-moz-placeholder { @content; }
+    &:-ms-input-placeholder { @content; }
+    &::-webkit-input-placeholder { @content; } 
 }
