@@ -1,0 +1,17 @@
+
+/**
+ * Mixin for user-select, which controls the ability of a user to select text
+ *
+ * Additional vendor prefixes are used relative to the Compass variant of this mixin
+ */
+@mixin user-select($value: text) {
+  @include experimental(user-select, $value, -moz, -webkit, not -o, -ms, -khtml, official);
+  -webkit-touch-callout: $value;
+}
+
+/**
+ * This user-select mixin is pre-populated with a value of 'none'
+ */
+@mixin no-select {
+  @include user-select(none);
+}

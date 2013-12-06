@@ -116,6 +116,7 @@ button {
   @include box-sizing(border-box);
   @include border-radius(0);
   padding: 0 10px;
+  width: 100%;
   height: 45px;
   @include font-details(1.125em);
 }
@@ -130,6 +131,7 @@ input[type=password] {
   @include single-transition(background-color, 500ms, ease-out);
   border: 1px solid $lt-brown;
   background-color: $ltr-brown;
+  @include no-tap-highlight;
   @include input-placeholder {
     @include single-transition(color, 500ms, ease-out);
     color: $lt-brown;
@@ -193,6 +195,7 @@ nav.primary-nav {
       h2 {
         cursor: pointer;
         margin: 0;
+        @include no-tap-highlight;
         label {
           cursor: pointer;
         }
@@ -217,7 +220,6 @@ nav.primary-nav {
                   width: 75%;
                   input {
                     border: 1px solid white;
-                    width: 100%;
                   }
                 }
                 &.button-item {
@@ -225,7 +227,6 @@ nav.primary-nav {
                   button {
                     @include single-transition(background-color, 250ms, ease-out);
                     border: 1px solid white;
-                    width: 100%;
                     background-color: $brown;
                   }
                 }

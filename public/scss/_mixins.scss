@@ -6,57 +6,7 @@
     FONTS
 \*------------------------------------*/
 
-/*--General--*/
-
-/**
- * Font mixin designed for easily adding individual attributes,
- * without including those that are unneccesary or unstated.
- *
- * Priority is given to size and color, though any attribute can
- * be targeted through the use of the 'null' value.
- *
- * ex. font-weight: 300 and line-height: 1
- * @include font-details(null, null, 300, 1);
- */
-@mixin font-details($size: null, $color: null, $weight: null, $height: null, $family: null) {
-  @if $family != null {
-    @if $height != null {
-      @if $size != null {
-        font: $weight #{$size}/#{$height} $family; // this will work even if $weight == null
-      } @else {
-        font-family: $family;
-        line-height: $height;
-        @if $weight != null {
-          font-weight: $weight;
-        }
-      }      
-    } @else {
-      @if $size != null {
-        font: $weight $size $family; // this will work even if $weight == null
-      } @else {
-        font-family: $family;
-        @if $weight != null {
-          font-weight: $weight;
-        }
-      }
-    }
-  } @else {
-    @if $size != null {
-      font-size: $size;
-    } 
-    @if $weight != null {
-      font-weight: $weight;
-    }
-    @if $height != null {
-      line-height: $height;
-    }
-  }
-  @if $color != null {
-    color: $color;
-  }
-}
-
-/*--Specific--*/
+@import "mixins/font-details";
 
 /**
  * The following mixins are subsets of the font-details mixin,
@@ -79,34 +29,14 @@
 }
 
 /*------------------------------------*\
-    TEXT SELECTION
+    SELECTION / HIGHLIGHTING
 \*------------------------------------*/
 
-/*--General--*/
+@import "mixins/user-select";
+@import "mixins/tap-highlight-color";
 
-/**
- * This user-select mixin, which controls the ability of a user to select text, is used instead of the less robust Compass variant
- */
-@mixin user-select($value: text) {
-  @include experimental(user-select, $value, -moz, -webkit, not -o, -ms, -khtml, official);
-  -webkit-touch-callout: $value;
-}
+/*------------------------------------*\
+    FORMS
+\*------------------------------------*/
 
-/*--Specific--*/
-
-/**
- * This user-select mixin is pre-populated with a value of 'none'
- */
-@mixin no-select {
-  @include user-select(none);
-}
-
-
-/** https://github.com/michaelsacca/Compass-Placeholder-Text-Mixin */
-@mixin input-placeholder {
-    &.placeholder { @content; }
-    &:-moz-placeholder { @content; }
-    &::-moz-placeholder { @content; }
-    &:-ms-input-placeholder { @content; }
-    &::-webkit-input-placeholder { @content; } 
-}
+@import "mixins/input-placeholder";
