@@ -1,5 +1,7 @@
 
 /**
+ * @mixin tap-highlight-color
+ *
  * Mixin for changing the color of tap highlights seen on Android and iOS webkit browsers
  *
  * @param $color {value} - <color>
@@ -11,6 +13,8 @@
 }
 
 /**
+ * @mixin no-tap-highlight
+ *
  * Alias for unpopulated inclusion of tap-highlight-color mixin
  *
  * @returns {declaration}

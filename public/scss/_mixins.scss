@@ -3,10 +3,16 @@
 ////////////
 
 /*------------------------------------*\
-    FONTS
+    MIKE'S MIXINS
 \*------------------------------------*/
 
-@import "mixins/font-details";
+@import "mixins/base";
+
+/*------------------------------------*\
+    BREWGET SPECIFIC MIXINS
+\*------------------------------------*/
+
+/*--Fonts--*/
 
 /**
  * The following mixins are subsets of the font-details mixin,
@@ -27,16 +33,3 @@
   $family: "ff-more-web-pro", serif;
   @include font-details($size, $color, $weight, $height, $family);
 }
-
-/*------------------------------------*\
-    SELECTION / HIGHLIGHTING
-\*------------------------------------*/
-
-@import "mixins/user-select";
-@import "mixins/tap-highlight-color";
-
-/*------------------------------------*\
-    FORMS
-\*------------------------------------*/
-
-@import "mixins/input-placeholder";
