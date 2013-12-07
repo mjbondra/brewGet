@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "dependencies": {
     "angular": "1.x",
+    "angular-animate": "1.x",
     "angular-resource": "1.x",
     "angular-route": "1.x",
     "angular-touch": "1.x",

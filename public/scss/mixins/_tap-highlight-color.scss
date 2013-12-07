@@ -1,6 +1,9 @@
 
 /**
- * Mixin for changing the color of webkit tap highlights seen on Android and iOS webkit browsers
+ * Mixin for changing the color of tap highlights seen on Android and iOS webkit browsers
+ *
+ * Example: semi-transparent green tap highlight with solid green fallback
+ * @include tap-highlight-color(209, 204, 53, 0.5, #d1cc35);
  */
 @mixin tap-highlight-color($r: 0, $g: 0, $b: 0, $a: 0, $color: transparent) {
   -webkit-tap-highlight-color: rgba($r,$g,$b,$a);
@@ -9,6 +12,8 @@
 
 /**
  * Alias for unpopulated inclusion of tap-highlight-color mixin
+ *
+ * Results in transparent tap highlight
  */
 @mixin no-tap-highlight {
   @include tap-highlight-color;

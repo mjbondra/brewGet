@@ -6,7 +6,7 @@
  * Priority is given to size and color, though any attribute can
  * be targeted through the use of the 'null' value.
  *
- * ex. font-weight: 300 and line-height: 1
+ * Example: font-weight: 300 and line-height: 1
  * @include font-details(null, null, 300, 1);
  */
 @mixin font-details($size: null, $color: null, $weight: null, $height: null, $family: null) {

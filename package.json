@@ -14,6 +14,7 @@
   },
   "devDependencies": {
     "bower": "1.x",
+    "graceful-fs": "2.x",
     "grunt": "0.x",
     "grunt-bower-task": "0.x",
     "grunt-cli": "0.x",
