@@ -4,10 +4,7 @@
  *
  * Source: https://github.com/michaelsacca/Compass-Placeholder-Text-Mixin
  *
- * Example: black placeholder text color
- * @include input-placeholder {
- *   color: #000000;
- * }
+ * @returns {rules} - populated by semicolon delimited declarations within brackets after '@include input-placeholder'
  */
 @mixin input-placeholder {
   &.placeholder { @content; }

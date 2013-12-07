@@ -66,7 +66,7 @@
     ELEMENTAL STYLES
 \*------------------------------------*/
 
-/*--General Elements--*/
+/*--General Containers--*/
 
 html, body {
   @include meta-serif(16px, $black, 500); // only place we will use 'px' for font-size; relative 'em' everywhere else
@@ -158,6 +158,12 @@ button {
   @include enzo(null, white);
 }
 
+/*--Other--*/
+
+a {
+  @include tap-highlight-color($green, 0.25);
+}
+
 /*------------------------------------*\
     UTILITIES
 \*------------------------------------*/
@@ -175,7 +181,7 @@ h1.branding {
     display: block;
     width: 200px;
     height: 42px;
-    background: url(../img/brewGet-logo-mobile-transparent.png) no-repeat 0 0 / 100% 100%;
+    background: url(../img/brewGet-logo-mobile-transparent.png) 0 0 / 100% 100% no-repeat;
   }
 }
 
@@ -191,7 +197,7 @@ nav.primary-nav {
       float: left;
       width: 25%;
       background-color: $brown;
-      @include no-select;
+      @include no-select-callout;
       h2, a {
         border: 1px solid white;
         height: 43px;
