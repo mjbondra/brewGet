@@ -19,7 +19,9 @@
  * App Module
  */
 var brewGet = angular.module('brewGet', [
+  'ngAnimate',
   'ngRoute',
+  'ngTouch',
   'brewGetControllers',
   'brewGetServices',
   'brewGetDirectives'

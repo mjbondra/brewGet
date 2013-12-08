@@ -6,28 +6,32 @@
 
 var brewGetDirectives = angular.module('brewGetDirectives', []);
 
-/** globally visible container for messages */
-brewGetDirectives.directive('globalMessages', function () {
+/**
+ * <global-messages> Directive
+ */
+brewGetDirectives.directive('globalMessages', ['MessageHandler', '_', function (MessageHandler, _) {
   return {
     restrict: 'E',
     link: function (scope) {
       scope.$on('globalMessages', function (event, globalMessages) { 
-        scope.globalMessages = globalMessages;
+        scope = _.extend(scope, MessageHandler.process(globalMessages));
       });
     },
-    templateUrl: '/partials/directives/global-messages.html'
+    templateUrl: '/partials/directives/messages.html'
   };
-});
+}]);
 
-/** reusable directive for form validation error messages */
-brewGetDirectives.directive('validationMessages', function () {
+/**
+ * <validation-messages> Directive
+ */
+brewGetDirectives.directive('validationMessages', ['MessageHandler', '_', function (MessageHandler, _) {
   return {
     restrict: 'E',
     link: function (scope) {
       scope.$on('validationErrors', function (event, validationErrors) { 
-        scope.validationErrors = validationErrors;
+        scope = _.extend(scope, MessageHandler.process(validationErrors));
       });
     },
-    templateUrl: '/partials/directives/validation-messages.html'
+    templateUrl: '/partials/directives/messages.html'
   };
-});
+}]);

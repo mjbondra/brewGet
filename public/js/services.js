@@ -6,7 +6,24 @@
 
 var brewGetServices = angular.module('brewGetServices', ['ngResource']);
 
-/** global service for handling backend responses */
+/*------------------------------------*\
+    EXTERNAL LIBRARY SERVICES
+\*------------------------------------*/
+
+/**
+ * Underscore Service
+ */
+brewGetServices.factory('_', function () {
+  return window._;
+});
+
+/*------------------------------------*\
+    REQUEST/RESPONSE SERVICES
+\*------------------------------------*/
+
+/** 
+ * Response Service
+ */
 brewGetServices.config(function ($provide, $httpProvider) { 
   $provide.factory('brewGetInterceptor', function ($rootScope, $q) {
     return {
@@ -25,7 +42,13 @@ brewGetServices.config(function ($provide, $httpProvider) {
   $httpProvider.interceptors.push('brewGetInterceptor');
 });
 
-/** service for getting and setting values within the html head element */
+/*------------------------------------*\
+    ELEMENTAL SERVICES
+\*------------------------------------*/
+
+/**
+ * <head> Service
+ */
 brewGetServices.factory('Head', function() {
   var defaultTitle = 'brewGet';
   var title = defaultTitle;
@@ -42,17 +65,42 @@ brewGetServices.factory('Head', function() {
   };
 });
 
-/** service for getting and setting values within the primary html nav element */
+/** 
+ * <nav> Service
+ */
 brewGetServices.factory('Nav', ['$http', function ($http) {
   return $http.get('api/nav');
 }]);
 
-/** test service for bringing in JSON */
-brewGetServices.factory('MikeData', ['$resource', function ($resource) {
-  return $resource('test-api/:resourceId.json');
-}]);
+/*------------------------------------*\
+    DIRECTIVE SERVICES
+\*------------------------------------*/
 
-/** user service for JSON API */
+/**
+ * Message Service
+ */
+brewGetServices.factory('MessageHandler', function() {
+  return {
+    process: function (alerts) {
+      var cssClasses = [];
+      if (alerts.length > 0) {
+        cssClasses.push('active-messages');
+      }
+      return { 
+        alerts: alerts, 
+        cssClasses: cssClasses 
+      };
+    }
+  };
+});
+
+/*------------------------------------*\
+    RESOURCE SERVICES
+\*------------------------------------*/
+
+/**
+ * User Service
+ */
 brewGetServices.factory('User', ['$rootScope', '$resource', function ($rootScope, $resource) {
   return $resource('api/users/:userId', {}, {
     save: { 
@@ -65,4 +113,15 @@ brewGetServices.factory('User', ['$rootScope', '$resource', function ($rootScope
       }
     }
   });
+}]);
+
+/*------------------------------------*\
+    TEMP/PLACEHOLDER SERVICES
+\*------------------------------------*/
+
+/** 
+ * Test Service for Bringing in JSON 
+ */
+brewGetServices.factory('MikeData', ['$resource', function ($resource) {
+  return $resource('test-api/:resourceId.json');
 }]);

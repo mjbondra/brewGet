@@ -4,7 +4,7 @@
  // CONTROLLERS //
 /////////////////
 
-var brewGetControllers = angular.module('brewGetControllers', ['ngTouch']);
+var brewGetControllers = angular.module('brewGetControllers', []);
 
 /*------------------------------------*\
     GLOBAL CONTROLLERS
