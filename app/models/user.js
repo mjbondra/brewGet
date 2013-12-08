@@ -80,10 +80,10 @@ UserSchema.path('hash').validate(function (v) {
  * Methods 
  */
 UserSchema.methods = {
-  authenticate: function (plainText,salt) {
+  authenticate: function (plainText, salt) {
     return this.hash === this.encrypt(sanitize(plainText).escape(),salt);
   },
-  encrypt: function (plainText,salt) {
+  encrypt: function (plainText, salt) {
     var hash = crypto.createHmac("sha512", salt)
       .update(plainText)
       .digest("base64");

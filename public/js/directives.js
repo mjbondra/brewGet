@@ -12,6 +12,7 @@ var brewGetDirectives = angular.module('brewGetDirectives', []);
 brewGetDirectives.directive('globalMessages', ['MessageHandler', '_', function (MessageHandler, _) {
   return {
     restrict: 'E',
+    scope: true,
     link: function (scope) {
       scope.$on('globalMessages', function (event, globalMessages) { 
         scope = _.extend(scope, MessageHandler.process(globalMessages));
@@ -27,6 +28,7 @@ brewGetDirectives.directive('globalMessages', ['MessageHandler', '_', function (
 brewGetDirectives.directive('validationMessages', ['MessageHandler', '_', function (MessageHandler, _) {
   return {
     restrict: 'E',
+    scope: true,
     link: function (scope) {
       scope.$on('validationErrors', function (event, validationErrors) { 
         scope = _.extend(scope, MessageHandler.process(validationErrors));

@@ -79,6 +79,16 @@ brewGetControllers.controller('UserNewCtrl', ['$scope', 'Head', 'User', function
 }]);
 
 /**
+ * Edit
+ * ROUTE /#!/users/:id/edit
+ * TEMPLATE /partials/users/edit.html
+ */
+brewGetControllers.controller('UserEditCtrl', ['$scope', 'Head', 'User', function ($scope, Head, User) {
+  Head.title('Account Details & Settings');
+  Head.description('Edit the details and settings of your brewGet account.');
+}]);
+
+/**
  * Authentication
  * ROUTE /#!/users/auth
  * TEMPLATE /partials/users/auth.html

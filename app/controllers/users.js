@@ -34,7 +34,7 @@ exports.create = function (req, res, next) {
   var user = new User(req.body);
   Q.ninvoke(user, 'save')
     .then(function () {
-      res.json(201, user); // 201 Created
+      newContentResponse('user', user, msg.user.created(user.username));
     })
     .fail(function (err) {
       next(err);

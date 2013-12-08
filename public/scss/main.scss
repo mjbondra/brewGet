@@ -135,7 +135,7 @@ input[type=color],
 input[type=email], 
 input[type=password] {
   @include single-transition(background-color, 500ms, ease-out);
-  border: 1px solid $lt-brown;
+  border: none;
   background-color: $ltr-brown;
   @include no-tap-highlight;
   @include input-placeholder {
@@ -155,10 +155,17 @@ input[type=submit],
 input[type=reset],
 button {
   margin: 15px 0;
-  border: 1px solid $brown;
+  border: none;
   background-color: $lt-brown;
   @include enzo(null, white);
-  @include tap-highlight-color($green, 0.25);
+  @include tap-highlight-color($brown, 0.5);
+  &:focus {
+    outline: 3px solid $green;
+  }
+  &:active {
+    outline-width: 1px;
+    background-color: $brown;
+  }
 }
 
 /*--Sectioning Elements--*/
@@ -170,17 +177,19 @@ main {
 /*--Flow Elements--*/
 
 a {
-  @include tap-highlight-color($green, 0.25);
+  @include tap-highlight-color($brown, 0.5);
 }
 
 validation-messages, global-messages {
   ul {
+    @include transition(max-height 2s ease-out, opacity 1s ease-out);
     overflow: hidden;
     display: block;
     max-height: 0;
-    @include single-transition(height, 1s, ease-out);
+    opacity: 0;
     &.active-messages {
-      max-height: auto;
+      max-height: 200px;
+      opacity: 1;
     }
   }
 }
@@ -322,16 +331,13 @@ nav.primary-nav {
 /*--Primary Content--*/
 
 main {
-  h1 {
-    // margin: 20px 0;
-  }
 
   // enter animation
   &.ng-enter {
+    @include transition(top 1s ease-out 1s, opacity 1s ease-out 1s);
     position: relative;
     top: 50px;
     opacity: 0;
-    @include single-transition(all, 1s, ease-out, 1s);
     &.ng-enter-active {
       top: 0;
       opacity: 1;
@@ -340,10 +346,10 @@ main {
 
   // exit animation
   &.ng-leave {
+    @include transition(left 1s ease-out, opacity 1s ease-out);
     position: relative;
     left: 0;
     opacity: 1;
-    @include single-transition(all, 1s, ease-out);
     &.ng-leave-active {
       left: -100%;
       opacity: 0;

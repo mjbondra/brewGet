@@ -48,6 +48,10 @@ brewGet.config(['$routeProvider', '$locationProvider', function ($routeProvider,
     templateUrl: '/partials/users/new.html',
     controller: 'UserNewCtrl'
   });
+  $routeProvider.when('/users/:id/edit', {
+    templateUrl: '/partials/users/edit.html',
+    controller: 'UserEditCtrl'
+  });
   $routeProvider.when('/users/auth', {
     templateUrl: '/partials/users/auth.html',
     controller: 'UserAuthCtrl'

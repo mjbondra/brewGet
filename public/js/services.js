@@ -27,13 +27,17 @@ brewGetServices.factory('_', function () {
 brewGetServices.config(function ($provide, $httpProvider) { 
   $provide.factory('brewGetInterceptor', function ($rootScope, $q) {
     return {
-      // response: function (res) {
-      //   return res || $q.when(res);
-      // },
+      response: function (res) {
+        /** response for content added */
+        if (res.status === 201 && res.data && res.data.messages) {
+          $rootScope.$broadcast('globalMessages', res.data.messages);
+        }
+        return res || $q.when(res);
+      },
       responseError: function (res) {
         /** response for validation and uniqueness errors */
-        if ((res.status === 409 || res.status === 422) && res.data && res.data.fieldValidationErrors) {
-          $rootScope.$broadcast('validationErrors', res.data.fieldValidationErrors);
+        if ((res.status === 409 || res.status === 422) && res.data && res.data.messages) {
+          $rootScope.$broadcast('validationErrors', res.data.messages);
         }
         return $q.reject(res);
       }
@@ -101,14 +105,14 @@ brewGetServices.factory('MessageHandler', function() {
 /**
  * User Service
  */
-brewGetServices.factory('User', ['$rootScope', '$resource', function ($rootScope, $resource) {
+brewGetServices.factory('User', ['$rootScope', '$resource', '$location', function ($rootScope, $resource, $location) {
   return $resource('api/users/:userId', {}, {
     save: { 
       method:'POST', 
       params: { userId: 'new' }, 
       interceptor: {
         response: function (res) {
-          console.log('added', res);
+          $location.path('/');
         }
       }
     }
