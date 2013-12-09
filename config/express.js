@@ -32,7 +32,7 @@ module.exports = function (app, config, passport) {
   app.use(express.compress());
   app.use(express.static(config.root + '/public'));
 
-  app.use(express.cookieParser());
+  app.use(express.cookieParser(config.secrets.cookie));
   app.use(express.json());
   app.use(express.urlencoded());
   // app.use(express.multipart()); use alternative parsing module for this
@@ -40,7 +40,7 @@ module.exports = function (app, config, passport) {
 
   /** express/mongo session storage */
   app.use(express.session({
-    secret: config.sessionSecret,
+    secret: config.secrets.session,
     store: new mongoStore({
       url: 'mongodb://' + config.db.host + '/' + config.db.name,
       collection : 'sessions'

@@ -19,7 +19,7 @@ var User = mongoose.model('User');
 exports.index = function (req, res, next) {
   Q.ninvoke(User, 'find')
     .then(function (users) {
-      res.json(users);
+      res.json(censor(users));
     })
     .fail(function (err) {
       next(err);

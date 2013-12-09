@@ -20,6 +20,7 @@
  */
 var brewGet = angular.module('brewGet', [
   'ngAnimate',
+  'ngCookies',
   'ngRoute',
   'ngTouch',
   'brewGetControllers',

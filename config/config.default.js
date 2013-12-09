@@ -14,7 +14,10 @@ module.exports = {
       name: 'dbname'
     },
     root: rootPath,
-    sessionSecret: 'secretString'
+    secrets: {
+      cookie: 'secretString',
+      session: 'secretString'
+    }
   },
   test: {
     db: {
@@ -22,7 +25,10 @@ module.exports = {
       name: 'dbname'
     },
     root: rootPath,
-    sessionSecret: 'secretString'
+    secrets: {
+      cookie: 'secretString',
+      session: 'secretString'
+    }
   },
   production: {
     db: {
@@ -30,6 +36,9 @@ module.exports = {
       name: 'dbname'
     },
     root: rootPath,
-    sessionSecret: 'secretString'
+    secrets: {
+      cookie: 'secretString',
+      session: 'secretString'
+    }
   }
 }

@@ -28,6 +28,7 @@
     "passport": "0.x",
     "passport-local": "0.x",
     "q": "0.x",
+    "sanitizer": "0.x",
     "socket.io": "0.x",
     "underscore": "1.x",
     "validator": "2.x"

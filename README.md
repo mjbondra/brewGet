@@ -59,6 +59,7 @@ The MIT License (MIT)
 
 * [AngularJS](http://angularjs.org/)
 * [Bower](http://bower.io/)
+* [Caja HTML Sanitizer](https://github.com/theSmaw/Caja-HTML-Sanitizer)
 * [Compass](http://compass-style.org/)
 * [Connect-Flash](https://github.com/jaredhanson/connect-flash)
 * [Connect-Mongo](http://kcbanner.github.io/connect-mongo/)
