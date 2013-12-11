@@ -9,8 +9,14 @@ var express = require('express');
  * Module dependencies
  */
 var mongoStore = require('connect-mongo')(express)
-  , flash = require('connect-flash')
-  , middleware = require('../app/middleware');
+  , flash = require('connect-flash');
+
+/**
+ * Middleware
+ */
+var error = require('../app/middleware/error')
+  , helper = require('../app/middleware/helper');
+
 
 module.exports = function (app, config, passport) {
 
@@ -54,8 +60,8 @@ module.exports = function (app, config, passport) {
   /** use flash for messages */
   app.use(flash());
 
-  app.use(middleware.helpers);
+  app.use(helper.functions);
   app.use(app.router);
-  app.use(middleware.validationErrorHandler);
+  app.use(error.validation);
 }
 

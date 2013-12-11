@@ -3,5 +3,5 @@
 <form novalidate>
   <label>Username or Email<input type="text" ng-model="user.username"></label>
   <label>Password<input type="password" ng-model="user.password"></label>
-  <button>Sign in</button>
+  <button ng-click="user.$authenticate()">Sign in</button>
 </form>

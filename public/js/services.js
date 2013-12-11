@@ -107,6 +107,18 @@ brewGetServices.factory('MessageHandler', function() {
  */
 brewGetServices.factory('User', ['$rootScope', '$resource', '$location', function ($rootScope, $resource, $location) {
   return $resource('api/users/:userId', {}, {
+    authenticate: {
+      method: 'POST',
+      params: { userId: 'authenticate' },
+      interceptor: {
+        response: function (res) {
+          console.log(res);
+        },
+        responseError: function (res) {
+          console.log(res);
+        }
+      }
+    },
     save: { 
       method:'POST', 
       params: { userId: 'new' }, 

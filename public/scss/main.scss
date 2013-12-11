@@ -65,6 +65,14 @@
 @import "mixins";
 
 /*------------------------------------*\
+    UNIVERSAL STYLES
+\*------------------------------------*/
+
+*, *:before, *:after {
+  @include box-sizing(border-box);
+}
+
+/*------------------------------------*\
     ELEMENTAL STYLES
 \*------------------------------------*/
 
@@ -119,7 +127,6 @@ input[type=submit],
 input[type=reset],
 button {
   @include appearance(none);
-  @include box-sizing(border-box);
   @include border-radius(0);
   padding: 0 10px;
   width: 100%;
@@ -181,15 +188,15 @@ a {
 }
 
 validation-messages, global-messages {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
   ul {
     @include transition(max-height 2s ease-out, opacity 1s ease-out);
-    display: block;
-    position: fixed;
+    display: block;   
     margin: 0;
     padding: 0;
-    bottom: 0;
-    left: 0;
-    width: 100%;
     max-height: 0;
     overflow: hidden;
     opacity: 0;
@@ -199,7 +206,7 @@ validation-messages, global-messages {
       max-height: 200px;
       li {
         padding: 2px 15px;
-        @include enzo(1.125em, white, 700);
+        @include enzo(1.125em, white, 300);
         &.success {
           background-color: $green;
         }
@@ -207,7 +214,10 @@ validation-messages, global-messages {
           background-color: $red;
         }
         &:first-child {
-          padding-top: 5px;
+          padding-top: 10px;
+        }
+        &:last-child {
+          padding-bottom: 10px;
         }
       }
     }
@@ -235,7 +245,7 @@ h1.branding {
     display: block;
     width: 200px;
     height: 42px;
-    background: url(../img/brewGet-logo-mobile-transparent.png) 0% 0% / 100% 100% no-repeat;
+    background: url(../img/brewGet-logo-mobile-transparent.png) 0% 0% / 200px 42px no-repeat;
   }
 }
 
@@ -246,15 +256,15 @@ nav.primary-nav {
   ul {
     margin: 0;
     padding: 0;
+    list-style: none;
     li {
-      display: block;
       float: left;
       width: 25%;
       background-color: $brown;
       @include no-select-callout;
       h2, a {
         border: 1px solid white;
-        height: 43px;
+        height: 45px;
         @include enzo(1.125em, white, 300, 43px);
         text-align: center;
       }
@@ -273,13 +283,13 @@ nav.primary-nav {
       }
       &.tree {
         &.content-nav-tree, &.search-nav-tree {
-          @include single-transition(all, 250ms, ease-out);
+          @include transition(margin-bottom 250ms ease-out, background-color 250ms ease-out);
           ul {
             position: absolute;
             left: 0;
             width: 100%;
             li {
-              @include single-transition(all, 250ms, ease-out);
+              @include transition(height 250ms ease-out, background-color 250ms ease-out);
               height: 0;
               overflow: hidden;
               &.search-nav-item {
@@ -302,7 +312,7 @@ nav.primary-nav {
             }
           }
           &.active-tree {
-            margin: 0 0 45px;
+            margin-bottom: 45px;
             background-color: $lt-brown;
             ul {
               z-index: 1;
@@ -321,6 +331,7 @@ nav.primary-nav {
           }
         }
         &.action-nav-tree {
+          background-color: transparent;
           width: 50%;
           h2 {
             display: none;
@@ -337,10 +348,10 @@ nav.primary-nav {
 
   // enter animation
   &.ng-enter {
+    @include transition(left 1s ease-out, opacity 1s ease-out);
     position: relative;
     left: -100%;
     opacity: 0;
-    @include single-transition(all, 1s, ease-out);
     &.ng-enter-active {
       left: 0;
       opacity: 1;

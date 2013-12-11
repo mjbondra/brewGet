@@ -1,3 +1,4 @@
+
 /**
  * Controllers
  */
@@ -5,6 +6,14 @@ var users = require('../app/controllers/users')
   , navigation = require('../app/controllers/navigation');
 
 module.exports = function (app, passport) {
+
+  /** authentication */
+  app.post('/api/users/authenticate', function (req, res, next) {
+    passport.authenticate('local', function (err, user, info) {
+      auth(err, user, info); // pass to auth helper function
+    })(req, res, next);
+  });
+
   app.get('/test', function (req, res, next) {
     res.json({ this: 'works', test: req.body });
   });

@@ -34,7 +34,8 @@ exports.create = function (req, res, next) {
   var user = new User(req.body);
   Q.ninvoke(user, 'save')
     .then(function () {
-      newContentResponse('user', user, msg.user.created(user.username));
+      // req.logIn(user);
+      resCreated('user', user, user.username);
     })
     .fail(function (err) {
       next(err);
