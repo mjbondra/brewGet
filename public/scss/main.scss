@@ -26,24 +26,25 @@
   1. LIBRARIES..................Stylesheet Related Resources
     a. 3rd Party Libraries......Non-Native Stylesheets and Mixins
     b. brewGet Libraries........brewGet Specific Variables and Mixins
-  2. ELEMENTAL STYLES...........Styles for HTML Elements
+  2. UNIVERSAL STYLES...........Styles Applied to All Elements
+  3. ELEMENTAL STYLES...........Styles for HTML Elements
     a. Root Elements............Styles for Root Elements
     b. Heading Elements.........Styles for Heading Tags
     c. Form Elements............Styles for Form Elements
     d. Sectioning Elements......Styles for Sectioning Elements
     e. Flow Elements............Styles for Flow Elements
-  3. UTILITIES..................Reusable Utility Classes
-  4. CONTENT....................Page Content
+  4. UTILITIES..................Reusable Utility Classes
+  5. CONTENT....................Page Content
     a. Branding.................Styles for Brand Images and Headings
     b. Navigation...............Styles for Navigation
     c. Primary Content..........Styles for Focal Content
     d. Ancillary Content........Styles for Supplemental Content
     e. Footer...................Footer Content
-  5. MEDIA QUERIES..............Media Queries
+  6. MEDIA QUERIES..............Media Queries
     a. Screen Width.............Imports Screen Width Stylesheet(s)
     b. Pixel Density............Imports HiDPI Stylesheet(s)
     c. Print....................Imports Print Stylesheet(s)
-  6. APPENDIX...................Additional Information
+  7. APPENDIX...................Additional Information
     a. Rule Structure...........Heirarchy of CSS Rules
     b. Citations................Giving Credit Where Credit is Due
 
@@ -332,7 +333,7 @@ nav.primary-nav {
         }
         &.action-nav-tree {
           background-color: transparent;
-          width: 50%;
+          width: 49.99%;
           h2 {
             display: none;
           }

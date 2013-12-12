@@ -63,5 +63,7 @@ module.exports = function (app, config, passport) {
   app.use(helper.functions);
   app.use(app.router);
   app.use(error.validation);
+  app.use(error.log);
+  app.use(error.respond);
 }
 

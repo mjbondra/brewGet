@@ -1,6 +1,17 @@
 
 /**
- * Validation Error handler
+ * Module dependencies
+ */
+var mongoose = require('mongoose')
+  , msg = require('../../config/messages');
+
+/**
+ * Models
+ */
+var _Error = mongoose.model('Error');
+
+/**
+ * Validation error handler
  */
 exports.validation = function (err, req, res, next) {
   var resJSON = {};
@@ -32,9 +43,48 @@ exports.validation = function (err, req, res, next) {
 
   /** respond if messages if they exist, or move to the next error middleware */
   if (resJSON.messages) {
-    console.log(resJSON);
     return res.json(err.status, resJSON);
   }
-  console.log(err);
-  res.json(err);
+
+  /** send to error logging */
+  next(err);
+}
+
+/**
+ * Error logging
+ */
+exports.log = function (err, req, res, next) {
+
+  /** record errors as Mongoose-modeled documents */
+  var _error = new _Error({ 
+    method: req.method,
+    referer: req.headers.referer,
+    stack: err.stack,
+    status: err.status || 500,
+    url: req.url,
+    user: typeof req.user !== 'undefined' ? req.user.id : null,
+    userIP: req.ip
+  });
+  _error.save(function (err) {
+    if (err) return next(err);
+  });
+
+  /** send to error responder */
+  next(err);
+}
+
+/**
+ * Error responding
+ */
+exports.respond = function (err, req, res, next) {
+  var resJSON = {};
+  var status = err.status || 500;
+
+  resJSON.messages = [{ 
+    message: msg.status[status] || msg.status[500], 
+    type: 'error' 
+  }];
+
+  /** respond to errors with JSON  */
+  res.json(status, resJSON);
 }

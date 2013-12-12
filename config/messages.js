@@ -71,8 +71,8 @@ module.exports = {
    * HTTP status code messages
    */
   status: {
-    403: 'Forbidden! You are not authorized to view this page.',
-    404: 'Oh, no! That page was not found.',
-    500: 'Whoa! There was an error while processing your request.'
+    403: 'You are not authorized to access this content',
+    404: 'The content you were looking for was not found',
+    500: 'There was a server error while processing your request'
   }
 }

@@ -19,7 +19,7 @@ exports.functions = function (req, res, next) {
   // console.log('cookie:', req.cookies);
   // console.log('signedCookie', req.signedCookies);
   // console.log('session:', req.session);
-  console.log('sessionUser: ', req.user);
+  // console.log('sessionUser: ', req.user);
 
   // if ( req.signedCookies.ip && req.signedCookies.ip === req.ip ) {
   //   console.log('yay! same ip!');
