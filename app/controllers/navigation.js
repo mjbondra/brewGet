@@ -6,7 +6,7 @@ var mongoose = require('mongoose');
 
 /**
  * Items
- * GET /nav
+ * GET /api/nav
  */
 exports.items = function (req, res, next) {
   var nav = {

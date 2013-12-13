@@ -66,7 +66,6 @@ The MIT License (MIT)
 * [Express](http://expressjs.com/)
 * [Font Awesome](http://fontawesome.io/)
 * [Grunt](http://gruntjs.com/)
-* [Gzippo](http://tomg.co/gzippo)
 * [HTML5 Boilerplate](http://html5boilerplate.com/)
 * [Mongoose](http://mongoosejs.com/)
 * [Nodemon](http://remy.github.io/nodemon/)
@@ -108,7 +107,7 @@ brewGet
 |	+--routes.js
 |
 |--lib
-|	+--mongoose-validator.js
+|	+--[backend utilities]
 |
 |--node_modules
 |	+--[npm installed libraries]

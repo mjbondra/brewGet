@@ -41,7 +41,7 @@ module.exports = function (app, config, passport) {
   app.use(express.cookieParser(config.secrets.cookie));
   app.use(express.json());
   app.use(express.urlencoded());
-  // app.use(express.multipart()); use alternative parsing module for this
+  // app.use(express.multipart()); // use alternative parsing module for this (possibly: https://github.com/felixge/node-formidable)
   app.use(express.methodOverride());
 
   /** express/mongo session storage */
@@ -60,9 +60,10 @@ module.exports = function (app, config, passport) {
   /** use flash for messages */
   app.use(flash());
 
+  /** middleware and routes */
   app.use(helper.functions);
   app.use(app.router);
-  app.use(error.validation);
+  app.use(error.validate);
   app.use(error.log);
   app.use(error.respond);
 }
