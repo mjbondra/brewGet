@@ -2,21 +2,32 @@
 module.exports = {
 
   /**
+   * Authentication messages
+   */
+  authentication: {
+    incorrect: {
+      user: function (username) { return 'User \'' + username + '\' was not found'; },
+      email: function (email) { return 'Email address \'' + email + '\' is not associated with an account'; },
+      password: 'Password is incorrect'
+    },
+    requires: {
+      authentication: function (path) { return 'You must be authenticated to access ' + path; },
+      role: function (path) { return 'You are not authorized to access ' + path; },
+      self: function (username, path) { return 'You must be user \'' + username + '\' to access ' + path; }
+    },
+    success: function (username) { return 'Authenticated as \'' + username + '\''; }
+  },
+
+  /**
    * Model messages (CRUD, etc)
    */
   user: {
-    adminRequired: function (path) { return 'You must be a site administrator to access ' + path; },
-    authenticated:  function (username) { return 'Authenticated as \'' + username + '\''; },
-    authenticationFailed: 'Username and/or password are not correct',
-    authenticationRequired: function (path) { return 'You must be authenticated to access ' + path; },
     created: function (username) { return 'User \'' + username + '\' was created'; },
     deleted: function (username) { return 'User \'' + username + '\' was deleted'; },
     notFound: function (username, path) { return 'User \'' + username + '\' could not found while trying to respond to ' + path; },
-    selfRequired: function (username, path) { return 'You must be user \'' + username + '\' to access ' + path; },
     read: function (username) { return 'User \'' + username + ' \' was read'; },
     restored: function (username, version) { return 'User \'' + username + '\' was restored with data from version ' + version; },
-    updated: function (username) { return 'User \'' + username + '\' was updated'; },
-    userRequired: function (path) { return 'You must be an authorized user to access ' + path; }
+    updated: function (username) { return 'User \'' + username + '\' was updated'; }
   },
 
   /*

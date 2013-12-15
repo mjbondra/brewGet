@@ -35,8 +35,8 @@ brewGetServices.config(function ($provide, $httpProvider) {
         return res || $q.when(res);
       },
       responseError: function (res) {
-        /** response for validation and uniqueness errors */
-        if ((res.status === 409 || res.status === 422) && res.data && res.data.messages) {
+        /** response for authentication (401), validation (422), and uniqueness (409) errors */
+        if ((res.status === 401 || res.status === 409 || res.status === 422) && res.data && res.data.messages) {
           $rootScope.$broadcast('validationErrors', res.data.messages);
         }
         return $q.reject(res);
@@ -69,11 +69,14 @@ brewGetServices.factory('Head', function() {
   };
 });
 
-/** 
+/**
  * <nav> Service
  */
 brewGetServices.factory('Nav', ['$http', function ($http) {
-  return $http.get('api/nav');
+  return function () {
+    var date = new Date();
+    return $http.get('api/nav?t=' + date.getTime());
+  };
 }]);
 
 /*------------------------------------*\
@@ -107,23 +110,31 @@ brewGetServices.factory('MessageHandler', function() {
  */
 brewGetServices.factory('User', ['$rootScope', '$resource', '$location', function ($rootScope, $resource, $location) {
   return $resource('api/users/:userId', {}, {
-    authenticate: {
-      method: 'POST',
-      params: { userId: 'authenticate' },
-      interceptor: {
-        response: function (res) {
-          console.log(res);
-        },
-        responseError: function (res) {
-          console.log(res);
-        }
-      }
-    },
     save: { 
       method:'POST', 
       params: { userId: 'new' }, 
       interceptor: {
         response: function (res) {
+          $location.path('/');
+        }
+      }
+    },
+    signIn: {
+      method: 'POST',
+      params: { userId: 'sign-in' },
+      interceptor: {
+        response: function (res) {
+          $rootScope.$broadcast('reloadNav');
+          $location.path('/');
+        }
+      }
+    },
+    signOut: {
+      method: 'GET',
+      params: { userId: 'sign-out' },
+      interceptor: {
+        response: function (res) {
+          $rootScope.$broadcast('reloadNav');
           $location.path('/');
         }
       }

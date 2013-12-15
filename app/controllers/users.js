@@ -46,17 +46,21 @@ exports.create = function (req, res, next) {
 \*------------------------------------*/
 
 /**
- * Authenticate
- * POST /api/users/authenticate
+ * Sign in
+ * POST /api/users/sign-in
  */
-exports.authenticate = function (passport) {
+exports.signIn = function (passport) {
   return function (req, res, next) {
+    var msgJSONArray = [];
+    if (typeof req.body.username === 'undefined') msgJSONArray.push(msgJSON(msg.username.isNull, 'validation', 'username'));
+    if (typeof req.body.password === 'undefined') msgJSONArray.push(msgJSON(msg.password.isNull, 'validation', 'password'));
+    if (msgJSONArray.length > 0) return resMsgJSON(msgJSONArray, 422) // 422 Unprocessable Entity
     passport.authenticate('local', function (err, user, info) {
       if (err) return next(err); // error
-      if (user === false) return res.json({});
+      if (user === false) return resMsgJSON(msgJSON(info.message, 'authentication', 'user'), 401); // 401 Unauthorized
       req.login(user, function (err) { // login success
         if (err) return next(err); // error
-        res.json({login: 'success'});
+        resMsgJSON(msgJSON(msg.authentication.success(user.username), 'success', 'user', censor(user)), 201); // 201 Created
       });
     })(req, res, next);
   };
@@ -64,9 +68,9 @@ exports.authenticate = function (passport) {
 
 /**
  * Sign out
- * GET /api/users/logout
+ * GET /api/users/sign-out
  */
-exports.logout = function (req, res, next) {
+exports.signOut = function (req, res, next) {
   req.session.destroy();
   res.json({logout: 'success'});
 }

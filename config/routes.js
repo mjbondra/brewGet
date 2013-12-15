@@ -16,8 +16,8 @@ module.exports = function (app, passport) {
   app.get('/api/nav', navigation.items);
 
   /** authentication */
-  app.post('/api/users/authenticate', users.authenticate(passport));
-  app.get('/api/users/logout', users.logout);
+  app.post('/api/users/sign-in', users.signIn(passport));
+  app.get('/api/users/sign-out', users.signOut);
 
   /** users */
   app.get('/api/users', users.index);

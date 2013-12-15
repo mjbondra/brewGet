@@ -3,6 +3,7 @@
  * Module dependencies
  */
 var mongoose = require('mongoose')
+  , msg = require('./messages').authentication
   , LocalStrategy = require('passport-local').Strategy
   , User = mongoose.model('User');
 
@@ -26,8 +27,8 @@ module.exports = function (passport) {
     function (username, password, done) {
       User.findOne({ username: username }, function (err, user) {
         if (err) return done(err);
-        if (!user) return done(null, false, { message: 'Unknown user' });
-        if (!user.authenticate(password, user.salt)) return done(null, false, { message: 'Invalid password' });
+        if (!user) return done(null, false, { message: msg.incorrect.user(username) });
+        if (!user.authenticate(password, user.salt)) return done(null, false, { message: msg.incorrect.password });
         return done(null, user);
       });
     }

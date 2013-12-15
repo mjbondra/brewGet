@@ -9,35 +9,65 @@ var mongoose = require('mongoose');
  * GET /api/nav
  */
 exports.items = function (req, res, next) {
-  var nav = {
-    content: [
+  var nav = {};
+  nav.content = [
+    {
+      title: 'Posts',
+      href: '/'
+    },
+    {
+      title: 'Users',
+      href: '/users'
+    },
+    {
+      title: 'Beers',
+      href: '/beers'
+    },
+    {
+      title: 'Breweries',
+      href: '/breweries'
+    }
+  ];
+  if (req.isAuthenticated()) {
+    nav.actions = [
       {
-        title: 'Posts',
-        href: '/'
+        title: 'Trade',
+        href: '/trade/new'
       },
       {
-        title: 'Users',
-        href: '/users'
-      },
-      {
-        title: 'Beers',
-        href: '/beers'
-      },
-      {
-        title: 'Breweries',
-        href: '/breweries'
+        title: 'Post',
+        href: '/posts/new'
       }
-    ],
-    actions: [
+    ];
+    nav.account = [
+      {
+        title: 'Settings',
+        href: '/account/settings'
+      },
+      {
+        title: 'Sign out',
+        href: '/account/sign-out'
+      },
+      {
+        title: 'MyTrades',
+        href: '/account/my-trades'
+      },
+      {
+        title: 'MyPosts',
+        href: '/account/my-posts'
+      }
+    ];
+  } else {
+    nav.actions = [
       {
         title: 'Sign up',
-        href: '/users/new'
+        href: '/account/sign-up'
       },
       {
         title: 'Sign in',
-        href: '/users/auth'
+        href: '/account/sign-in'
       }
-    ]
-  };
+    ];
+  }
   res.json(nav);
 }

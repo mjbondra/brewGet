@@ -40,22 +40,29 @@ brewGet.config(['$routeProvider', '$locationProvider', function ($routeProvider,
     controller: 'HomeCtrl'
   });
 
-  /* user routes */
+  /** user/account routes */
   $routeProvider.when('/users', {
     templateUrl: '/partials/users/index.html',
     controller: 'UserIndexCtrl'
   });
-  $routeProvider.when('/users/new', {
-    templateUrl: '/partials/users/new.html',
+  $routeProvider.when('/account/sign-up', {
+    templateUrl: '/partials/account/sign-up.html',
     controller: 'UserNewCtrl'
   });
-  $routeProvider.when('/users/:id/edit', {
-    templateUrl: '/partials/users/edit.html',
+  $routeProvider.when('/account/settings', {
+    templateUrl: '/partials/account/settings.html',
     controller: 'UserEditCtrl'
   });
-  $routeProvider.when('/users/auth', {
-    templateUrl: '/partials/users/auth.html',
+  $routeProvider.when('/account/sign-in', {
+    templateUrl: '/partials/account/sign-in.html',
     controller: 'UserAuthCtrl'
+  });
+  $routeProvider.when('/account/sign-out', {
+    resolve: {
+      response: ['User', function (User) {
+        User.signOut();
+      }]
+    }
   });
 
   /* default route */

@@ -193,6 +193,13 @@ validation-messages, global-messages {
   bottom: 0;
   left: 0;
   width: 100%;
+  i {
+    position: absolute;
+    z-index: 1;
+    top: 10px;
+    right: 15px;
+    @include font-details(1.5em, white);
+  }
   ul {
     @include transition(max-height 2s ease-out, opacity 1s ease-out);
     display: block;   
@@ -205,21 +212,22 @@ validation-messages, global-messages {
     &.active-messages {
       opacity: 1;
       max-height: 200px;
-      li {
-        padding: 2px 15px;
-        @include enzo(1.125em, white, 300);
-        &.success {
-          background-color: $green;
-        }
-        &.validation {
-          background-color: $red;
-        }
-        &:first-child {
-          padding-top: 10px;
-        }
-        &:last-child {
-          padding-bottom: 10px;
-        }
+    }
+    li {
+      padding: 2px 15px;
+      @include enzo(1.125em, white, 300);
+      &.success {
+        background-color: $green;
+      }
+      &.validation, &.authentication {
+        background-color: $red;
+      }
+      &:first-child {
+        padding-top: 10px;
+        padding-right: 45px;
+      }
+      &:last-child {
+        padding-bottom: 10px;
       }
     }
   }
@@ -283,7 +291,7 @@ nav.primary-nav {
         text-decoration: none;
       }
       &.tree {
-        &.content-nav-tree, &.search-nav-tree {
+        &.content-nav-tree, &.search-nav-tree, &.account-nav-tree {
           @include transition(margin-bottom 250ms ease-out, background-color 250ms ease-out);
           ul {
             position: absolute;
@@ -343,6 +351,35 @@ nav.primary-nav {
             }
           }
         }
+        &.account-nav-tree {
+          position: absolute;
+          top: 1px;
+          right: 0;
+          background-color: $lt-yellow-green;
+          h2 {
+            height: 41px;
+            @include font-details(null, $black, null, 39px);
+          }
+          ul {
+            position: absolute;
+            width: 400%;
+            left: -300%;
+            li {
+              background-color: $lt-yellow-green;
+              a {
+                color: $black
+              }
+            }
+          }
+          &.active-tree {
+            background-color: $yellow-green;
+            ul {
+              li {
+                background-color: $lt-yellow-green;
+              }
+            }
+          }
+        }
       }
     }
   }
@@ -366,7 +403,7 @@ main {
 
   // enter animation
   &.ng-enter {
-    @include transition(top 1s ease-out 1s, opacity 1s ease-out 1s);
+    @include transition(top 500ms ease-out 500ms, opacity 500ms ease-out 500ms);
     position: relative;
     top: 50px;
     opacity: 0;
@@ -378,7 +415,7 @@ main {
 
   // exit animation
   &.ng-leave {
-    @include transition(left 1s ease-out, opacity 1s ease-out);
+    @include transition(left 500ms ease-out, opacity 500ms ease-out);
     position: relative;
     left: 0;
     opacity: 1;

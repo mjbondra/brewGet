@@ -17,6 +17,9 @@ brewGetDirectives.directive('globalMessages', ['MessageHandler', '_', function (
       scope.$on('globalMessages', function (event, globalMessages) { 
         scope = _.extend(scope, MessageHandler.process(globalMessages));
       });
+      scope.hideMessages = function () {
+        scope.cssClasses = [];
+      };
     },
     templateUrl: '/partials/directives/messages.html'
   };
@@ -33,6 +36,9 @@ brewGetDirectives.directive('validationMessages', ['MessageHandler', '_', functi
       scope.$on('validationErrors', function (event, validationErrors) { 
         scope = _.extend(scope, MessageHandler.process(validationErrors));
       });
+      scope.hideMessages = function () {
+        scope.cssClasses = [];
+      };
     },
     templateUrl: '/partials/directives/messages.html'
   };

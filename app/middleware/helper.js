@@ -90,10 +90,8 @@ exports.functions = function (req, res, next) {
    */
   resMsgJSON = function (msgJSONArray, status) {
     var resJSON = {};
-    resJSON.messages = [];
-    msgJSONArray.forEach(function (msgObj) {
-      resJSON.messages.push(msgObj);
-    });
+    if (!_.isArray(msgJSONArray)) msgJSONArray = [ msgJSONArray ];
+    resJSON.messages = msgJSONArray;
     if (typeof status !== 'undefined') return res.json(status, resJSON);
     res.json(resJSON);
   }
@@ -111,7 +109,7 @@ exports.functions = function (req, res, next) {
    */
   resCreated = function (contentType, mongooseDoc, title) {
     title = title || mongooseDoc.title;
-    resMsgJSON([ msgJSON(msg[contentType].created(title), 'success', contentType, censor(mongooseDoc)) ], 201);
+    resMsgJSON(msgJSON(msg[contentType].created(title), 'success', contentType, censor(mongooseDoc)), 201);
   }
 
   resModified = function () {}

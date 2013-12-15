@@ -24,11 +24,12 @@ exports.validate = function (err, req, res, next) {
       var dbCollection = ( mongoError ? mongoError[1] : 'content' );
       var collectionField = ( mongoError ? mongoError[2] : 'field' );
       var fieldValue = ( mongoError ? mongoError[3] : 'value' );
-      return resMsgJSON([ msgJSON(msg.notUnique(collectionField, fieldValue), 'validation', collectionField, fieldValue) ], 409); // 409 Conflict
+      return resMsgJSON(msgJSON(msg.notUnique(collectionField, fieldValue), 'validation', collectionField, fieldValue), 409); // 409 Conflict
     }
 
   /** Mongoose validation errors */
   } else if (err.name === 'ValidationError' && err.errors) {
+    console.log(err);
     var msgJSONArray = [];
     var objKeys = Object.keys(err.errors);
     objKeys.forEach(function (key) {

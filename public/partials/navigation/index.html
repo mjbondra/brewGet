@@ -28,4 +28,12 @@
       </li>
     </ul>
   </li>
+  <li ng-show="Nav.account" class="tree account-nav-tree" ng-class="{ 'active-tree': activeTree == 'account' }">
+    <h2 ng-click="showNavTree('account')">Account</h2>
+    <ul>
+      <li class="account-nav-item" ng-repeat="navItem in Nav.account">
+        <a ng-href="{{ navItem.href }}">{{ navItem.title }}</a>
+      </li>
+    </ul>
+  </li>
 </ul>

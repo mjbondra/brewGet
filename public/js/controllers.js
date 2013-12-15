@@ -24,8 +24,16 @@ brewGetControllers.controller('HeadCtrl', ['$scope', 'Head', function ($scope, H
 brewGetControllers.controller('NavCtrl', ['$scope', 'Nav', function ($scope, Nav) {
 
   /** load nav */
-  Nav.success(function (nav) {
-    $scope.Nav = nav;
+  var loadNav = function () {
+    Nav().success(function (nav) {
+      $scope.Nav = nav;
+    });
+  };
+  loadNav();
+
+  /** reload nav on 'reloadNav' event */
+  $scope.$on('reloadNav', function () {
+    loadNav();
   });
 
   /** active tree functionality */
@@ -51,7 +59,6 @@ brewGetControllers.controller('HomeCtrl', ['$scope', '$cookies', 'Head', 'MikeDa
   Head.title('brewGet');
   Head.description('brewGet is a web application that supports the non-monetary exchange of regionally-limited or otherwise difficult to acquire beer.');
   $scope.mikedata = MikeData.get({ resourceId: 'test' });
-  console.log($cookies);
 }]);
 
 /*------------------------------------*\
@@ -71,8 +78,8 @@ brewGetControllers.controller('UserIndexCtrl', ['$scope', 'Head', 'User', functi
 
 /**
  * New
- * ROUTE /#!/users/new
- * TEMPLATE /partials/users/new.html
+ * ROUTE /#!/account/sign-up
+ * TEMPLATE /partials/account/sign-up.html
  */
 brewGetControllers.controller('UserNewCtrl', ['$scope', 'Head', 'User', function ($scope, Head, User) {
   Head.title('Sign up');
@@ -82,8 +89,8 @@ brewGetControllers.controller('UserNewCtrl', ['$scope', 'Head', 'User', function
 
 /**
  * Edit
- * ROUTE /#!/users/:id/edit
- * TEMPLATE /partials/users/edit.html
+ * ROUTE /#!/account/settings
+ * TEMPLATE /partials/account/settings.html
  */
 brewGetControllers.controller('UserEditCtrl', ['$scope', 'Head', 'User', function ($scope, Head, User) {
   Head.title('Account Details & Settings');
@@ -92,8 +99,8 @@ brewGetControllers.controller('UserEditCtrl', ['$scope', 'Head', 'User', functio
 
 /**
  * Authentication
- * ROUTE /#!/users/auth
- * TEMPLATE /partials/users/auth.html
+ * ROUTE /#!/account/sign-in
+ * TEMPLATE /partials/account/sign-in.html
  */
 brewGetControllers.controller('UserAuthCtrl', ['$scope', 'Head', 'User', function ($scope, Head, User) {
   Head.title('Sign in');
