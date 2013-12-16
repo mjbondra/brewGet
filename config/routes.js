@@ -17,7 +17,7 @@ module.exports = function (app, passport) {
 
   /** authentication */
   app.post('/api/users/sign-in', users.signIn(passport));
-  app.get('/api/users/sign-out', users.signOut);
+  app.delete('/api/users/sign-out', users.signOut);
 
   /** users */
   app.get('/api/users', users.index);

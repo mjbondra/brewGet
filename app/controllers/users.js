@@ -68,7 +68,7 @@ exports.signIn = function (passport) {
 
 /**
  * Sign out
- * GET /api/users/sign-out
+ * DELETE /api/users/sign-out
  */
 exports.signOut = function (req, res, next) {
   req.session.destroy();

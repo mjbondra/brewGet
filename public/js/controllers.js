@@ -62,47 +62,47 @@ brewGetControllers.controller('HomeCtrl', ['$scope', '$cookies', 'Head', 'MikeDa
 }]);
 
 /*------------------------------------*\
-    USER CONTROLLERS
+    USER/ACCOUNT CONTROLLERS
 \*------------------------------------*/
 
 /**
- * Index
+ * User index
  * ROUTE /#!/users
  * TEMPLATE /partials/users/index.html
  */
-brewGetControllers.controller('UserIndexCtrl', ['$scope', 'Head', 'User', function ($scope, Head, User) {
+brewGetControllers.controller('UserIndex', ['$scope', 'Head', 'User', function ($scope, Head, User) {
   Head.title('Users');
   Head.description('An index of users on brewGet.');
   $scope.users = User.query();
 }]);
 
 /**
- * New
+ * Account sign up
  * ROUTE /#!/account/sign-up
  * TEMPLATE /partials/account/sign-up.html
  */
-brewGetControllers.controller('UserNewCtrl', ['$scope', 'Head', 'User', function ($scope, Head, User) {
+brewGetControllers.controller('AccountSignUp', ['$scope', 'Head', 'User', function ($scope, Head, User) {
   Head.title('Sign up');
   Head.description('Sign up for an account on brewGet.');
   $scope.user = new User();
 }]);
 
 /**
- * Edit
+ * Account settings
  * ROUTE /#!/account/settings
  * TEMPLATE /partials/account/settings.html
  */
-brewGetControllers.controller('UserEditCtrl', ['$scope', 'Head', 'User', function ($scope, Head, User) {
+brewGetControllers.controller('AccountSettings', ['$scope', 'Head', 'User', function ($scope, Head, User) {
   Head.title('Account Details & Settings');
   Head.description('Edit the details and settings of your brewGet account.');
 }]);
 
 /**
- * Authentication
+ * Account sign in
  * ROUTE /#!/account/sign-in
  * TEMPLATE /partials/account/sign-in.html
  */
-brewGetControllers.controller('UserAuthCtrl', ['$scope', 'Head', 'User', function ($scope, Head, User) {
+brewGetControllers.controller('AccountSignIn', ['$scope', 'Head', 'User', function ($scope, Head, User) {
   Head.title('Sign in');
   Head.description('Sign in to your brewGet account.');
   $scope.user = new User();

@@ -74,8 +74,7 @@ brewGetServices.factory('Head', function() {
  */
 brewGetServices.factory('Nav', ['$http', function ($http) {
   return function () {
-    var date = new Date();
-    return $http.get('api/nav?t=' + date.getTime());
+    return $http.get('api/nav', { params: { t: new Date().getTime() }});
   };
 }]);
 
@@ -130,7 +129,7 @@ brewGetServices.factory('User', ['$rootScope', '$resource', '$location', functio
       }
     },
     signOut: {
-      method: 'GET',
+      method: 'DELETE',
       params: { userId: 'sign-out' },
       interceptor: {
         response: function (res) {

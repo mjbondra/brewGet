@@ -1,5 +1,5 @@
 <ul>
-  <li class="tree content-nav-tree" ng-class="{ 'active-tree': activeTree == 'content' }">
+  <li class="tree content-nav-tree" ng-class="{ 'active-tree': activeTree === 'content' }">
     <h2 ng-click="showNavTree('content')">Content</h2>
     <ul>
       <li class="content-nav-item" ng-repeat="navItem in Nav.content">
@@ -7,7 +7,7 @@
       </li>
     </ul>
   </li>
-  <li class="tree search-nav-tree" ng-class="{ 'active-tree': activeTree == 'search' }">
+  <li class="tree search-nav-tree" ng-class="{ 'active-tree': activeTree === 'search' }">
     <form>
       <h2><label for="search" ng-click="showNavTree('search')">Search</label></h2>
       <ul>
@@ -28,7 +28,7 @@
       </li>
     </ul>
   </li>
-  <li ng-show="Nav.account" class="tree account-nav-tree" ng-class="{ 'active-tree': activeTree == 'account' }">
+  <li class="tree account-nav-tree" ng-class="{ 'active-tree': activeTree === 'account', 'signed-in': Nav.account }">
     <h2 ng-click="showNavTree('account')">Account</h2>
     <ul>
       <li class="account-nav-item" ng-repeat="navItem in Nav.account">
