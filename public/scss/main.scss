@@ -320,7 +320,7 @@ nav.primary-nav {
               }
             }
           }
-          &.active-tree {
+          &.expanded-tree {
             margin-bottom: 45px;
             background-color: $lt-brown;
             ul {
@@ -358,7 +358,7 @@ nav.primary-nav {
           background-color: $lt-yellow-green;
           h2 {
             height: 41px;
-            @include font-details(null, $black, null, 39px);
+            @include font-details(null, $brown, null, 39px);
           }
           ul {
             position: absolute;
@@ -367,11 +367,11 @@ nav.primary-nav {
             li {
               background-color: $lt-yellow-green;
               a {
-                color: $black
+                color: $brown;
               }
             }
           }
-          &.active-tree {
+          &.expanded-tree {
             background-color: $yellow-green;
             ul {
               li {
@@ -381,50 +381,56 @@ nav.primary-nav {
           }
         }
       }
+      &.active {
+        a {
+          background-color: $yellow-green;
+          color: $brown;
+        }
+      }
     }
   }
 
   // enter animation
-  &.ng-enter {
-    @include transition(left 1s ease-out, opacity 1s ease-out);
-    position: relative;
-    left: -100%;
-    opacity: 0;
-    &.ng-enter-active {
-      left: 0;
-      opacity: 1;
-    }
-  }
+  // &.ng-enter {
+  //   @include transition(left 1s ease-out, opacity 1s ease-out);
+  //   position: relative;
+  //   left: -100%;
+  //   opacity: 0;
+  //   &.ng-enter-active {
+  //     left: 0;
+  //     opacity: 1;
+  //   }
+  // }
 }
 
 /*--Primary Content--*/
 
-main {
+// main {
 
-  // enter animation
-  &.ng-enter {
-    @include transition(top 500ms ease-out 500ms, opacity 500ms ease-out 500ms);
-    position: relative;
-    top: 50px;
-    opacity: 0;
-    &.ng-enter-active {
-      top: 0;
-      opacity: 1;
-    }
-  }
+//   // enter animation
+//   &.ng-enter {
+//     @include transition(top 500ms ease-out 500ms, opacity 500ms ease-out 500ms);
+//     position: relative;
+//     top: 50px;
+//     opacity: 0;
+//     &.ng-enter-active {
+//       top: 0;
+//       opacity: 1;
+//     }
+//   }
 
-  // exit animation
-  &.ng-leave {
-    @include transition(left 500ms ease-out, opacity 500ms ease-out);
-    position: relative;
-    left: 0;
-    opacity: 1;
-    &.ng-leave-active {
-      left: -100%;
-      opacity: 0;
-    }
-  }
-}
+//   // exit animation
+//   &.ng-leave {
+//     @include transition(left 500ms ease-out, opacity 500ms ease-out);
+//     position: relative;
+//     left: 0;
+//     opacity: 1;
+//     &.ng-leave-active {
+//       left: -100%;
+//       opacity: 0;
+//     }
+//   }
+// }
 
 /*--Ancillary Content--*/
 

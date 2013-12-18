@@ -21,7 +21,7 @@ brewGetControllers.controller('HeadCtrl', ['$scope', 'Head', function ($scope, H
  * Navigation Controller
  * TEMPLATE /partials/nav/index.html
  */
-brewGetControllers.controller('NavCtrl', ['$scope', 'Nav', function ($scope, Nav) {
+brewGetControllers.controller('NavCtrl', ['$scope', '$location', 'Nav', function ($scope, $location, Nav) {
 
   /** load nav */
   var loadNav = function () {
@@ -36,17 +36,29 @@ brewGetControllers.controller('NavCtrl', ['$scope', 'Nav', function ($scope, Nav
     loadNav();
   });
 
-  /** active tree functionality */
-  $scope.activeTree = false;
+  /** collapse expanded trees */
+  var collapseTrees = function () {
+    $scope.expandedTree = false;
+  };
+  collapseTrees();
+
+  /** collapse trees on route change success */
   $scope.$on('$routeChangeSuccess', function () {
-    $scope.activeTree = false;
+    collapseTrees();
   });
-  $scope.showNavTree = function (context) {
-    if ($scope.activeTree === context || typeof context === 'undefined') $scope.activeTree = false;
-    else {
-      $scope.activeTree = context;
-    }
+
+  /** expand tree related to passed context */
+  $scope.expandTree = function (context) {
+    if ($scope.expandedTree === context || typeof context === 'undefined') $scope.expandedTree = false;
+    else $scope.expandedTree = context;
   }
+
+  /** add active class to current page's nav item */
+  $scope.isActive = function (href) {
+    if (href === $location.path()) return true;
+    else return false;
+  }
+
 }]);
 
 /** 
