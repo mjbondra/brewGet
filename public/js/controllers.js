@@ -47,13 +47,19 @@ brewGetControllers.controller('NavCtrl', ['$scope', '$location', 'Nav', function
     collapseTrees();
   });
 
-  /** expand tree related to passed context */
+  /** set tree to expand based on passed context */
   $scope.expandTree = function (context) {
-    if ($scope.expandedTree === context || typeof context === 'undefined') $scope.expandedTree = false;
+    if (context === $scope.expandedTree || typeof context === 'undefined') $scope.expandedTree = false;
     else $scope.expandedTree = context;
   }
 
-  /** add active class to current page's nav item */
+  /** function used to determine expanded tree */
+  $scope.isExpanded = function (context) {
+    if (context === $scope.expandedTree) return true;
+    else return false;
+  }
+
+  /** function used to determine active path */
   $scope.isActive = function (href) {
     if (href === $location.path()) return true;
     else return false;
