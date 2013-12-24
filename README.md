@@ -1,7 +1,7 @@
 brewGet
 ===
 
-brewGet is a web application that supports the non-monetary exchange of regionally-limited or otherwise difficult to acquire beer. Built with Node.js, Koa, and AngularJS.
+brewGet is a web application that supports the non-monetary exchange of regionally-limited or otherwise difficult to acquire beer. Built with [Node.js](https://nodejs.org/), [Koa](http://koajs.com/), and [AngularJS](http://angularjs.org/).
 
 ##Installing and Running Locally
 
@@ -14,7 +14,7 @@ Instructions and requirements for installing this web application.
 
 ######Dependency Notes
 
-brewGet is built with [Koa](http://koajs.com/), which requires Node 0.11.9 or greater, and that Node be run with the `--harmony` flag. Alernatively, the current stable branch (Node 0.10.x) can be used in conjunction with [gnode](https://github.com/TooTallNate/gnode). See [Koa](http://koajs.com/) documentation for additional notes.
+brewGet is built with [Koa](http://koajs.com/), which requires Node 0.11.9 or greater, and that Node be run with the `--harmony` flag. Alternatively, the current stable branch (Node 0.10.x) can be used in conjunction with [gnode](https://github.com/TooTallNate/gnode). See [Koa](http://koajs.com/) documentation for additional notes.
 
 ###Getting Started
 
@@ -22,7 +22,12 @@ While in the project root directory:
 
 ```
 npm install
-npm start
+node --harmony server
+```
+If you would like to use `npm start` as it is specified in `package.json`, install [Nodemon](http://remy.github.io/nodemon/):  
+
+```
+npm install nodemon -g
 ```
 
 ##Appendix
@@ -54,7 +59,6 @@ The MIT License (MIT)
 * [Mongoose](http://mongoosejs.com/)
 * [Nodemon](http://remy.github.io/nodemon/)
 * [Normalize.css](http://necolas.github.io/normalize.css/)
-* [Passport](http://passportjs.org/)
 * [Q](http://documentup.com/kriskowal/q/)
 * [RequireJS](http://requirejs.org/)
 * [Socket.IO](http://socket.io/)
@@ -132,6 +136,9 @@ brewGet
 |	|	|--mongo.js (MongoDB configuration)
 |	|	|--passport.js (Passport configuration)
 |	|	+--routes.js (Koa routes)
+|	|
+|	|--test
+|	|	+--[testing files]
 |	|
 |	+--index.js (bootstrap for Koa app)
 |  
