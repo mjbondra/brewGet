@@ -1,0 +1,7 @@
+<h1>Sign in</h1>
+<validation-messages></validation-messages>
+<form novalidate>
+  <label>Username or Email<input type="text" ng-model="user.username"></label>
+  <label>Password<input type="password" ng-model="user.password"></label>
+  <button ng-click="user.$signIn()">Sign in</button>
+</form>

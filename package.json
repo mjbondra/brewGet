@@ -1,0 +1,42 @@
+{
+  "name": "brewGet",
+  "description": "brewGet is a web application that supports the non-monetary exchange of regionally-limited or otherwise difficult to acquire beer. Built with Node.js, Koa, and AngularJS.",
+  "version": "0.1.1",
+  "private": true,
+  "author": {
+    "name": "Michael J. Bondra",
+    "email": "mjbondra@gmail.com",
+    "url": "https://twitter.com/mjbondra"
+  },
+  "scripts": {
+    "start": "NODE_ENV=development nodemon --harmony server",
+    "install": "grunt"
+  },
+  "devDependencies": {
+    "bower": "1.x",
+    "graceful-fs": "2.x",
+    "grunt": "0.x",
+    "grunt-bower-task": "0.x",
+    "grunt-cli": "0.x",
+    "grunt-contrib-uglify": "0.x",
+    "mocha": "*",
+    "should": "*",
+    "supertest": "*"
+  },
+  "dependencies": {
+    "co-body": "0.x",
+    "co-fs": "1.x",
+    "koa": "0.x",
+    "koa-logger": "1.x",
+    "koa-router": "2.x",
+    "koa-session": "1.x",
+    "koa-static": "1.x",
+    "mongoose": "3.x",
+    "passport": "0.x",
+    "passport-local": "0.x",
+    "q": "0.x",
+    "sanitizer": "0.x",
+    "underscore": "1.x",
+    "validator": "2.x"
+  }
+}

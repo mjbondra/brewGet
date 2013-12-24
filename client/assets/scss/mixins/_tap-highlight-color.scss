@@ -1,0 +1,24 @@
+
+/**
+ * @mixin tap-highlight-color
+ *
+ * Mixin for changing the color of tap highlights seen on Android and iOS webkit browsers
+ *
+ * @param $color {value} - <color>
+ * @param $alpha {value} - <opacity-value> | inherit
+ * @returns {declaration} 
+ */
+@mixin tap-highlight-color($color: black, $alpha: 1) {
+  -webkit-tap-highlight-color: rgba($color, $alpha);
+}
+
+/**
+ * @mixin no-tap-highlight
+ *
+ * Alias for unpopulated inclusion of tap-highlight-color mixin
+ *
+ * @returns {declaration}
+ */
+@mixin no-tap-highlight {
+  @include tap-highlight-color(black, 0);
+}

@@ -1,0 +1,39 @@
+<ul>
+  <li class="tree content-nav-tree" ng-class="{ 'expanded-tree': isExpanded('content') }">
+    <h2 ng-click="expandTree('content')">Content</h2>
+    <ul>
+      <li class="content-nav-item" ng-class="{ active: isActive(navItem.href) }" ng-repeat="navItem in Nav.content">
+        <a ng-href="{{ navItem.href }}">{{ navItem.title }}</a>
+      </li>
+    </ul>
+  </li>
+  <li class="tree search-nav-tree" ng-class="{ 'expanded-tree': isExpanded('search') }">
+    <form>
+      <h2><label for="search" ng-click="expandTree('search')">Search</label></h2>
+      <ul>
+        <li class="search-nav-item input-item">
+          <input type="text" id="search" ng-model="search" placeholder="Enter search terms...">
+        </li>
+        <li class="search-nav-item button-item">
+          <button><i class="fa fa-search"></i></button>
+        </li>
+      </ul>
+    </form>
+  </li>
+  <li class="tree action-nav-tree">
+    <h2>Actions</h2>
+    <ul>
+      <li class="action-nav-item" ng-class="{ active: isActive(navItem.href) }" ng-repeat="navItem in Nav.actions">
+        <a ng-href="{{ navItem.href }}">{{ navItem.title }}</a>
+      </li>
+    </ul>
+  </li>
+  <li class="tree account-nav-tree" ng-class="{ 'expanded-tree': isExpanded('account') }" ng-if="Nav.account">
+    <h2 ng-click="expandTree('account')">Account</h2>
+    <ul>
+      <li class="account-nav-item" ng-class="{ active: isActive(navItem.href) }" ng-repeat="navItem in Nav.account">
+        <a ng-href="{{ navItem.href }}">{{ navItem.title }}</a>
+      </li>
+    </ul>
+  </li>
+</ul>

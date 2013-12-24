@@ -1,0 +1,44 @@
+
+/**
+ * @mixin user-select
+ *
+ * Mixin for user-select, which controls the ability of a user to select text
+ *
+ * Additional vendor prefixes and properties are included relative to the Compass variant of this mixin
+ *
+ * @param $value {value} - none | text | all | element 
+ * @param $touch {boolean} - extend to -webkit-touch-callout
+ * @returns {declarations}
+ */
+@mixin user-select($value: text, $touch: false) {
+  @if $value == none and $touch != false {
+    -webkit-touch-callout: $value;
+  }
+      -webkit-user-select: $value;
+       -khtml-user-select: $value;
+         -moz-user-select: $value;
+          -ms-user-select: $value;
+              user-select: $value;
+}
+
+/**
+ * @mixin no-select
+ *
+ * This user-select mixin is pre-populated with a value of 'none'
+ *
+ * @returns {declarations}
+ */
+@mixin no-select {
+  @include user-select(none);
+}
+
+/**
+ * @mixin no-select-callout
+ *
+ * This user-select mixin is pre-populated with a value of 'none', and extends this value to mobile touch callouts
+ *
+ * @returns {declarations}
+ */
+@mixin no-select-callout {
+  @include user-select(none, true);
+}

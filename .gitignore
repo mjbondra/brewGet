@@ -1,0 +1,28 @@
+# Configuration #
+#################
+config.js
+sftp-config.json
+
+# NPM Packages #
+################
+node_modules
+
+# Bower Packages #
+##################
+client/assets/lib
+
+# Compiled Source, Logs and Non-Essential Data #
+################################################
+lib-cov
+*.seed
+*.log
+*.csv
+*.dat
+*.out
+*.pid
+*.gz
+pids
+logs
+results
+.sass-cache
+.DS_Store

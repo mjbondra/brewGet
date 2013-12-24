@@ -1,0 +1,17 @@
+
+/** 
+ * @mixin input-placeholder
+ *
+ * Mixin for easily adding input placeholder styles across vender-prefixed selectors
+ *
+ * Source: https://github.com/michaelsacca/Compass-Placeholder-Text-Mixin
+ *
+ * @returns {rules} - populated by semicolon delimited declarations within brackets after '@include input-placeholder'
+ */
+@mixin input-placeholder {
+  &.placeholder { @content; }
+  &:-moz-placeholder { @content; }
+  &::-moz-placeholder { @content; }
+  &:-ms-input-placeholder { @content; }
+  &::-webkit-input-placeholder { @content; } 
+}

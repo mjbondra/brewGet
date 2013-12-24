@@ -1,0 +1,4 @@
+<i ng-click="hideMessages()" class="fa fa-times-circle"></i>
+<ul ng-class="cssClasses">
+  <li ng-repeat="alert in alerts" ng-class="alert.type">{{ alert.message }}</li>
+</ul>

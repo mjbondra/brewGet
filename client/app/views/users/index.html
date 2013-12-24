@@ -1,0 +1,5 @@
+<h1>Users</h1>
+<article ng-repeat="user in users">
+  <h2>{{ user.username }}</h2>
+  <a ng-href="{{ 'mailto:' + user.email }}">{{ user.email }}</a>
+</article>

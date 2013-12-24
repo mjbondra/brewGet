@@ -1,0 +1,36 @@
+  ///////////////
+ // VARIABLES //
+///////////////
+
+/*------------------------------------*\
+    COLORS
+\*------------------------------------*/
+
+$black: #222222;
+
+$brown: #554236;
+$lt-brown: #a17357;
+$ltr-brown: #e4d7ce;
+
+$green: #4d8f46;
+$yellow-green: #d1cc35;
+$lt-yellow-green: #eae6ae;
+
+$red: #cc3300;
+$lt-red: #ff3333;
+
+/*------------------------------------*\
+    COMPASS
+\*------------------------------------*/
+
+/** Support for khtml in experimental css3 properties (-khtml) */
+$experimental-support-for-khtml: true;
+
+/*------------------------------------*\
+    SUSY
+\*------------------------------------*/
+
+$total-columns: 4;     // a 12-column grid
+$column-width: 4em;    // each column is 4em wide
+$gutter-width: 1em;    // 1em gutters between columns
+$grid-padding: 0.5em;  // grid-padding equal to gutters
