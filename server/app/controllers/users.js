@@ -19,7 +19,7 @@ var User = mongoose.model('User');
 exports.index = function *(next) {
   try {
     var users = yield Q.ninvoke(User, 'find');
-    this.body = censor(users);
+    this.body = yield censor(users);
   } catch (err) {
     this.err = err;
     yield next;
@@ -35,7 +35,7 @@ exports.create = function *(next) {
     var user = new User(this.request.body);
     yield Q.ninvoke(user, 'save');
     this.status = 201; // 201 Created
-    this.body = resCreated('user', user, user.username);;
+    this.body = yield resCreated('user', user, user.username);;
   } catch (err) {
     this.err = err;
     yield next;

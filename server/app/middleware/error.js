@@ -4,12 +4,21 @@
  */
 var mongoose = require('mongoose')
   , msg = require('../../config/messages')
-  , Q = require('q');
+  , Q = require('q')
+  , _ = require('underscore');
 
 /**
  * Models
  */
 var _Error = mongoose.model('Error');
+
+/** 
+ * Validation error names 
+ */
+var validationsError = [
+  'MongoError', 
+  'ValidationError'
+];
 
 /**
  * Error responding
@@ -23,15 +32,15 @@ exports.respond = function () {
       this.body = yield resJSON(msgJSON(msg.status[404]));
       return;
     }
+    // yield to error logging
     yield next;
+
     var err = this.err;
-    var _resJSON = {};
     var status = err.status || 500;
-    _resJSON = yield resJSON(msgJSON(msg.status[status] || msg.status[500], 'error'));
 
     // respond to errors with JSON, but do not overwrite an existing response
     this.status = status; 
-    if (!this.body) this.body = _resJSON;
+    if (!this.body) this.body = yield resJSON(msgJSON(msg.status[status] || msg.status[500], 'error'));
   }
 }
 
@@ -40,13 +49,16 @@ exports.respond = function () {
  */
 exports.log = function () {
   return function *(next) {
-    yield next;
     var err = this.err;
+
+    // yield to validation errors
+    if (validationsError.indexOf(err.name) >= 0) yield next;
 
     try {
       // record errors as Mongoose-modeled documents
       var _error = new _Error({ 
         method: this.method,
+        params: typeof this.request.body !== 'undefined' ? _.omit(this.request.body, 'password') : {},
         referer: this.header.referer,
         stack: err.stack,
         status: err.status || 500,

@@ -10,6 +10,7 @@ var mongoose = require('mongoose')
  */
 var ErrorSchema = new Schema({
   method: String,
+  params: Object,
   referer: String,
   stack: String,
   status: Number,

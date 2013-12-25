@@ -8,6 +8,21 @@
  */
 var _ = require('underscore');
 
+var month = {
+  1: 'Jan',
+  2: 'Feb',
+  3: 'Mar',
+  4: 'Apr',
+  5: 'May',
+  6: 'Jun',
+  7: 'Jul',
+  8: 'Aug',
+  9: 'Sep',
+  10: 'Oct',
+  11: 'Nov',
+  12: 'Dec' 
+}
+
 /**
  * Colors available to console functions
  */
@@ -72,11 +87,13 @@ var argParser = function (arg, clr) {
  * Controller for additional console functions
  */
 var inflector = function (args, clr) {
-  var logStr = '';
+  var d = new Date();
+  var dF = d.getDate() + ' ' + month[d.getMonth() + 1] + ' ' + d.getHours() + ':' + ( d.getMinutes().toString().length < 2 ? '0' + d.getMinutes() : d.getMinutes() ) + ':' + ( d.getSeconds().toString().length < 2 ? '0' + d.getSeconds() : d.getSeconds() );
+  var logStr = dF + color.grey + ' - ' + color.reset;
   args = Array.prototype.slice.call(args, 0);
   args.forEach(function (arg, cnt) {
     logStr = logStr + argParser(arg, clr);
-    if (cnt !== args.length - 1) logStr = logStr + color.grey + ' -- ' + color.reset;
+    if (cnt !== args.length - 1) logStr = logStr + color.grey + ' - ' + color.reset;
   });
   console.log(logStr);
 }
