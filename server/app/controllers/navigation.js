@@ -23,7 +23,7 @@ exports.items = function* () {
       href: '/breweries'
     }
   ];
-  if (typeof this.isAuthenticated !== 'undefined') {
+  if (this.session.user) {
     nav.actions = [
       {
         title: 'Trade',
@@ -64,5 +64,5 @@ exports.items = function* () {
       }
     ];
   }
-  this.body = nav;
+  this.body = yield nav;
 }

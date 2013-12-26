@@ -3,17 +3,20 @@
  * Module dependencies
  */
 var logger = require('koa-logger')
+  , mongoose = require('mongoose')
+  , mongoStore = require('koa-session-mongo')
   , router = require('koa-router')
-  , session = require('koa-session')
+  , session = require('koa-session-store')
   , static = require('koa-static');
 
 /**
  * Middleware
  */
-var bodyParser = require('../app/middleware/body-parser')
+var auth = require('../app/middleware/auth')
+  , bodyParser = require('../app/middleware/body-parser')
   , error = require('../app/middleware/error');
 
-module.exports = function (app, config) {
+module.exports = function (app, config, veritable) {
 
   // collapse JSON responses
   app.jsonSpaces = 0;
@@ -21,13 +24,17 @@ module.exports = function (app, config) {
   // logger 
   app.use(logger());
 
-  // sessions 
-  app.keys = config.secrets;
-  app.use(session());
-
   // static files 
   app.use(static(config.root + '/client'));
 
+  // sessions 
+  app.keys = config.secrets;
+  app.use(session({
+    store: mongoStore.create({
+      mongoose: mongoose.connection
+    })
+  }));
+  
   // body parser 
   app.use(bodyParser());
 

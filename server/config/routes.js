@@ -10,8 +10,8 @@ module.exports = function (app) {
   // navigation
   app.get('/api/nav', navigation.items)
 
-
-  // app.post('/api/users/sign-in', users.signIn(passport));
+  app.post('/api/users/sign-in', users.signIn);
+  app.delete('/api/users/sign-out', users.signOut);
   // users
   app.get('/api/users', users.index);
   app.post('/api/users/new', users.create);
