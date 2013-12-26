@@ -12,11 +12,11 @@ var logger = require('koa-logger')
 /**
  * Middleware
  */
-var auth = require('../app/middleware/auth')
-  , bodyParser = require('../app/middleware/body-parser')
-  , error = require('../app/middleware/error');
+var bodyParser = require('../app/middleware/body-parser')
+  , error = require('../app/middleware/error')
+  , user = require('../app/controllers/users').deserialize;
 
-module.exports = function (app, config, veritable) {
+module.exports = function (app, config) {
 
   // collapse JSON responses
   app.jsonSpaces = 0;
@@ -34,6 +34,7 @@ module.exports = function (app, config, veritable) {
       mongoose: mongoose.connection
     })
   }));
+  app.use(user());
   
   // body parser 
   app.use(bodyParser());
