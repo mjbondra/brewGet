@@ -111,7 +111,6 @@ app.factory('User', ['$rootScope', '$resource', '$location', function ($rootScop
   return $resource('api/users/:userId', {}, {
     save: { 
       method:'POST', 
-      params: { userId: 'new' }, 
       interceptor: {
         response: function (res) {
           $location.path('/');

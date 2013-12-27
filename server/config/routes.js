@@ -24,7 +24,7 @@ module.exports = function (app) {
 
   // users
   app.get('/api/users', users.index);
-  app.post('/api/users/new', users.create);
+  app.post('/api/users', users.create);
   app.get('/api/users/:username', users.show);
   app.put('/api/users/:username', users.update);
   app.delete('/api/users/:username', users.destroy);

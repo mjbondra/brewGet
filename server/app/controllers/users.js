@@ -43,7 +43,7 @@ exports.show = function *(next) {
 
 /**
  * Create
- * POST /api/users/new 
+ * POST /api/users
  */
 exports.create = function *(next) {
   try {
