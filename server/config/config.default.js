@@ -10,33 +10,45 @@ var path = require('path')
 
 module.exports = {
   development: {
-    db: {
-      host: 'dbhost',
-      name: 'dbname'
-    },
     env: 'development',
+    mongo: {
+      host: 'dbhost',
+      db: 'dbname'
+    },
+    path: {
+      root: rootPath,
+      static: rootPath + '/client',
+      tmp: rootPath + '/server/assets/tmp'
+    },
     port: port,
-    root: rootPath,
     secrets: ['secretString']
   },
   test: {
-    db: {
-      host: 'dbhost',
-      name: 'dbname'
-    },
     env: 'test',
+    mongo: {
+      host: 'dbhost',
+      db: 'dbname'
+    },
+    path: {
+      root: rootPath,
+      static: rootPath + '/client',
+      tmp: rootPath + '/server/assets/tmp'
+    },
     port: port,
-    root: rootPath,
     secrets: ['secretString']
   },
   production: {
-    db: {
-      host: 'dbhost',
-      name: 'dbname'
-    },
     env: 'production',
+    mongo: {
+      host: 'dbhost',
+      db: 'dbname'
+    },
+    path: {
+      root: rootPath,
+      static: rootPath + '/client',
+      tmp: rootPath + '/server/assets/tmp'
+    },
     port: port,
-    root: rootPath,
     secrets: ['secretString']
   }
 }

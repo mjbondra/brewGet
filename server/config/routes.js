@@ -7,10 +7,17 @@ var navigation = require('../app/controllers/navigation')
 
 module.exports = function (app) {
   
+  app.get('/test-api/test.json', function *() {
+    this.body = {
+      "name": "brewGet",
+      "description": "a node/express app that facilitates the trading of beer"
+    }
+  })
+
   // navigation
   app.get('/api/nav', navigation.items)
 
-  app.post('/api/users/sign-in', users.signIn);
+  app.post('/api/users/sign-in', users.authenticate);
   app.delete('/api/users/sign-out', users.signOut);
   // users
   app.get('/api/users', users.index);

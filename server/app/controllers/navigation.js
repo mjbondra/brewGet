@@ -23,7 +23,7 @@ exports.items = function* () {
       href: '/breweries'
     }
   ];
-  if (this.session.user) {
+  if (this.user) {
     nav.actions = [
       {
         title: 'Trade',

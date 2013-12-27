@@ -25,7 +25,7 @@ module.exports = function (app, config) {
   app.use(logger());
 
   // static files 
-  app.use(static(config.root + '/client'));
+  app.use(static(config.path.static));
 
   // sessions 
   app.keys = config.secrets;
@@ -37,7 +37,7 @@ module.exports = function (app, config) {
   app.use(user());
   
   // body parser 
-  app.use(bodyParser());
+  app.use(bodyParser(config));
 
   // routes 
   app.use(router(app));

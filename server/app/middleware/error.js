@@ -52,7 +52,7 @@ exports.log = function () {
     var err = this.err;
 
     // yield to validation errors
-    if (validationsError.indexOf(err.name) >= 0) yield next;
+    if (validationsError.indexOf(err.name) >= 0) return yield next;
 
     try {
       // record errors as Mongoose-modeled documents

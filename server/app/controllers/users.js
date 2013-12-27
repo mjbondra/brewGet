@@ -50,10 +50,9 @@ exports.create = function *(next) {
  * Sign in
  * POST /api/users/sign-in
  */
-exports.signIn = function *(next) {
+exports.authenticate = function *(next) {
   try {
     var msgJSONArray = [];
-
     if (!this.request.body.username) msgJSONArray.push(msgJSON(msg.username.isNull, 'validation', 'username'));
     if (!this.request.body.password) msgJSONArray.push(msgJSON(msg.password.isNull, 'validation', 'password'));
     if (msgJSONArray.length > 0) {
@@ -61,25 +60,20 @@ exports.signIn = function *(next) {
       this.body = yield resJSON(msgJSONArray);
       return;
     }
-
     var user = yield Q.ninvoke(User, 'findOne', { username: this.request.body.username });
-
     if (!user) {
       this.status = 401; // 401 Unauthorized
       this.body = yield resJSON(msgJSON(msg.authentication.incorrect.user(this.request.body.username), 'authentication', 'user'));
       return;
     }
-
     if (!user.authenticate(this.request.body.password, user.salt)) {
       this.status = 401; // 401 Unauthorized
       this.body = yield resJSON(msgJSON(msg.authentication.incorrect.password, 'authentication', 'user'));
       return;
     }
-
-    this.session.user = user.id;
+    this.session.user = user.id; // Serialize user to session
     this.status = 201; // 201 Created
     this.body = yield resJSON(msgJSON(msg.authentication.success(user.username), 'success', 'user', censor(user))); // 201 Created
-
   } catch (err) {
     this.err = err;
     yield next;
@@ -96,9 +90,13 @@ exports.signOut = function *(next) {
 }
 
 /*------------------------------------*\
-    Session
+    Session Middleware
 \*------------------------------------*/
 
+/**
+ * Deserialize user from session
+ * Make available to app as this.user
+ */
 exports.deserialize = function () {
   return function *(next) {
     if (this.session.user && !this.user) {
