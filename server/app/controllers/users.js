@@ -27,6 +27,20 @@ exports.index = function *(next) {
 }
 
 /**
+ * Show
+ * GET /api/users/:username
+ */
+exports.show = function *(next) {
+  try {
+    var user = yield Q.ninvoke(User, 'findOne', { username: this.params.username });
+    this.body = yield censor(user);
+  } catch (err) {
+    this.err = err;
+    yield next;
+  }
+}
+
+/**
  * Create
  * POST /api/users/new 
  */
@@ -41,6 +55,16 @@ exports.create = function *(next) {
     yield next;
   }
 }
+
+/**
+ * Update
+ */
+exports.update = function *(next) {}
+
+/**
+ * Destroy
+ */
+exports.destroy = function *(next) {}
 
 /*------------------------------------*\
     Authentication
