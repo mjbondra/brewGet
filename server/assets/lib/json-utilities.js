@@ -94,5 +94,12 @@ resCreated = function (contentType, mongooseDoc, title) {
   return resJSON(msgJSON(msg[contentType].created(title), 'success', contentType, censor(mongooseDoc)));
 }
 
-resModified = function () {}
-resDeleted = function () {}
+resUpdated = function (contentType, mongooseDoc, title) {
+  title = title || mongooseDoc.title;
+  return resJSON(msgJSON(msg[contentType].updated(title), 'success', contentType, censor(mongooseDoc)));
+}
+
+resDeleted = function (contentType, mongooseDoc, title) {
+  title = title || mongooseDoc.title;
+  return resJSON(msgJSON(msg[contentType].deleted(title), 'success', contentType, censor(mongooseDoc)));
+}

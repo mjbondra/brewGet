@@ -26,6 +26,8 @@ module.exports = function (app) {
   app.get('/api/users', users.index);
   app.post('/api/users/new', users.create);
   app.get('/api/users/:username', users.show);
+  app.put('/api/users/:username', users.update);
+  app.delete('/api/users/:username', users.destroy);
 
   // redirect all remaining GET method routes to angular router
   app.get('*', function* () {

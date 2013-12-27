@@ -22,7 +22,7 @@ exports.index = function *(next) {
     this.body = yield censor(users);
   } catch (err) {
     this.err = err;
-    yield next;
+    yield next; // 500 Internal Server Error
   }
 }
 
@@ -33,10 +33,11 @@ exports.index = function *(next) {
 exports.show = function *(next) {
   try {
     var user = yield Q.ninvoke(User, 'findOne', { username: this.params.username });
+    if (!user) return yield next; // 404 Not Found
     this.body = yield censor(user);
   } catch (err) {
     this.err = err;
-    yield next;
+    yield next; // 500 Internal Server Error
   }
 }
 
@@ -52,22 +53,43 @@ exports.create = function *(next) {
     this.body = yield resCreated('user', user, user.username);;
   } catch (err) {
     this.err = err;
-    yield next;
+    yield next; // 500 Internal Server Error / 422 Unprocessable Entity / 409 Conflict
   }
 }
 
 /**
  * Update
+ * PUT /api/users/:username
  */
-exports.update = function *(next) {}
+exports.update = function *(next) {
+  try {
+    var user = yield Q.ninvoke(User, 'findOne', { username: this.params.username });
+    if (!user) return yield next; // 404 Not Found
+    user = _.extend(user, this.request.body);
+    yield Q.ninvoke(user, 'save');
+    this.body = yield resUpdated('user', user, user.username);
+  } catch (err) {
+    this.err = err;
+    yield next; // 500 Internal Server Error / 422 Unprocessable Entity / 409 Conflict
+  }
+}
 
 /**
  * Destroy
+ * DELETE /api/users/:username
  */
-exports.destroy = function *(next) {}
+exports.destroy = function *(next) {
+  try {
+    var user = yield Q.ninvoke(User, 'findOneAndRemove', { username: this.params.username });
+    this.body = yield resDeleted('user', user, user.username);
+  } catch (err) {
+    this.err = err;
+    yield next;
+  }
+}
 
 /*------------------------------------*\
-    Authentication
+    Authentication / Session
 \*------------------------------------*/
 
 /**
@@ -105,19 +127,6 @@ exports.authenticate = function *(next) {
 }
 
 /**
- * Sign out
- * DELETE /api/users/sign-out
- */
-exports.signOut = function *(next) {
-  this.session = {};
-  this.body = yield resJSON(msgJSON('logout'));
-}
-
-/*------------------------------------*\
-    Session Middleware
-\*------------------------------------*/
-
-/**
  * Deserialize user from session
  * Make available to app as this.user
  */
@@ -132,4 +141,13 @@ exports.deserialize = function () {
     }
     yield next;
   }
+}
+
+/**
+ * Sign out
+ * DELETE /api/users/sign-out
+ */
+exports.signOut = function *(next) {
+  this.session = {};
+  this.body = yield resJSON(msgJSON('logout'));
 }
