@@ -1,18 +1,32 @@
 
-var mongoose = require('mongoose')
+var app = require('../')
+  , mongoose = require('mongoose')
   , port = process.env.PORT || 3000
   , request = require('supertest')('http://localhost:' + port)
   , should = require('should');
-
-console.log(port);
-
-var app = require('../');
 
 var User = mongoose.model('User');
 
 describe('Users & Authentication', function () {
 
   describe('POST /api/users', function () {
+    describe('Invalid parameters', function () {
+      it('should return JSON and a 422', function (done) {
+        request
+          .post('/api/users')
+          .field('username', 'foobar')
+          .field('email', '')
+          .field('password', 'foobar')
+          .expect('Content-Type', /json/)
+          .expect(422, done);
+      });
+      it('should not create document', function (done) {
+        User.findOne({ username: 'foobar' }, function (err, user) {
+          should.equal(user, null);
+          done();
+        });
+      });
+    });
     describe('Valid parameters', function () {
       it('should return JSON and a 201', function (done) {
         request
@@ -23,16 +37,11 @@ describe('Users & Authentication', function () {
           .expect('Content-Type', /json/)
           .expect(201, done);
       });
-    });
-    describe('Invalid parameters', function () {
-      it('should return JSON and a 422', function (done) {
-        request
-          .post('/api/users')
-          .field('username', 'foobar')
-          .field('email', '')
-          .field('password', 'foobar')
-          .expect('Content-Type', /json/)
-          .expect(422, done);
+      it('should create document', function (done) {
+        User.findOne({ username: 'foobar' }, function (err, user) {
+          should.notEqual(user, null);
+          done();
+        });
       });
     });
     describe('Duplicate \'username\' parameter', function () {
@@ -44,6 +53,12 @@ describe('Users & Authentication', function () {
           .field('password', 'foobar')
           .expect('Content-Type', /json/)
           .expect(409, done);
+      });
+      it('should not create duplicate document', function (done) {
+        User.count({ username: 'foobar' }, function (err, count) {
+          count.should.equal(1);
+          done();
+        });
       });
     });
   });
@@ -57,6 +72,12 @@ describe('Users & Authentication', function () {
           .expect('Content-Type', /json/)
           .expect(200, done);
       });
+      it('should update document', function (done) {
+        User.findOne({ username: 'foobar' }, function (err, user) {
+          should.equal(user.email, 'foobar@foobar.com');
+          done();
+        });
+      });
     });
     describe('Valid user, invalid parameters', function () {
       it('should return JSON and a 422', function (done) {
@@ -66,6 +87,12 @@ describe('Users & Authentication', function () {
           .expect('Content-Type', /json/)
           .expect(422, done);
       });
+      it('should not update document', function (done) {
+        User.findOne({ username: 'foobar' }, function (err, user) {
+          should.notEqual(user.email, 'foobar');
+          done();
+        });
+      });
     });
     describe('Non-existant user', function () {
       it('should return JSON and a 404', function (done) {
@@ -74,6 +101,12 @@ describe('Users & Authentication', function () {
           .field('email', 'foobar@foobar.com')
           .expect('Content-Type', /json/)
           .expect(404, done);
+      });
+      it('should not create document', function (done) {
+        User.findOne({ username: 'foo' }, function (err, user) {
+          should.equal(user, null);
+          done();
+        });
       });
     });
   });
@@ -159,6 +192,12 @@ describe('Users & Authentication', function () {
           .expect('Content-Type', /json/)
           .expect(200, done);
       });
+      it('should delete document', function (done) {
+        User.findOne({ username: 'foobar' }, function (err, user) {
+          should.equal(user, null);
+          done();
+        });
+      });
     });
     describe('Non-existant user', function () {
       it('should return JSON and a 404', function (done) {
@@ -169,5 +208,4 @@ describe('Users & Authentication', function () {
       });
     });
   });
-
 });
