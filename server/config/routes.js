@@ -1,5 +1,10 @@
 
 /**
+ * Middleware
+ */
+var requires = require('../app/Middleware/auth').requires;
+
+/**
  * Controllers
  */
 var navigation = require('../app/controllers/navigation')
@@ -26,8 +31,8 @@ module.exports = function (app) {
   app.get('/api/users', users.index);
   app.post('/api/users', users.create);
   app.get('/api/users/:username', users.show);
-  app.put('/api/users/:username', users.update);
-  app.delete('/api/users/:username', users.destroy);
+  app.put('/api/users/:username', requires.self, users.update);
+  app.delete('/api/users/:username', requires.self, users.destroy);
 
   // redirect all remaining GET method routes to angular router
   app.get('*', function* () {

@@ -2,10 +2,15 @@
 var app = require('../')
   , mongoose = require('mongoose')
   , port = process.env.PORT || 3000
-  , request = require('supertest')('http://localhost:' + port)
+  , supertest = require('supertest')
   , should = require('should');
 
+var request = supertest('http://localhost:' + port)
+  , agent = supertest.agent('http://localhost:' + port);
+
 var User = mongoose.model('User');
+
+var userId, sessionId;
 
 describe('Users & Authentication', function () {
 
@@ -14,9 +19,7 @@ describe('Users & Authentication', function () {
       it('should return JSON and a 422', function (done) {
         request
           .post('/api/users')
-          .field('username', 'foobar')
-          .field('email', '')
-          .field('password', 'foobar')
+          .send({ username: 'foobar', email: 'foobar', password: 'foobar' })
           .expect('Content-Type', /json/)
           .expect(422, done);
       });
@@ -29,17 +32,23 @@ describe('Users & Authentication', function () {
     });
     describe('Valid parameters', function () {
       it('should return JSON and a 201', function (done) {
-        request
+        agent
           .post('/api/users')
-          .field('username', 'foobar')
-          .field('email', 'foo@bar.com')
-          .field('password', 'foobar')
+          .send({ username: 'foobar', email: 'foo@bar.com', password: 'foobar' })
           .expect('Content-Type', /json/)
           .expect(201, done);
       });
       it('should create document', function (done) {
         User.findOne({ username: 'foobar' }, function (err, user) {
+          userId = user.id || null;
           should.notEqual(user, null);
+          done();
+        });
+      });
+      it('should serialize user into session', function (done) {
+        mongoose.connection.db.collection('sessions').findOne({ blob: { $regex: userId } }, function (err, session) {
+          should.notEqual(session, null);
+          sessionId = session._id;
           done();
         });
       });
@@ -48,9 +57,7 @@ describe('Users & Authentication', function () {
       it('should return JSON and a 409', function (done) {
         request
           .post('/api/users')
-          .field('username', 'foobar')
-          .field('email', 'foo@bar.com')
-          .field('password', 'foobar')
+          .send({ username: 'foobar', email: 'foo@bar.com', password: 'foobar' })
           .expect('Content-Type', /json/)
           .expect(409, done);
       });
@@ -64,48 +71,98 @@ describe('Users & Authentication', function () {
   });
 
   describe('PUT /api/users/:username', function () {
-    describe('Valid user, valid parameters', function () {
-      it('should return JSON and a 200', function (done) {
-        request
-          .put('/api/users/foobar')
-          .field('email', 'foobar@foobar.com')
-          .expect('Content-Type', /json/)
-          .expect(200, done);
-      });
-      it('should update document', function (done) {
-        User.findOne({ username: 'foobar' }, function (err, user) {
-          should.equal(user.email, 'foobar@foobar.com');
-          done();
+    describe('Invalid session (not self)', function () {
+      describe('Non-existant user', function () {
+        it('should return JSON and a 401', function (done) {
+          request
+            .put('/api/users/foo')
+            .send({ email: 'foobar@foobar.com' })
+            .expect('Content-Type', /json/)
+            .expect(401, done);
+        });
+        it('should not create document', function (done) {
+          User.findOne({ username: 'foo' }, function (err, user) {
+            should.equal(user, null);
+            done();
+          });
         });
       });
-    });
-    describe('Valid user, invalid parameters', function () {
-      it('should return JSON and a 422', function (done) {
-        request
-          .put('/api/users/foobar')
-          .field('email', 'foobar')
-          .expect('Content-Type', /json/)
-          .expect(422, done);
-      });
-      it('should not update document', function (done) {
-        User.findOne({ username: 'foobar' }, function (err, user) {
-          should.notEqual(user.email, 'foobar');
-          done();
+      describe('Valid user (not self), invalid parameters', function () {
+        it('should return JSON and a 401', function (done) {
+          request
+            .put('/api/users/foobar')
+            .send({ email: 'foobar' })
+            .expect('Content-Type', /json/)
+            .expect(401, done);
+        });
+        it('should not update document', function (done) {
+          User.findOne({ username: 'foobar' }, function (err, user) {
+            should.notEqual(user.email, 'foobar');
+            done();
+          });
         });
       });
+      describe('valid user (not self), valid parameters', function () {
+        it('should return JSON and a 401', function (done) {
+          request
+            .put('/api/users/foobar')
+            .send({ email: 'foo@baz.com' })
+            .expect('Content-Type', /json/)
+            .expect(401, done);
+        });
+        it('should not update document', function (done) {
+          User.findOne({ username: 'foobar' }, function (err, user) {
+            should.notEqual(user.email, 'foo@baz.com');
+            done();
+          });
+        });
+      }); 
     });
-    describe('Non-existant user', function () {
-      it('should return JSON and a 404', function (done) {
-        request
-          .put('/api/users/foo')
-          .field('email', 'foobar@foobar.com')
-          .expect('Content-Type', /json/)
-          .expect(404, done);
+
+    describe('Valid session (self)', function () {
+      describe('Non-existant/non-session user', function () {
+        it('should return JSON and a 401', function (done) {
+          agent
+            .put('/api/users/foo')
+            .send({ email: 'foobar@foobar.com' })
+            .expect('Content-Type', /json/)
+            .expect(401, done);
+        });
+        it('should not create document', function (done) {
+          User.findOne({ username: 'foo' }, function (err, user) {
+            should.equal(user, null);
+            done();
+          });
+        });
       });
-      it('should not create document', function (done) {
-        User.findOne({ username: 'foo' }, function (err, user) {
-          should.equal(user, null);
-          done();
+      describe('Valid user (self), invalid parameters', function () {
+        it('should return JSON and a 422', function (done) {
+          agent
+            .put('/api/users/foobar')
+            .send({ email: 'foobar' })
+            .expect('Content-Type', /json/)
+            .expect(422, done);
+        });
+        it('should not update document', function (done) {
+          User.findOne({ username: 'foobar' }, function (err, user) {
+            should.notEqual(user.email, 'foobar');
+            done();
+          });
+        });
+      });
+      describe('valid user (self), valid parameters', function () {
+        it('should return JSON and a 200', function (done) {
+          agent
+            .put('/api/users/foobar')
+            .send({ email: 'foobar@foobar.com' })
+            .expect('Content-Type', /json/)
+            .expect(200, done);
+        });
+        it('should update document', function (done) {
+          User.findOne({ username: 'foobar' }, function (err, user) {
+            should.equal(user.email, 'foobar@foobar.com');
+            done();
+          });
         });
       });
     });
@@ -123,14 +180,6 @@ describe('Users & Authentication', function () {
   });
 
   describe('GET /api/users/:username', function () {
-    describe('Valid user', function () {
-      it('should return JSON and a 200', function (done) {
-        request
-          .get('/api/users/foobar')
-          .expect('Content-Type', /json/)
-          .expect(200, done);
-      });
-    });
     describe('Non-existant user', function () {
       it('should return JSON and a 404', function (done) {
         request
@@ -139,36 +188,12 @@ describe('Users & Authentication', function () {
           .expect(404, done);
       });
     });
-  });
-
-  describe('POST /api/users/sign-in', function () {
-    describe('Missing credentials', function () {
-      it('should return JSON and a 422', function (done) {
+    describe('Valid user', function () {
+      it('should return JSON and a 200', function (done) {
         request
-          .post('/api/users/sign-in')
-          .field()
+          .get('/api/users/foobar')
           .expect('Content-Type', /json/)
-          .expect(422, done);
-      });
-    });
-    describe('Invalid credentials', function () {
-      it('should return JSON and a 401', function (done) {
-        request
-          .post('/api/users/sign-in')
-          .field('username', 'foo')
-          .field('password', 'foo')
-          .expect('Content-Type', /json/)
-          .expect(401, done);
-      });
-    });
-    describe('Valid credentials', function () {
-      it('should return JSON and a 201', function (done) {
-        request
-          .post('/api/users/sign-in')
-          .field('username', 'foobar')
-          .field('password', 'foobar')
-          .expect('Content-Type', /json/)
-          .expect(201, done);
+          .expect(200, done);
       });
     });
   });
@@ -176,35 +201,131 @@ describe('Users & Authentication', function () {
   describe('DELETE /api/users/sign-out', function () {
     describe('Sign out', function () {
       it('should return JSON and a 200', function (done) {
-        request
+        agent
           .del('/api/users/sign-out')
           .expect('Content-Type', /json/)
           .expect(200, done);
+      });
+      it('should remove user from session', function (done) {
+        var ObjectID = require('mongoose/node_modules/mongodb').ObjectID;
+        mongoose.connection.db.collection('sessions').findOne({ _id: sessionId }, function (err, session) {
+          should.equal(session.blob, '{}');
+          done();
+        });
+      });
+    });
+  });
+
+  describe('POST /api/users/sign-in', function () {
+    describe('Missing credentials', function () {
+      it('should return JSON and a 422', function (done) {
+        agent
+          .post('/api/users/sign-in')
+          .send({})
+          .expect('Content-Type', /json/)
+          .expect(422, done);
+      });
+      it('should not serialize user into session', function (done) {
+        mongoose.connection.db.collection('sessions').findOne({ blob: { $regex: 'user' } }, function (err, session) {
+          should.equal(session, null);
+          done();
+        });
+      });
+    });
+    describe('Invalid credentials', function () {
+      it('should return JSON and a 401', function (done) {
+        agent
+          .post('/api/users/sign-in')
+          .send({ username: 'foo', password: 'foo' })
+          .expect('Content-Type', /json/)
+          .expect(401, done);
+      });
+      it('should not serialize user into session', function (done) {
+        mongoose.connection.db.collection('sessions').findOne({ blob: { $regex: 'user' } }, function (err, session) {
+          should.equal(session, null);
+          done();
+        });
+      });
+    });
+    describe('Valid credentials', function () {
+      it('should return JSON and a 201', function (done) {
+        agent
+          .post('/api/users/sign-in')
+          .send({ username: 'foobar', password: 'foobar' })
+          .expect('Content-Type', /json/)
+          .expect(201, done);
+      });
+      it('should serialize user into session', function (done) {
+        mongoose.connection.db.collection('sessions').findOne({ blob: { $regex: userId } }, function (err, session) {
+          should.notEqual(session, null);
+          done();
+        });
       });
     });
   });
 
   describe('DELETE /api/users/:username', function () {
-    describe('Valid user', function () {
-      it('should return JSON and a 200', function (done) {
-        request
-          .del('/api/users/foobar')
-          .expect('Content-Type', /json/)
-          .expect(200, done);
+    describe('Invalid session (not self)', function () {
+      describe('Non-existant/non-session user', function () {
+        it('should return JSON and a 401', function (done) {
+          request
+            .del('/api/users/foo')
+            .expect('Content-Type', /json/)
+            .expect(401, done);
+        });
       });
-      it('should delete document', function (done) {
-        User.findOne({ username: 'foobar' }, function (err, user) {
-          should.equal(user, null);
-          done();
+      describe('Valid user (not self)', function () {
+        it('should return JSON and a 401', function (done) {
+          request
+            .del('/api/users/foobar')
+            .expect('Content-Type', /json/)
+            .expect(401, done);
+        });
+        it('should not delete document', function (done) {
+          User.findOne({ username: 'foobar' }, function (err, user) {
+            should.notEqual(user, null);
+            done();
+          });
         });
       });
     });
-    describe('Non-existant user', function () {
-      it('should return JSON and a 404', function (done) {
-        request
-          .del('/api/users/foobar')
-          .expect('Content-Type', /json/)
-          .expect(404, done);
+
+    describe('Valid session (self)', function () {
+      describe('Non-existant/non-session user', function () {
+        it('should return JSON and a 401', function (done) {
+          agent
+            .del('/api/users/foo')
+            .expect('Content-Type', /json/)
+            .expect(401, done);
+        });
+        it('should not remove user from session', function (done) {
+          var ObjectID = require('mongoose/node_modules/mongodb').ObjectID;
+          mongoose.connection.db.collection('sessions').findOne({ _id: sessionId }, function (err, session) {
+            should.notEqual(session.blob, '{}');
+            done();
+          });
+        });
+      });
+      describe('Valid user (self)', function () {
+        it('should return JSON and a 200', function (done) {
+          agent
+            .del('/api/users/foobar')
+            .expect('Content-Type', /json/)
+            .expect(200, done);
+        });
+        it('should delete document', function (done) {
+          User.findOne({ username: 'foobar' }, function (err, user) {
+            should.equal(user, null);
+            done();
+          });
+        });
+        it('should remove user from session', function (done) {
+          var ObjectID = require('mongoose/node_modules/mongodb').ObjectID;
+          mongoose.connection.db.collection('sessions').findOne({ _id: sessionId }, function (err, session) {
+            should.equal(session.blob, '{}');
+            done();
+          });
+        });
       });
     });
   });

@@ -113,6 +113,7 @@ app.factory('User', ['$rootScope', '$resource', '$location', function ($rootScop
       method:'POST', 
       interceptor: {
         response: function (res) {
+          $rootScope.$broadcast('reloadNav');
           $location.path('/');
         }
       }

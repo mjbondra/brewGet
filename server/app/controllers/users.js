@@ -49,6 +49,7 @@ exports.create = function *(next) {
   try {
     var user = new User(this.request.body);
     yield Q.ninvoke(user, 'save');
+    this.session.user = user.id; // Serialize user to session
     this.status = 201; // 201 Created
     this.body = yield resCreated('user', user, user.username);;
   } catch (err) {
@@ -82,6 +83,7 @@ exports.destroy = function *(next) {
   try {
     var user = yield Q.ninvoke(User, 'findOneAndRemove', { username: this.params.username });
     if (!user) return yield next; // 404 Not Found
+    this.session = {};
     this.body = yield resDeleted('user', user, user.username);
   } catch (err) {
     this.err = err;
