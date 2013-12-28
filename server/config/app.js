@@ -21,8 +21,8 @@ module.exports = function (app, config) {
   // collapse JSON responses
   app.jsonSpaces = 0;
 
-  // logger 
-  app.use(logger());
+  // logger
+  if (config.env !== 'test') app.use(logger());
 
   // static files 
   app.use(static(config.path.static));

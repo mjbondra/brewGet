@@ -81,6 +81,7 @@ exports.update = function *(next) {
 exports.destroy = function *(next) {
   try {
     var user = yield Q.ninvoke(User, 'findOneAndRemove', { username: this.params.username });
+    if (!user) return yield next; // 404 Not Found
     this.body = yield resDeleted('user', user, user.username);
   } catch (err) {
     this.err = err;

@@ -6,7 +6,8 @@
 /**
  * Module dependencies
  */
-var _ = require('underscore');
+var _ = require('underscore')
+  , env = process.env.NODE_ENV || 'development';
 
 var month = {
   1: 'Jan',
@@ -106,6 +107,7 @@ var inflector = function (args, opts) {
  * Additional console functions
  */
 console.success = function () {
+  if (env === 'test') return;
   var opts = {
     bool: color.yellow,
     delimiter: color.grey,
@@ -117,6 +119,7 @@ console.success = function () {
   inflector(arguments, opts);
 }
 console.failure = function () {
+  if (env === 'test') return;
   var opts = {
     bool: color.red,
     delimiter: color.grey,
@@ -128,6 +131,7 @@ console.failure = function () {
   inflector(arguments, opts);
 }
 console.warning = function () {
+  if (env === 'test') return;
   var opts = {
     bool: color.yellow,
     delimiter: color.grey,
