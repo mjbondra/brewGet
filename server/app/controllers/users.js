@@ -100,8 +100,8 @@ exports.destroy = function *(next) {
 exports.authenticate = function *(next) {
   try {
     var msgJSONArray = [];
-    if (!this.request.body.username) msgJSONArray.push(msgJSON(msg.username.isNull, 'validation', 'username'));
-    if (!this.request.body.password) msgJSONArray.push(msgJSON(msg.password.isNull, 'validation', 'password'));
+    if (typeof this.request.body.username === 'undefined') msgJSONArray.push(msgJSON(msg.username.isNull, 'validation', 'username'));
+    if (typeof this.request.body.password === 'undefined') msgJSONArray.push(msgJSON(msg.password.isNull, 'validation', 'password'));
     if (msgJSONArray.length > 0) {
       this.status = 422; // 422 Unprocessable Entity
       this.body = yield resJSON(msgJSONArray);
