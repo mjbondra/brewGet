@@ -2,7 +2,7 @@
 /**
  * Middleware
  */
-var requires = require('../app/Middleware/auth').requires;
+var requires = require('../app/middleware/auth').requires;
 
 /**
  * Controllers
