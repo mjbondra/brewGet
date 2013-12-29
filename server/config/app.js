@@ -4,9 +4,10 @@
  */
 var logger = require('koa-logger')
   , mongoose = require('mongoose')
-  , mongoStore = require('koa-session-mongo')
+  // , mongoStore = require('koa-session-mongo')
   , router = require('koa-router')
-  , session = require('koa-session-store')
+  , session = require('koa-session')
+  // , session = require('koa-session-store')
   , static = require('koa-static');
 
 /**
@@ -29,11 +30,12 @@ module.exports = function (app, config) {
 
   // sessions 
   app.keys = config.secrets;
-  app.use(session({
-    store: mongoStore.create({
-      mongoose: mongoose.connection
-    })
-  }));
+  app.use(session());
+  // app.use(session({
+  //   store: mongoStore.create({
+  //     mongoose: mongoose.connection
+  //   })
+  // }));
   app.use(user());
   
   // body parser 

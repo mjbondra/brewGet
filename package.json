@@ -31,6 +31,7 @@
     "koa": "0.x",
     "koa-logger": "1.x",
     "koa-router": "2.x",
+    "koa-session": "1.x",
     "koa-session-mongo": "0.x",
     "koa-session-store": "0.x",
     "koa-static": "1.x",
