@@ -72,7 +72,7 @@ describe('Users & Authentication', function () {
 
   describe('PUT /api/users/:username', function () {
     describe('Invalid session (not self)', function () {
-      describe('Non-existant user', function () {
+      describe('Non-existent user', function () {
         it('should return JSON and a 401', function (done) {
           request
             .put('/api/users/foo')
@@ -120,7 +120,7 @@ describe('Users & Authentication', function () {
     });
 
     describe('Valid session (self)', function () {
-      describe('Non-existant/non-session user', function () {
+      describe('Non-existent/non-session user', function () {
         it('should return JSON and a 401', function (done) {
           agent
             .put('/api/users/foo')
@@ -180,7 +180,7 @@ describe('Users & Authentication', function () {
   });
 
   describe('GET /api/users/:username', function () {
-    describe('Non-existant user', function () {
+    describe('Non-existent user', function () {
       it('should return JSON and a 404', function (done) {
         request
           .get('/api/users/foo')
@@ -266,7 +266,7 @@ describe('Users & Authentication', function () {
 
   describe('DELETE /api/users/:username', function () {
     describe('Invalid session (not self)', function () {
-      describe('Non-existant/non-session user', function () {
+      describe('Non-existent/non-session user', function () {
         it('should return JSON and a 401', function (done) {
           request
             .del('/api/users/foo')
@@ -291,7 +291,7 @@ describe('Users & Authentication', function () {
     });
 
     describe('Valid session (self)', function () {
-      describe('Non-existant/non-session user', function () {
+      describe('Non-existent/non-session user', function () {
         it('should return JSON and a 401', function (done) {
           agent
             .del('/api/users/foo')
