@@ -4,7 +4,7 @@
  */
 var logger = require('koa-logger')
   , mongoose = require('mongoose')
-  , mongooseStore = require('../assets/lib/koa-session-mongoose')
+  , mongooseStore = require('koa-session-mongoose')
   , router = require('koa-router')
   , session = require('koa-session-store')
   , static = require('koa-static');
@@ -30,6 +30,9 @@ module.exports = function (app, config) {
   // sessions 
   app.keys = config.secrets;
   app.use(session({
+    cookie: {
+      maxage: 1000 * 60 * 60 * 24 * 14 // 2 weeks
+    },
     store: mongooseStore.create()
   }));
   app.use(user());
