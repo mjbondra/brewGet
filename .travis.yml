@@ -6,4 +6,4 @@ services: mongodb
 
 notifications:
   email: 
-	- mjbondra@gmail.com
+    - mjbondra@gmail.com
