@@ -12,8 +12,8 @@ module.exports = {
   development: {
     env: 'development',
     mongo: {
-      host: 'dbhost',
-      db: 'dbname'
+      host: 'localhost',
+      db: 'db_dev'
     },
     path: {
       root: rootPath,
@@ -26,8 +26,8 @@ module.exports = {
   test: {
     env: 'test',
     mongo: {
-      host: 'dbhost',
-      db: 'dbname'
+      host: 'localhost',
+      db: 'db_test'
     },
     path: {
       root: rootPath,
@@ -40,8 +40,8 @@ module.exports = {
   production: {
     env: 'production',
     mongo: {
-      host: 'dbhost',
-      db: 'dbname'
+      host: 'localhost',
+      db: 'db_prod'
     },
     path: {
       root: rootPath,

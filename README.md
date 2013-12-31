@@ -1,6 +1,8 @@
 brewGet
 ===
 
+[![Build Status](https://api.travis-ci.org/mjbondra/brewGet.png)](https://travis-ci.org/mjbondra/brewGet)
+
 brewGet is a web application that supports the non-monetary exchange of regionally-limited or otherwise difficult to acquire beer. Built with [Node.js](https://nodejs.org/), [Koa](http://koajs.com/), and [AngularJS](http://angularjs.org/).
 
 ##Installing and Running Locally

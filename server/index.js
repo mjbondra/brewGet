@@ -28,7 +28,7 @@ var fs = require('fs');
 
 // use environment-specific configuration; default to 'development' if unspecified
 var env = process.env.NODE_ENV || 'development'
-  , config = require('./config/config')[env];
+  , config = require(fs.existsSync(__dirname + '/config/config.js') ? './config/config' : './config/config.default')[env];
 
 // global utilities
 require('./assets/lib/console-utilities');
