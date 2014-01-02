@@ -7,13 +7,14 @@ var logger = require('koa-logger')
   , mongooseStore = require('koa-session-mongoose')
   , router = require('koa-router')
   , session = require('koa-session-store')
-  , static = require('koa-static');
+  , static = require('koa-static-cache');
 
 /**
  * Middleware
  */
 var bodyParser = require('../app/middleware/body-parser')
   , error = require('../app/middleware/error')
+  , pathRewrite = require('../app/middleware/path-rewrite')
   , user = require('../app/controllers/users').deserialize;
 
 module.exports = function (app, config) {
@@ -25,6 +26,7 @@ module.exports = function (app, config) {
   if (config.env !== 'test') app.use(logger());
 
   // static files 
+  app.use(pathRewrite('/', '/index.html'));
   app.use(static(config.path.static));
 
   // sessions 
