@@ -29,6 +29,7 @@
     "co-busboy": "0.x",
     "co-fs": "1.x",
     "koa": "0.x",
+    "koa-compress": "1.x",
     "koa-logger": "1.x",
     "koa-router": "2.x",
     "koa-session-mongoose": "0.x",

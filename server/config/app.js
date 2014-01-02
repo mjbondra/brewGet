@@ -2,7 +2,8 @@
 /**
  * Module dependencies
  */
-var logger = require('koa-logger')
+var compress = require('koa-compress')
+  , logger = require('koa-logger')
   , mongoose = require('mongoose')
   , mongooseStore = require('koa-session-mongoose')
   , router = require('koa-router')
@@ -24,6 +25,8 @@ module.exports = function (app, config) {
 
   // logger
   if (config.env !== 'test') app.use(logger());
+
+  app.use(compress());
 
   // static files 
   app.use(pathRewrite('/', '/index.html'));
