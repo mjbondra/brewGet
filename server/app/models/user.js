@@ -60,7 +60,7 @@ UserSchema.virtual('_meta')
  * Pre-validation hook; Sanitizers
  */
 UserSchema.pre('validate', function (next) {
-  /** ensure that password virtual exists on new User objects for validation purposes */
+  // ensure that password virtual exists on new User objects for validation purposes
   if (!this.password && this.isNew) this.password = null;
 
   this.username = sanitize(this.username).escape();
