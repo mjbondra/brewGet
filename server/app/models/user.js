@@ -85,9 +85,9 @@ UserSchema.methods = {
     return this.hash === this.encrypt(sanitize(plainText).escape(),salt);
   },
   encrypt: function (plainText, salt) {
-    var hash = crypto.createHmac("sha512", salt)
+    var hash = crypto.createHmac('sha512', salt)
       .update(plainText)
-      .digest("base64");
+      .digest('base64');
     return hash;
   },
   makeSalt: function () {
