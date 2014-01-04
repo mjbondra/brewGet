@@ -142,6 +142,30 @@ app.factory('User', ['$rootScope', '$resource', '$location', function ($rootScop
 }]);
 
 /*------------------------------------*\
+    AUTHENTICATION SERVICES
+\*------------------------------------*/
+
+/**
+ * Auth-checking Service
+ */
+app.factory('Auth', ['$cookies', '$q', function ($cookies, $q) {
+
+  // this function is allowed to return a promise that accounts for cookie-setting delays
+  // TODO: revisit this to see if this delay is removed or otherwise accounted for by Angular
+  return function (opts) {
+    opts = opts || {};
+    opts.delay = opts.delay || false;
+    opts.time = opts.time || 300; // 300ms
+    if (opts.delay === false) return angular.fromJson($cookies.auth);
+    var deferred = $q.defer();
+    setTimeout(function () {
+      deferred.resolve(angular.fromJson($cookies.auth));
+    }, opts.time);
+    return deferred.promise
+  }
+}]);
+
+/*------------------------------------*\
     TEMP/PLACEHOLDER SERVICES
 \*------------------------------------*/
 

@@ -21,12 +21,16 @@ app.controller('HeadCtrl', ['$scope', 'Head', function ($scope, Head) {
  * Navigation Controller
  * TEMPLATE /partials/nav/index.html
  */
-app.controller('NavCtrl', ['$scope', '$location', 'Nav', function ($scope, $location, Nav) {
+app.controller('NavCtrl', ['$scope', '$location', 'Nav', 'Auth', function ($scope, $location, Nav, Auth) {
 
   /** load nav */
   var loadNav = function () {
     Nav().success(function (nav) {
       $scope.Nav = nav;
+      Auth({ delay: true }).then(function (auth) {
+        $scope.Auth = auth;
+        console.log(auth);
+      });
     });
   };
   loadNav();
@@ -73,11 +77,9 @@ app.controller('NavCtrl', ['$scope', '$location', 'Nav', function ($scope, $loca
  * ROUTE /#!/
  * TEMPLATE /partials/home.html
  */
-app.controller('HomeCtrl', ['$scope', '$cookies', 'Head', 'MikeData', function ($scope, $cookies, Head, MikeData) {
+app.controller('HomeCtrl', ['$scope', 'Head', 'MikeData', function ($scope, Head, MikeData) {
   Head.title('brewGet');
   Head.description('brewGet is a web application that supports the non-monetary exchange of regionally-limited or otherwise difficult to acquire beer.');
-  console.log('cookies', $cookies);
-  $cookies.myFavorite = 'oatmeal';
   $scope.mikedata = MikeData.get({ resourceId: 'test' });
 }]);
 

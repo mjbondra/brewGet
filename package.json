@@ -34,7 +34,6 @@
     "koa-router": "2.x",
     "koa-session-mongoose": "0.x",
     "koa-session-store": "0.x",
-    "koa-static": "1.x",
     "mongoose": "3.x",
     "q": "0.x",
     "sanitizer": "0.x",

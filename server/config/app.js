@@ -16,7 +16,7 @@ var compress = require('koa-compress')
 var bodyParser = require('../app/middleware/body-parser')
   , error = require('../app/middleware/error')
   , pathRewrite = require('../app/middleware/path-rewrite')
-  , user = require('../app/controllers/users').deserialize;
+  , user = require('../app/controllers/users').session;
 
 module.exports = function (app, config) {
 

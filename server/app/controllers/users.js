@@ -49,6 +49,7 @@ exports.create = function *(next) {
   try {
     var user = new User(this.request.body);
     yield Q.ninvoke(user, 'save');
+    this.user = user;
     this.session.user = user.id; // Serialize user to session
     this.status = 201; // 201 Created
     this.body = yield resCreated('user', user, user.username);;
@@ -120,6 +121,7 @@ exports.authenticate = function *(next) {
       this.body = yield resJSON(msgJSON(msg.authentication.incorrect.password, 'authentication', 'user'));
       return;
     }
+    this.user = user;
     this.session.user = user.id; // Serialize user to session
     this.status = 201; // 201 Created
     this.body = yield resJSON(msgJSON(msg.authentication.success(user.username), 'success', 'user', censor(user))); // 201 Created
@@ -133,8 +135,10 @@ exports.authenticate = function *(next) {
  * Deserialize user from session
  * Make available to app as this.user
  */
-exports.deserialize = function () {
+exports.session = function () {
   return function *(next) {
+
+    // deserialize user from session
     if (this.session.user && !this.user) {
       try {
         this.user = yield Q.ninvoke(User, 'findById', this.session.user);
@@ -143,6 +147,13 @@ exports.deserialize = function () {
       }
     }
     yield next;
+
+    // populate cookie for frontend -- presence of this cookie does not grant authenticated access on backend
+    if (this.user) {
+      this.cookies.set('auth', JSON.stringify({ isAuthenticated: true, username: this.user.username }), { httpOnly: false, overwrite: true });
+    } else {
+      this.cookies.set('auth', JSON.stringify({ isAuthenticated: false }), { httpOnly: false, overwrite: true });
+    }
   }
 }
 
@@ -151,6 +162,7 @@ exports.deserialize = function () {
  * DELETE /api/users/sign-out
  */
 exports.signOut = function *(next) {
+  this.user = null;
   this.session = {};
   this.body = yield resJSON(msgJSON('logout'));
 }

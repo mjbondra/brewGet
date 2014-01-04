@@ -28,8 +28,8 @@ var UserSchema = new Schema({
   hash: String,
   salt: String,
   role: { 
-    type: String, 
-    default: 'user' 
+    type: Number, 
+    default: 1 
   }
 });
 
