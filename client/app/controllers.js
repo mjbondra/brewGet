@@ -23,7 +23,7 @@ app.controller('HeadCtrl', ['$scope', 'Head', function ($scope, Head) {
  */
 app.controller('NavCtrl', ['$scope', '$location', 'Nav', 'Auth', function ($scope, $location, Nav, Auth) {
 
-  /** load nav */
+  // load nav
   var loadNav = function () {
     Nav().success(function (nav) {
       $scope.Nav = nav;
@@ -35,35 +35,35 @@ app.controller('NavCtrl', ['$scope', '$location', 'Nav', 'Auth', function ($scop
   };
   loadNav();
 
-  /** reload nav on 'reloadNav' event */
+  // reload nav on 'reloadNav' event
   $scope.$on('reloadNav', function () {
     loadNav();
   });
 
-  /** collapse expanded trees */
+  // collapse expanded trees
   var collapseTrees = function () {
     $scope.expandedTree = false;
   };
   collapseTrees();
 
-  /** collapse trees on route change success */
+  // collapse trees on route change success
   $scope.$on('$routeChangeSuccess', function () {
     collapseTrees();
   });
 
-  /** set tree to expand based on passed context */
+  // set tree to expand based on passed context
   $scope.expandTree = function (context) {
     if (context === $scope.expandedTree || typeof context === 'undefined') $scope.expandedTree = false;
     else $scope.expandedTree = context;
   }
 
-  /** function used to determine expanded tree */
+  // function used to determine expanded tree
   $scope.isExpanded = function (context) {
     if (context === $scope.expandedTree) return true;
     else return false;
   }
 
-  /** function used to determine active path */
+  // function used to determine active path
   $scope.isActive = function (href) {
     if (href === $location.path()) return true;
     else return false;
