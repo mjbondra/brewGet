@@ -7,7 +7,8 @@ var check = require('../../assets/lib/mongoose-validator').check
   , mongoose = require('mongoose')
   , msg = require('../../config/messages')
   , sanitize = require('validator').sanitize
-  , Schema = mongoose.Schema;
+  , Schema = mongoose.Schema
+  , uid = require('uid2');
 
 /**
  * User schema
@@ -90,7 +91,7 @@ UserSchema.methods = {
     return hash;
   },
   makeSalt: function () {
-    return Math.round((new Date().valueOf() * Math.random())) + '';
+    return uid(15);
   }
 };
 
