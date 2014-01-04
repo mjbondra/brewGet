@@ -43,7 +43,7 @@ module.exports = function (app, config) {
   app.use(user());
   
   // body parser 
-  app.use(bodyParser(config));
+  app.use(bodyParser({ uploadDir: config.path.tmp }));
 
   // routes 
   app.use(router(app));

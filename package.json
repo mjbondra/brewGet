@@ -38,6 +38,7 @@
     "q": "0.x",
     "sanitizer": "0.x",
     "underscore": "1.x",
+    "uid2": "0.x",
     "validator": "2.x"
   }
 }
