@@ -36,6 +36,7 @@
     "koa-session-store": "0.x",
     "mongoose": "3.x",
     "q": "0.x",
+    "qs": "0.x",
     "sanitizer": "0.x",
     "underscore": "1.x",
     "uid2": "0.x",
