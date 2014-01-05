@@ -1,4 +1,9 @@
-
+/**
+ * This module creates a string which contains fieldnames and values in the style of url-encoding 
+ * to leverage the objectifying power of the qs module. Though the performance hit for doing this is minimal, 
+ * I would like to mimick the functionality of qs internally, and avoid the step of creating this string.
+ */
+ 
 /**
  * Module dependencies
  */
@@ -16,13 +21,10 @@ var ffObj = function () {
  * Add field and value to cummulative field string
  *
  * @param fieldname {string} - name of field, which can include backets (ex. someField[someKey][0])
- * @param value {string} - value associated with field
- * @param opts {option} - set of opptions for addField method
- * @param opts.object {boolean} - boolean that declares whether field value is an object
+ * @param value {string|object} - value associated with field
  */
-ffObj.prototype.addField = function *(fieldname, value, opts) {
-  opts = opts || {};
-  if (opts.object === true) {
+ffObj.prototype.addField = function *(fieldname, value) {
+  if (value && typeof value === 'object') {
     yield this.stringify(fieldname, value);
     this._fieldStr = ( this._fieldStr ? this._fieldStr + '&' : '' ) + this._objStr;
     this._objStr = '';

@@ -33,7 +33,7 @@ module.exports = function (opts) {
           var path = opts.uploadDir + '/' + uid(15);
           part.pipe(fs.createWriteStream(path));
           uploadPaths.push(path);
-          yield files.addField(part.fieldname, part, { object: true });
+          yield files.addField(part.fieldname, part);
         } 
       }
       this.request.body = yield body.getFields();
