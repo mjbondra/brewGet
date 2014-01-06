@@ -163,6 +163,6 @@ exports.session = function () {
  */
 exports.signOut = function *(next) {
   this.user = null;
-  this.session = {};
+  this.session = null;
   this.body = yield resJSON(msgJSON('logout'));
 }
