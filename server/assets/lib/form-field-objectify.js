@@ -1,7 +1,7 @@
 /**
- * This module creates a string which contains fieldnames and values in the style of url-encoding 
- * to leverage the objectifying power of the qs module. Though the performance hit for doing this is minimal, 
- * I would like to mimick the functionality of qs internally, and avoid the step of creating this string.
+ * This module creates a string which contains fieldnames and values in the style of url-encoding to 
+ * leverage the objectifying power of the qs module. Though the performance hit for doing this is minimal, 
+ * I would like to mimick the necessary functionality of qs internally to avoid creating this string.
  */
  
 /**
@@ -54,12 +54,12 @@ ffObj.prototype.stringify = function *(fieldname, value) {
     , i = objKeys.length;
   while (i--) {
     if (typeof value[objKeys[i]] === 'object') yield this.stringify(fieldname + '[' + objKeys[i] + ']', value[objKeys[i]]);
-    else if (typeof value[objKeys[i]] === 'string' || typeof value[objKeys[i]] === 'number' || typeof value[objKeys[i]] === 'boolean') this._objStr = (this._objStr ? this._objStr + '&' : '') + fieldname + '[' + objKeys[i] + ']=' + value[objKeys[i]];
+    else if (typeof value[objKeys[i]] === 'string' || typeof value[objKeys[i]] === 'number' || typeof value[objKeys[i]] === 'boolean') this._objStr = ( this._objStr ? this._objStr + '&' : '' ) + fieldname + '[' + objKeys[i] + ']=' + value[objKeys[i]];
   }
 }
 
 /**
- * Create a form-field-objectify Object
+ * Create a form-field-objectify object
  */
 exports.create = function () {
   return new ffObj();
