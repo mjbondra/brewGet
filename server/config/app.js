@@ -52,6 +52,11 @@ module.exports = function (app, config) {
         parts: 20     
       }
     },
+    types: [
+      'image/png',
+      'image/jpeg',
+      'image/gif'
+    ],
     uploadDir: config.path.tmp
   }));
 
