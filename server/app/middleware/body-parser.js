@@ -92,7 +92,6 @@ module.exports = function (opts) {
 
       this.request.body = this.req.body = yield body.getFields();
       this.request.files = this.req.files = yield files.getFields();
-      console.log(this.request.files);
       yield next;
       
       // remove temporary files
