@@ -43,7 +43,17 @@ module.exports = function (app, config) {
   app.use(user());
   
   // body parser 
-  app.use(bodyParser({ uploadDir: config.path.tmp }));
+  app.use(bodyParser({
+    busboy: {
+      limits: {
+        fields: 20,
+        files: 10,
+        fileSize: 2097152, // 2 MB
+        parts: 20     
+      }
+    },
+    uploadDir: config.path.tmp
+  }));
 
   // routes 
   app.use(router(app));

@@ -11,6 +11,7 @@ var coBody = require('co-body')
 
 module.exports = function (opts) {
   opts = opts || {};
+  opts.busboy = opts.busboy || {};
   opts.uploadDir = opts.uploadDir || '/tmp'; 
   return function *(next) {
 
@@ -24,14 +25,19 @@ module.exports = function (opts) {
 
       var body = ffObj.create()
         , files = ffObj.create()
-        , parts = coBusboy(this)
+        , parts = coBusboy(this, opts.busboy)
         , uploadPaths = [];
 
-      var part;
       while (part = yield parts) {
         if (part.length) yield body.addField(part[0], part[1]);
         else {
           var path = opts.uploadDir + '/' + uid(15);
+
+          // pipe and pipe events
+          part.on('limit', function () {
+            var re = new RegExp(this.fieldname.replace('[', '\\[').replace(']', '\\]') + '.*?(&|$)', 'g');
+            files._fieldStr = files._fieldStr.replace(re, '').replace(/&$/, '');
+          });
           part.on('end', function () {
             if (this.fieldname && this._readableState && this._readableState.pipes) {
               var bytesWritten = ( this._readableState.pipes.bytesWritten ? this._readableState.pipes.bytesWritten : 0 ) + ( this._readableState.pipes._writableState && this._readableState.pipes._writableState.length ? this._readableState.pipes._writableState.length : 0 );
@@ -39,6 +45,7 @@ module.exports = function (opts) {
             }
           });
           part.pipe(fs.createWriteStream(path));
+
           uploadPaths.push(path);
           yield files.addField(part.fieldname, {
             encoding: part.encoding || part.transferEncoding,
@@ -50,6 +57,7 @@ module.exports = function (opts) {
       }
       this.request.body = yield body.getFields();
       this.request.files = yield files.getFields();
+      console.log(this.request.files);
       yield next;
       
       // remove temporary files
@@ -57,7 +65,7 @@ module.exports = function (opts) {
       while (i--) {
         yield coFs.unlink(uploadPaths[i]);
       }
-
+      
     // nothing to process
     } else yield next;
   }
