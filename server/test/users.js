@@ -206,10 +206,10 @@ describe('Users & Authentication', function () {
           .expect('Content-Type', /json/)
           .expect(200, done);
       });
-      it('should remove user from session', function (done) {
+      it('should remove session document', function (done) {
         var ObjectID = require('mongoose/node_modules/mongodb').ObjectID;
         mongoose.connection.db.collection('sessions').findOne({ _id: sessionId }, function (err, session) {
-          should.equal(session.blob, '{}');
+          should.equal(session, null);
           done();
         });
       });
@@ -258,6 +258,7 @@ describe('Users & Authentication', function () {
       it('should serialize user into session', function (done) {
         mongoose.connection.db.collection('sessions').findOne({ blob: { $regex: userId } }, function (err, session) {
           should.notEqual(session, null);
+          sessionId = session._id;
           done();
         });
       });
