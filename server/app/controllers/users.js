@@ -52,7 +52,7 @@ exports.create = function *(next) {
     this.user = user;
     this.session.user = user.id; // Serialize user to session
     this.status = 201; // 201 Created
-    this.body = yield resCreated('user', user, user.username);;
+    this.body = yield resCreated('user', user, user.username);
   } catch (err) {
     this.err = err;
     yield next; // 500 Internal Server Error / 422 Unprocessable Entity / 409 Conflict
