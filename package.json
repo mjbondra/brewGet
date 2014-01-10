@@ -36,7 +36,7 @@
     "koa-session-mongoose": "0.x",
     "koa-session-store": "0.x",
     "koa-static-cache": "1.x",
-    "mongoose": "3.x",
+    "mongoose": "3.8.3",
     "q": "1.x",
     "qs": "0.x",
     "sanitizer": "0.x",
