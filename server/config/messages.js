@@ -34,7 +34,7 @@ module.exports = {
     isNull: 'Body field cannot be empty' 
   },
   comments: {
-    isNull: 'Please include comments'
+    isNull: 'Comments cannot be empty'
   },
   birthday: {
     isNull: 'Birthday cannot be empty',
@@ -43,7 +43,7 @@ module.exports = {
   },
   email: {
     notEmail: 'Email address must be valid',
-    isNull: 'Please include your email address'
+    isNull: 'Email address cannot be empty'
   },
   jobTitle: {
     isNull: 'Job title cannot be empty'
@@ -55,7 +55,7 @@ module.exports = {
     last: {
       isNull: 'Last name cannot be empty'
     }, 
-    isNull: 'Please include your name'
+    isNull: 'Name cannot be empty'
   },
   password: {
     isNull: 'Password cannot be empty'
