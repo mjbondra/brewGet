@@ -126,6 +126,7 @@ input[type=email],
 input[type=password], 
 input[type=submit], 
 input[type=reset],
+select,
 button {
   @include appearance(none);
   @include border-radius(0);
@@ -141,7 +142,8 @@ input[type=tel],
 input[type=number],
 input[type=color],
 input[type=email], 
-input[type=password] {
+input[type=password],
+select {
   @include single-transition(background-color, 500ms, ease-out);
   border: none;
   background-color: $ltr-brown;
@@ -157,6 +159,19 @@ input[type=password] {
       color: $brown;
     }
   }
+}
+
+select {
+  // set height to auto and use padding to assure vertical text-alignment across browsers
+  height: auto;
+  padding: {
+    top: 10px;
+    bottom: 9px;
+  }
+  // firefox hack to remove select arrow
+  -moz-appearance: none;
+  text-indent: 0.01px;
+  text-overflow: '';
 }
 
 input[type=submit], 
@@ -187,6 +202,16 @@ main {
 a {
   @include tap-highlight-color($brown, 0.5);
 }
+
+/*------------------------------------*\
+    UTILITIES
+\*------------------------------------*/
+
+.ng-animate { 
+  border-collapse: collapse; 
+}
+
+/*--Angular Directives--*/
 
 validation-messages, global-messages {
   position: fixed;
@@ -223,8 +248,10 @@ validation-messages, global-messages {
         background-color: $red;
       }
       &:first-child {
-        padding-top: 10px;
-        padding-right: 45px;
+        padding: {
+          top: 10px;
+          right: 45px;
+        }
       }
       &:last-child {
         padding-bottom: 10px;
@@ -233,12 +260,33 @@ validation-messages, global-messages {
   }
 }
 
-/*------------------------------------*\
-    UTILITIES
-\*------------------------------------*/
-
-.ng-animate { 
-  border-collapse: collapse; 
+input-date {
+  label {
+    margin: {
+      bottom: 0;
+    }
+  }
+  select {
+    float: left;
+    margin: {
+      bottom: 15px;
+    }
+    border: {
+      right: 2px solid white;
+    }
+    &.month {
+      width: 40%;
+    }
+    &.day {
+      width: 25%;
+    }
+    &.year {
+      border: {
+        right: none;
+      }
+      width: 35%;
+    }
+  }
 }
 
 /*------------------------------------*\
