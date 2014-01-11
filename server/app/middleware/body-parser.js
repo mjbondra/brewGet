@@ -15,13 +15,14 @@ var coBody = require('co-body')
  * - uses 'co-body' for json and url-encoded data
  * - uses 'co-busboy' for multi-part data
  *
- * ctx.request.body - contains parsed request body
- * ctx.request.files - contains parsed request files
+ * @this    {object}  ctx
+ * @mixin   {object}  ctx.request.body        - contains parsed request body
+ * @mixin   {object}  ctx.request.files       - contains parsed request files
  *
- * @param opts {object} - object containing options for middleware
- * @param opts.busboy {object} - busboy options (see busboy documentation for more details)
- * @param opts.types {array} - array of acceptable mime-types {string} for file uploads (defaults to allowing all types)
- * @param opts.uploadDir {string} - directory where files will be uploaded (note: they will be deleted just prior to response)
+ * @param   {object}  [opts]                  - object containing options for middleware
+ * @param   {object}  [opts.busboy]           - busboy options (see busboy documentation for more details)
+ * @param   {array}   [opts.types]            - array of acceptable mime-types {string} for file uploads (defaults to allowing all types)
+ * @param   {string}  [opts.uploadDir=/tmp]   - directory where files will be uploaded (note: they will be deleted just prior to response)
  */
 module.exports = function (opts) {
   opts = opts || {};
