@@ -3,7 +3,7 @@
  * Module dependencies
  */
 var coBody = require('co-body')
-  , coBusboy = require('../../assets/lib/co-busboy') // temporarily hijacking this module to add event listeners that rely on an unpublished version of busboy
+  , coBusboy = require('co-busboy')
   , coFs = require('co-fs')
   , ffObj = require('../../assets/lib/form-field-objectify')
   , fs = require('fs')
