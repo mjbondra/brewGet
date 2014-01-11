@@ -14,23 +14,32 @@ var check = require('../../assets/lib/mongoose-validator').check
  * User schema
  */
 var UserSchema = new Schema({
-  username: { 
-    type: String, 
-    validate: [ check.notNull, msg.username.isNull ], 
-    index: { unique: true }
+  birthday: {
+    type: Date,
+    validate: [
+      { validator: check.notNull, msg: msg.birthday.isNull },
+      { validator: check.isDate, msg: msg.birthday.notDate },
+      { validator: check.is21, msg: msg.birthday.not21 }
+    ]
   },
   email: { 
     type: String, 
     validate: [
-      { validator: check.isEmail, msg: msg.email.notEmail },
-      { validator: check.notNull, msg: msg.email.isNull }
+      { validator: check.notNull, msg: msg.email.isNull },
+      { validator: check.isEmail, msg: msg.email.notEmail }
     ]
   },
   hash: String,
-  salt: String,
+  location: String,
   role: { 
     type: Number, 
     default: 1 
+  },
+  salt: String,
+  username: { 
+    type: String, 
+    validate: [ check.notNull, msg.username.isNull ], 
+    index: { unique: true }
   }
 });
 
@@ -48,14 +57,6 @@ UserSchema.virtual('password')
     return this._password; 
   });
 
-UserSchema.virtual('_meta')
-  .set(function (metaData) {
-    this.__meta = metaData;
-  })
-  .get(function () { 
-    return this.__meta; 
-  });
-
 /**
  * Pre-validation hook; Sanitizers
  */
@@ -63,8 +64,9 @@ UserSchema.pre('validate', function (next) {
   // ensure that password virtual exists on new User objects for validation purposes
   if (!this.password && this.isNew) this.password = null;
 
-  this.username = sanitize(this.username).escape();
   this.email = sanitize(this.email).escape();
+  this.location = sanitize(this.location).escape();
+  this.username = sanitize(this.username).escape();
   next();
 });
 

@@ -2,7 +2,9 @@
 <validation-messages></validation-messages>
 <form novalidate>
   <label>Username<input type="text" ng-model="user.username"></label>
-  <label>Email<input type="email" ng-model="user.email"></label>
   <label>Password<input type="password" ng-model="user.password"></label>
+  <label>Email<input type="email" ng-model="user.email"></label>
+  <label>Location<input type="text" ng-model="user.location"></label>
+  <input-date label="Birthday" form-object="user" date-container="birthday"></input-date>
   <button ng-click="user.$save()">Sign up</button>
 </form>

@@ -32,7 +32,7 @@ module.exports = function (opts) {
 
     // json and url-encoded data
     if (this.is('application/x-www-form-urlencoded', 'application/json')) {
-      this.request.body = yield coBody(this);
+      this.request.body = this.req.body = yield coBody(this);
       yield next;
 
     // multi-part form data

@@ -1,0 +1,14 @@
+<label>{{ label }}</label>
+<select ng-model="month">
+  <option value selected>Month</option>
+  <option ng-repeat="m in months" value="{{ m.value | twoCharString }}">{{ m.name }}</option>
+</select>
+<select ng-model="day">
+  <option value selected>Day</option>
+  <option ng-repeat="d in days() | dayArray" value="{{ d | twoCharString }}">{{ d | twoCharString }}</option>
+</select>
+<select ng-model="year">
+  <option value selected>Year</option>
+  <option ng-repeat="y in years" value="{{ y }}">{{ y }}</option>
+</select>
+<input type="hidden" ng-model="date" value="{{ getDate() }}">

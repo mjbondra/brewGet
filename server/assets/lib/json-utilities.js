@@ -23,7 +23,7 @@ var msg = require('../../config/messages')
  */
 censor = function (obj) {
   if (typeof obj !== 'object') return obj;
-  if (_.isArray(obj)) { // is Object Array
+  if (Array.isArray(obj)) { // is Object Array
     var _obj = [];
     obj.forEach(function (o, key) {
       _obj.push(censor(o));
@@ -72,7 +72,7 @@ msgJSON = function (message, type, related, value) {
  */
 resJSON = function (msgJSONArray) {
   var _resJSON = {};
-  if (!_.isArray(msgJSONArray)) msgJSONArray = [ msgJSONArray ];
+  if (!Array.isArray(msgJSONArray)) msgJSONArray = [ msgJSONArray ];
   _resJSON.messages = msgJSONArray;
   return _resJSON;
 }

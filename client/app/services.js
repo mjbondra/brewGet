@@ -53,7 +53,7 @@ app.config(function ($provide, $httpProvider) {
 /**
  * <head> Service
  */
-app.factory('Head', function() {
+app.factory('Head', function () {
   var defaultTitle = 'brewGet';
   var title = defaultTitle;
   var description = 'brewGet is a web application designed to support the beer trading community';
@@ -85,7 +85,7 @@ app.factory('Nav', ['$http', function ($http) {
 /**
  * Message Service
  */
-app.factory('MessageHandler', function() {
+app.factory('MessageHandler', function () {
   return {
     process: function (alerts) {
       var cssClasses = [];
@@ -99,6 +99,29 @@ app.factory('MessageHandler', function() {
     }
   };
 });
+
+/**
+ * Date Service
+ */
+app.factory('DateHandler', ['_', function (_) {
+  return {
+    months: [
+      { name: 'January', value: 1, dayCount: 31 },
+      { name: 'February', value: 2, dayCount: 28 },
+      { name: 'March', value: 3, dayCount: 31 },
+      { name: 'April', value: 4, dayCount: 30 },
+      { name: 'May', value: 5, dayCount: 31 },
+      { name: 'June', value: 6, dayCount: 30 },
+      { name: 'July', value: 7, dayCount: 31 },
+      { name: 'August', value: 8, dayCount: 31 },
+      { name: 'September', value: 9, dayCount: 30 },
+      { name: 'October', value: 10, dayCount: 31 },
+      { name: 'November', value: 11, dayCount: 30 },
+      { name: 'December', value: 12, dayCount: 31 }
+    ],
+    years: _.range(1900, new Date().getFullYear() + 1).reverse()
+  };
+}]);
 
 /*------------------------------------*\
     RESOURCE SERVICES
@@ -161,7 +184,7 @@ app.factory('Auth', ['$cookies', '$q', function ($cookies, $q) {
     setTimeout(function () {
       deferred.resolve(angular.fromJson($cookies.auth));
     }, opts.time);
-    return deferred.promise
+    return deferred.promise;
   }
 }]);
 

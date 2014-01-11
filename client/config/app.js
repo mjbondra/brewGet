@@ -24,6 +24,7 @@ require.config({
     angularTouch: ['angular'],
     controllers: ['angular'],
     directives: ['angular'],
+    filters: ['angular'],
     routes: ['angular'],
     services: ['angular']
   }
@@ -42,9 +43,10 @@ require([
   'angularTouch',
   'controllers',
   'directives',
+  'filters',
   'routes',
   'services'
-], function (underscore, angular, angularAnimate, angularCookies, angularRoute, angularResource, angularTouch, controllers, directives, routes, services) {
+], function (underscore, angular, angularAnimate, angularCookies, angularRoute, angularResource, angularTouch, controllers, directives, filters, routes, services) {
   'use strict';
 
   /** 
@@ -58,6 +60,7 @@ require([
     'brewGet.controllers',
     'brewGet.services',
     'brewGet.directives',
+    'brewGet.filters',
     'brewGet.routes'
   ]);
 

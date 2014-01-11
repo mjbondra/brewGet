@@ -128,11 +128,11 @@ exports.check = {
     if (!value) return true;
     return validate.check(value).isDate();
   },
-  isAfter: function (value) {
+  isAfter: function (value, date) {
     if (!value) return true;
     return validate.check(value).isAfter(date);
   },
-  isBefore: function (value) {
+  isBefore: function (value, date) {
     if (!value) return true;
     return validate.check(value).isBefore(date);
   },
@@ -155,5 +155,15 @@ exports.check = {
   isCreditCard: function (value) {
     if (!value) return true;
     return validate.check(value).isCreditCard();
+  },
+
+  /**
+   * brewGet specific validations
+   */
+  is21: function (value) {
+    if (!value) return true;
+    var d = new Date();
+    d.setFullYear(d.getFullYear() - 21);
+    return validate.check(value).isBefore(d);
   }
 }
