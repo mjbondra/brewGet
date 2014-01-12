@@ -98,7 +98,6 @@ app.directive('placesLocation', ['PlacesAPI', function (PlacesAPI) {
       PlacesAPI.setElementByID(attrs.id, attrs.locationTypes);
       scope.$on('place', function (event, place) {
         scope.ngModel = element.val();
-        console.log(place);
         scope.$apply('ngModel');
       });
     }
