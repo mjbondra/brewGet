@@ -23,7 +23,8 @@ var msg = require('../../config/messages')
  */
 censor = function (obj) {
   if (typeof obj !== 'object') return obj;
-  if (Array.isArray(obj)) { // is Object Array
+  else if (obj instanceof Date) return obj;
+  else if (Array.isArray(obj)) { // is Object Array
     var _obj = [];
     obj.forEach(function (o, key) {
       _obj.push(censor(o));

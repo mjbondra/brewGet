@@ -6,6 +6,10 @@
 
 var app = angular.module('brewGet.directives', []);
 
+/*------------------------------------*\
+    ELEMENTAL DIRECTIVES
+\*------------------------------------*/
+
 /**
  * <global-messages> Directive
  */
@@ -72,4 +76,31 @@ app.directive('inputDate', ['DateHandler', '_', function (DateHandler, _) {
     },
     templateUrl: '/app/views/directives/input-date.html'
   };
+}]);
+
+/*------------------------------------*\
+    ATTRIBUTIONAL DIRECTIVES
+\*------------------------------------*/
+
+/**
+ * places-location Directive
+ *
+ * @param {string} attrs.id - id attribute of input element with places-location attribute
+ * @param {string} [attrs.locationTypes=geocode] - types of locations for which the Places API should query
+ */
+app.directive('placesLocation', ['PlacesAPI', function (PlacesAPI) {
+  return {
+    scope: {
+      ngModel: '='
+    },
+    link: function (scope, element, attrs) {
+      attrs.locationTypes = attrs.locationTypes || 'geocode';
+      PlacesAPI.setElementByID(attrs.id, attrs.locationTypes);
+      scope.$on('place', function (event, place) {
+        scope.ngModel = element.val();
+        console.log(place);
+        scope.$apply('ngModel');
+      });
+    }
+  }
 }]);

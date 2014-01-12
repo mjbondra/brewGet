@@ -1,5 +1,6 @@
 require.config({
   paths: {
+    async: '../assets/lib/requirejs-plugins/src/async',
     angular: '../assets/lib/angular/angular.min',
     angularAnimate: '../assets/lib/angular-animate/angular-animate.min',
     angularCookies: '../assets/lib/angular-cookies/angular-cookies.min',
@@ -34,6 +35,7 @@ require.config({
 window.name = 'NG_DEFER_BOOTSTRAP!';
 
 require([
+  'async!https://maps.googleapis.com/maps/api/js?libraries=places&sensor=false',
   'underscore',
   'angular',
   'angularAnimate',
@@ -46,7 +48,7 @@ require([
   'filters',
   'routes',
   'services'
-], function (underscore, angular, angularAnimate, angularCookies, angularRoute, angularResource, angularTouch, controllers, directives, filters, routes, services) {
+], function (places, underscore, angular, angularAnimate, angularCookies, angularRoute, angularResource, angularTouch, controllers, directives, filters, routes, services) {
   'use strict';
 
   /** 

@@ -17,6 +17,27 @@ app.factory('_', function () {
   return window._;
 });
 
+/**
+ * Google Places API Service
+ */
+app.factory('PlacesAPI', ['$rootScope', function ($rootScope) {
+  var maps = window.google.maps
+    , places = maps.places
+    , autocomplete
+    , element;
+  return {
+    setElementByID: function (elementID, types) {
+      element = document.getElementById(elementID);
+      autocomplete = new places.Autocomplete(element, { types: [ types ] });
+      maps.event.addListener(autocomplete, 'place_changed', function () {
+        var place = autocomplete.getPlace();
+        if (!place.geometry) return;
+        $rootScope.$broadcast('place', place);
+      });
+    }
+  };
+}]);
+
 /*------------------------------------*\
     REQUEST/RESPONSE SERVICES
 \*------------------------------------*/
@@ -170,6 +191,12 @@ app.factory('User', ['$rootScope', '$resource', '$location', function ($rootScop
 
 /**
  * Auth-checking Service
+ * 
+ * @param   {object}  [opts]
+ * @param   {boolean} [opts.delay=false]
+ * @param   {number}  [opts.time=300]
+ *
+ * @returns {object|promise}
  */
 app.factory('Auth', ['$cookies', '$q', function ($cookies, $q) {
 
