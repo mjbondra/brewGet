@@ -19,7 +19,7 @@ describe('Users & Authentication', function () {
       it('should return JSON and a 422', function (done) {
         request
           .post('/api/users')
-          .send({ username: 'foobar', email: 'foobar', password: 'foobar' })
+          .send({ username: 'foobar', email: 'foobar', password: 'foobar', birthday: new Date(2000, 0, 1) })
           .expect('Content-Type', /json/)
           .expect(422, done);
       });
@@ -34,7 +34,7 @@ describe('Users & Authentication', function () {
       it('should return JSON and a 201', function (done) {
         agent
           .post('/api/users')
-          .send({ username: 'foobar', email: 'foo@bar.com', password: 'foobar' })
+          .send({ username: 'foobar', email: 'foo@bar.com', password: 'foobar', birthday: new Date(1982, 10, 11) })
           .expect('Content-Type', /json/)
           .expect(201, done);
       });
@@ -57,7 +57,7 @@ describe('Users & Authentication', function () {
       it('should return JSON and a 409', function (done) {
         request
           .post('/api/users')
-          .send({ username: 'foobar', email: 'foo@bar.com', password: 'foobar' })
+          .send({ username: 'foobar', email: 'foo@bar.com', password: 'foobar', birthday: new Date(1982, 10, 11) })
           .expect('Content-Type', /json/)
           .expect(409, done);
       });

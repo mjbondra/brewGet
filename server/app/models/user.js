@@ -67,10 +67,11 @@ UserSchema.virtual('password')
  * Pre-validation hook; Sanitizers
  */
 UserSchema.pre('validate', function (next) {
-  // ensure that password virtual exists on new User objects for validation purposes
+  // ensure that certain variables exists on new User objects for validation purposes
   if (!this.password && this.isNew) this.password = null;
+  if (!this.birthday && this.isNew) this.birthday = null;
 
-  // parse location strings -- they may be strings, or stringified Google Places API objects
+  // parse location strings -- they may be plain strings, or stringified Google Places API objects
   this.parseLocation(this.location);
 
   this.email = sanitize(this.email).escape();
