@@ -11,15 +11,14 @@
   "scripts": {
     "start": "NODE_ENV=development nodemon --harmony server",
     "test": "NODE_ENV=test PORT=3001 ./node_modules/.bin/mocha --harmony --reporter spec server/test/*.js",
-    "install": "grunt"
+    "install": "bower install && gulp"
   },
   "devDependencies": {
     "bower": "1.x",
-    "graceful-fs": "2.x",
-    "grunt": "0.x",
-    "grunt-bower-task": "0.x",
-    "grunt-cli": "0.x",
-    "grunt-contrib-uglify": "0.x",
+    "gulp": "3.x",
+    "gulp-concat": "2.x",
+    "gulp-rename": "0.x",
+    "gulp-uglify": "0.x",
     "mocha": "1.x",
     "should": "2.x",
     "supertest": "0.x"
