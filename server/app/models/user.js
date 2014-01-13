@@ -31,6 +31,12 @@ var UserSchema = new Schema({
   },
   hash: String,
   location: String,
+  _location: {
+    city: String,
+    state: String,
+    latitude: Number,
+    longitude: Number
+  },
   role: { 
     type: Number, 
     default: 1 
@@ -64,8 +70,10 @@ UserSchema.pre('validate', function (next) {
   // ensure that password virtual exists on new User objects for validation purposes
   if (!this.password && this.isNew) this.password = null;
 
+  // parse location strings -- they may be strings, or stringified Google Places API objects
+  this.parseLocation(this.location);
+
   this.email = sanitize(this.email).escape();
-  this.location = sanitize(this.location).escape();
   this.username = sanitize(this.username).escape();
   next();
 });
@@ -94,6 +102,29 @@ UserSchema.methods = {
   },
   makeSalt: function () {
     return uid(15);
+  },
+  parseLocation: function (location) {
+    try {
+      location = JSON.parse(location);
+      this.location = sanitize(location.formatted_address).escape();
+
+      // latitude & longitude
+      if (location.geometry && location.geometry.location) {
+        if (typeof location.geometry.location.b === 'number') this._location.latitude = location.geometry.location.b;
+        if (typeof location.geometry.location.d === 'number') this._location.longitude = location.geometry.location.d;
+      }
+
+      // city & state
+      var i = location.address_components.length;
+      while (i--) {
+        if (location.address_components[i].types[0] === 'locality') this._location.city = sanitize(location.address_components[i].long_name).escape();
+        else if (location.address_components[i].types[0] === 'administrative_area_level_1') this._location.state = sanitize(location.address_components[i].short_name).escape();
+        else if (location.address_components[i].types[0] === 'country' && location.address_components[i].long_name !== 'United States') this.invalidate('location', msg.location.notUS);
+      }
+    } catch (err) {
+      if (typeof this.location === 'string') this.location = sanitize(this.location).escape();
+      else this.location = '';
+    }
   }
 };
 

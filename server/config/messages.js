@@ -48,6 +48,9 @@ module.exports = {
   jobTitle: {
     isNull: 'Job title cannot be empty'
   },
+  location: {
+    notUS: 'Your location must be within the United States'
+  },
   name: {
     first: {
       isNull: 'First name cannot be empty'

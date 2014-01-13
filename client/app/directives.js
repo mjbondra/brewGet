@@ -83,21 +83,24 @@ app.directive('inputDate', ['DateHandler', '_', function (DateHandler, _) {
 \*------------------------------------*/
 
 /**
- * places-location Directive
+ * Places API Directive
+ *
+ * ex. <input type="text" id="location" places types="(cities)">
  *
  * @param {string} attrs.id - id attribute of input element with places-location attribute
- * @param {string} [attrs.locationTypes=geocode] - types of locations for which the Places API should query
+ * @param {string} [attrs.types=geocode] - types of locations for which the Places API should query
  */
-app.directive('placesLocation', ['PlacesAPI', function (PlacesAPI) {
+app.directive('places', ['PlacesAPI', function (PlacesAPI) {
   return {
     scope: {
       ngModel: '='
     },
     link: function (scope, element, attrs) {
-      attrs.locationTypes = attrs.locationTypes || 'geocode';
-      PlacesAPI.setElementByID(attrs.id, attrs.locationTypes);
+      attrs.types = attrs.types || 'geocode';
+      PlacesAPI.setElementByID(attrs.id, attrs.types);
       scope.$on('place', function (event, place) {
-        scope.ngModel = element.val();
+        place.formatted_address = element.val();
+        scope.ngModel = angular.toJson(place);
         scope.$apply('ngModel');
       });
     }
