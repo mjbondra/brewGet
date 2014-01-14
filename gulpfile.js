@@ -20,5 +20,5 @@ gulp.task('config', function () {
 });
 
 gulp.task('default', function () {
-  gulp.run('requirejs');
+  gulp.run('requirejs', 'config');
 });
