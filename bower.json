@@ -14,7 +14,6 @@
     "requirejs": "2.x",
     "requirejs-plugins": "1.x",
     "socket.io": "0.x",
-    "susy": "1.x",
-    "underscore": "1.x"
+    "susy": "1.x"
   }
 }

@@ -8,6 +8,10 @@
     <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=0, width=device-width">
     <meta name="description" ng-attr-content="{{ Head.description() }}">
     <link href="assets/css/main.css" rel="stylesheet">
+    <script type="text/javascript" src="//use.typekit.net/uby8kic.js"></script>
+    <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+    <script type="text/javascript" src="//maps.googleapis.com/maps/api/js?libraries=places&sensor=false"></script>
+    <script type="text/javascript" src="assets/js/app.js"></script>
     <title ng-bind="Head.title()">brewGet</title>
   </head>
   <body>
@@ -19,6 +23,5 @@
     <main ng-view></main>
     <aside></aside>
     <footer></footer>
-    <script data-main="config/app" src="assets/lib/requirejs/require.min.js"></script>
   </body>
 </html>

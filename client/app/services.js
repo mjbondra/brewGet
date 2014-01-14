@@ -6,6 +6,11 @@
 
 var app = angular.module('brewGet.services', ['ngResource']);
 
+/**
+ * Module dependencies
+ */
+var _ = require('underscore');
+
 /*------------------------------------*\
     EXTERNAL LIBRARY SERVICES
 \*------------------------------------*/
@@ -14,7 +19,7 @@ var app = angular.module('brewGet.services', ['ngResource']);
  * Underscore Service
  */
 app.factory('_', function () {
-  return window._;
+  return _;
 });
 
 /**
@@ -45,8 +50,8 @@ app.factory('PlacesAPI', ['$rootScope', function ($rootScope) {
 /** 
  * Response Service
  */
-app.config(function ($provide, $httpProvider) { 
-  $provide.factory('brewGetInterceptor', function ($rootScope, $q) {
+app.config(['$provide', '$httpProvider', function ($provide, $httpProvider) { 
+  $provide.factory('brewGetInterceptor', ['$rootScope', '$q', function ($rootScope, $q) {
     return {
       response: function (res) {
         /** response for content added */
@@ -63,9 +68,9 @@ app.config(function ($provide, $httpProvider) {
         return $q.reject(res);
       }
     };
-  });
+  }]);
   $httpProvider.interceptors.push('brewGetInterceptor');
-});
+}]);
 
 /*------------------------------------*\
     ELEMENTAL SERVICES

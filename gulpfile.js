@@ -1,14 +1,15 @@
 var fs = require('fs')
   , gulp = require('gulp')
-  , concat = require('gulp-concat')
+  , browserify = require('gulp-browserify')
+  , compass = require('gulp-compass')
   , rename = require('gulp-rename')
   , uglify = require('gulp-uglify');
 
-gulp.task('requirejs', function () {
-  gulp.src('./client/assets/lib/requirejs/require.js')
-    .pipe(rename('require.min.js'))
+gulp.task('browserify', function () {
+  gulp.src('./client/config/app.js')
+    .pipe(browserify())
     .pipe(uglify())
-    .pipe(gulp.dest('./client/assets/lib/requirejs/'));
+    .pipe(gulp.dest('./client/assets/js/'))
 });
 
 gulp.task('config', function () {
@@ -20,5 +21,12 @@ gulp.task('config', function () {
 });
 
 gulp.task('default', function () {
-  gulp.run('requirejs', 'config');
+  gulp.run('config', 'browserify');
+});
+
+gulp.task('watch', function () {
+  gulp.run('browserify');
+  gulp.watch(['./client/config/*.js', './client/app/*.js'], function () {
+    gulp.run('browserify');
+  });
 });
