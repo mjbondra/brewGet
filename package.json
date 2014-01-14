@@ -17,6 +17,7 @@
     "bower": "1.x",
     "gulp": "3.x",
     "gulp-concat": "2.x",
+    "gulp-header": "1.x",
     "gulp-rename": "0.x",
     "gulp-uglify": "0.x",
     "mocha": "1.x",
@@ -24,8 +25,7 @@
     "supertest": "0.x"
   },
   "dependencies": {
-    "busboy": "~0.0.14",
-    "chan": "~0.2.0",
+    "busboy": "0.x",
     "co-body": "0.x",
     "co-busboy": "0.x",
     "co-fs": "1.x",
