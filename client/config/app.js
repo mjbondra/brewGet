@@ -1,3 +1,5 @@
+'use strict';
+
 /**
  *                     ___           ___           ___           ___           ___                 
  *      _____         /  /\         /  /\         /__/\         /  /\         /  /\          ___   
@@ -14,17 +16,15 @@
  */
 
 // AngularJS
-require('./angular')
+require('./angular');
 
 // App Dependencies
-require('../app')
+require('../app');
 
 // Router
-require('./routes')
+require('./routes');
 
-/** 
- * AngularJS/App modules
- */
+// AngularJS/App modules
 var app = angular.module('brewGet', [
   'ngAnimate',
   'ngCookies',

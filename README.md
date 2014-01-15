@@ -52,21 +52,23 @@ The MIT License (MIT)
 
 * [AngularJS](http://angularjs.org/)
 * [Bower](http://bower.io/)
+* [Browserify](http://browserify.org/)
+* [Busboy](https://github.com/mscdex/busboy) / [Co-Busboy](https://github.com/cojs/busboy)
 * [Caja HTML Sanitizer](https://github.com/theSmaw/Caja-HTML-Sanitizer)
 * [Compass](http://compass-style.org/)
 * [Font Awesome](http://fontawesome.io/)
-* [Grunt](http://gruntjs.com/)
+* [Gulp](http://gulpjs.com/)
 * [HTML5 Boilerplate](http://html5boilerplate.com/)
 * [Koa](http://koajs.com/)
 * [Mongoose](http://mongoosejs.com/)
 * [Nodemon](http://remy.github.io/nodemon/)
 * [Normalize.css](http://necolas.github.io/normalize.css/)
 * [Q](http://documentup.com/kriskowal/q/)
-* [RequireJS](http://requirejs.org/)
 * [Socket.IO](http://socket.io/)
 * [Sass](http://sass-lang.com/)
 * [Susy](http://susy.oddbird.net/)
 * [UglifyJS](http://lisperator.net/uglifyjs/)
+* [Uid2](https://github.com/Coreh/uid2)
 * [Underscore](http://underscorejs.org/)
 * [Node-Validator](https://github.com/chriso/node-validator)
 
@@ -83,6 +85,7 @@ brewGet
 |	|	|--controllers.js (AngularJS controllers)
 |	|	|--directives.js (AngularJS directives)
 |	|	|--filters.js (AngularJS filters)
+|	|	|--index.js (AngularJS app load file)
 |	|	+--services.js (AngularJS services)
 |	|
 |	|--assets
@@ -91,6 +94,9 @@ brewGet
 |	|	|
 |	|	|--fonts
 |	|	|	+--[web fonts]
+|	|	|
+|	|	|--js
+|	|	|	+--app.js (Browserified and Uglified app file)
 |	|	|
 |	|	|--img
 |	|	|	+--[images]
@@ -104,7 +110,8 @@ brewGet
 |	|	+--config.rb (Compass configuration)
 |	|
 |	|--config
-|	|	|--app.js (RequireJS dependency bootstrap and AngularJS modules configuration)
+|	|	|--angular.js (AngularJS core load file)
+|	|	|--app.js (AngularJS app configuration file)
 |	|	+--routes.js (AngularJS routes)
 |	|
 |	+--index.html (AngularJS html template)
@@ -146,11 +153,14 @@ brewGet
 |  
 |--.bowerrc
 |--.gitignore
+|--.travis.yml
 |--bower.json
 |--Gemfile
 |--Gemfile.lock
-|--gruntfile.js
-+--package.json
+|--gulpfile.js
+|--LICENSE
+|--package.json
++--README.md
 ```
 
 

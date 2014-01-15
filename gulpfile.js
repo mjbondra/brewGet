@@ -1,7 +1,6 @@
 var fs = require('fs')
   , gulp = require('gulp')
   , browserify = require('gulp-browserify')
-  , compass = require('gulp-compass')
   , rename = require('gulp-rename')
   , uglify = require('gulp-uglify');
 
@@ -20,13 +19,12 @@ gulp.task('config', function () {
   }
 });
 
-gulp.task('default', function () {
-  gulp.run('config', 'browserify');
-});
-
 gulp.task('watch', function () {
-  gulp.run('browserify');
   gulp.watch(['./client/config/*.js', './client/app/*.js'], function () {
     gulp.run('browserify');
   });
+});
+
+gulp.task('default', function () {
+  gulp.run('config', 'browserify');
 });
