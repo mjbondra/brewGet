@@ -92,9 +92,10 @@ app.controller('HomeCtrl', ['$scope', 'Head', 'MikeData', function ($scope, Head
  * ROUTE /#!/users
  * TEMPLATE /partials/users/index.html
  */
-app.controller('UserIndex', ['$scope', 'Head', 'User', function ($scope, Head, User) {
+app.controller('UserIndex', ['$scope', 'Head', 'User', 'Gravatar', function ($scope, Head, User, Gravatar) {
   Head.title('Users');
   Head.description('An index of users on brewGet.');
+  $scope.Gravatar = Gravatar;
   $scope.users = User.query();
 }]);
 

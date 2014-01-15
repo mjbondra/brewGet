@@ -1,6 +1,7 @@
 <h1>Users</h1>
 <article ng-repeat="user in users">
   <h2>{{ user.username }}</h2>
+  <img ng-src="{{ Gravatar.url(user.email) }}">
   <a ng-href="{{ 'mailto:' + user.email }}">{{ user.email }}</a>
   <p>{{ user.location }}</p>
 </article>

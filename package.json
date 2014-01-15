@@ -29,6 +29,7 @@
     "co-body": "0.x",
     "co-busboy": "0.x",
     "co-fs": "1.x",
+    "gravatar": "1.x",
     "koa": "0.x",
     "koa-compress": "1.x",
     "koa-logger": "1.x",

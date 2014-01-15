@@ -9,7 +9,8 @@ var app = angular.module('brewGet.services', ['ngResource']);
 /**
  * Module dependencies
  */
-var _ = require('underscore');
+var _ = require('underscore')
+  , gravatar = require('gravatar');
 
 /*------------------------------------*\
     EXTERNAL LIBRARY SERVICES
@@ -21,6 +22,19 @@ var _ = require('underscore');
 app.factory('_', function () {
   return _;
 });
+
+/**
+ * Gravatar URL Generating Service
+ */
+app.factory('Gravatar', ['HighDPI', function (HighDPI) {
+  return {
+    url: function (email, options, https) {
+      options = options || {};
+      options.s = options.s || ( HighDPI() ? 200 : 100 );
+      return gravatar.url(email, options, https);
+    }
+  };
+}]);
 
 /**
  * Google Places API Service
@@ -42,6 +56,27 @@ app.factory('PlacesAPI', ['$rootScope', function ($rootScope) {
     }
   };
 }]);
+
+/*------------------------------------*\
+    UTILITY SERVICES
+\*------------------------------------*/
+
+/** 
+ * HighDPI Service - inspired by RetinaJS (http://retinajs.com/)
+ *
+ * @return {boolean} - whether or not a screen is high density
+ */
+app.factory('HighDPI', function () {
+  return function () {
+    var mediaQuery = "(-webkit-min-device-pixel-ratio: 1.3),\
+      (min--moz-device-pixel-ratio: 1.3),\
+      (-o-min-device-pixel-ratio: 13/10),\
+      (min-resolution: 1.3dppx)";
+    if (window.devicePixelRatio > 1) return true;
+    if (window.matchMedia && window.matchMedia(mediaQuery).matches) return true;
+    return false;
+  }
+});
 
 /*------------------------------------*\
     REQUEST/RESPONSE SERVICES
