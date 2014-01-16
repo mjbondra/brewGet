@@ -16,7 +16,6 @@
   "devDependencies": {
     "bower": "1.x",
     "gulp": "3.x",
-    "gulp-compass": "1.x",
     "gulp-browserify": "0.x",
     "gulp-rename": "0.x",
     "gulp-uglify": "0.x",

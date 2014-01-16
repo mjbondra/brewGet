@@ -11,8 +11,6 @@
     "font-awesome": "4.x",
     "html5-boilerplate": "4.x",
     "normalize-css": "2.x",
-    "requirejs": "2.x",
-    "requirejs-plugins": "1.x",
     "socket.io": "0.x",
     "susy": "1.x"
   }
