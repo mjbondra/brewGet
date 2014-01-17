@@ -69,13 +69,13 @@ app.directive('inputDate', ['DateHandler', '_', function (DateHandler, _) {
       }
       scope.getDate = function () {
         if (scope.month && scope.day && scope.year) date = new Date(parseInt(scope.year), parseInt(scope.month), parseInt(scope.day));
-        else if (!scope.month && !scope.day && !scope.year && scope[attrs.formObject || 'form'][attrs.dateContainer || 'date']) {
+        else if (!scope.month && !scope.day && !scope.year && typeof scope[attrs.formObject || 'form'][attrs.dateContainer || 'date'] === 'string') {
           date = new Date(scope[attrs.formObject || 'form'][attrs.dateContainer || 'date']);
           scope.month = date.getMonth();
           scope.day = date.getDate();
           scope.year = date.getFullYear();
         }
-        else if (typeof scope[attrs.formObject || 'form'][attrs.dateContainer || 'date'] !== 'undefined') date = null;
+        else date = null;
         scope[attrs.formObject || 'form'][attrs.dateContainer || 'date'] = date;
         return date;
       }
