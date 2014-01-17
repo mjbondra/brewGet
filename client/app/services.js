@@ -30,8 +30,8 @@ app.factory('Gravatar', ['HighDPI', function (HighDPI) {
   return {
     url: function (email, options, https) {
       options = options || {};
-      options.s = options.s || ( HighDPI() ? 200 : 100 );
-      return gravatar.url(email, options, https);
+      options.s = ( HighDPI() ? options.s * 2 : options.s ) || ( HighDPI() ? 200 : 100 );
+      if (email) return gravatar.url(email, options, https);
     }
   };
 }]);
@@ -60,6 +60,12 @@ app.factory('PlacesAPI', ['$rootScope', function ($rootScope) {
 /*------------------------------------*\
     UTILITY SERVICES
 \*------------------------------------*/
+
+// app.factory('DateDissect', function () {
+//   return (date) {
+
+//   }
+// });
 
 /** 
  * HighDPI Service - inspired by RetinaJS (http://retinajs.com/)
@@ -167,18 +173,18 @@ app.factory('MessageHandler', function () {
 app.factory('DateHandler', ['_', function (_) {
   return {
     months: [
-      { name: 'January', value: 1, dayCount: 31 },
-      { name: 'February', value: 2, dayCount: 28 },
-      { name: 'March', value: 3, dayCount: 31 },
-      { name: 'April', value: 4, dayCount: 30 },
-      { name: 'May', value: 5, dayCount: 31 },
-      { name: 'June', value: 6, dayCount: 30 },
-      { name: 'July', value: 7, dayCount: 31 },
-      { name: 'August', value: 8, dayCount: 31 },
-      { name: 'September', value: 9, dayCount: 30 },
-      { name: 'October', value: 10, dayCount: 31 },
-      { name: 'November', value: 11, dayCount: 30 },
-      { name: 'December', value: 12, dayCount: 31 }
+      { name: 'January', value: 0, dayCount: 31 },
+      { name: 'February', value: 1, dayCount: 28 },
+      { name: 'March', value: 2, dayCount: 31 },
+      { name: 'April', value: 3, dayCount: 30 },
+      { name: 'May', value: 4, dayCount: 31 },
+      { name: 'June', value: 5, dayCount: 30 },
+      { name: 'July', value: 6, dayCount: 31 },
+      { name: 'August', value: 7, dayCount: 31 },
+      { name: 'September', value: 8, dayCount: 30 },
+      { name: 'October', value: 9, dayCount: 31 },
+      { name: 'November', value: 10, dayCount: 30 },
+      { name: 'December', value: 11, dayCount: 31 }
     ],
     years: _.range(1900, new Date().getFullYear() + 1).reverse()
   };
@@ -215,6 +221,15 @@ app.factory('User', ['$rootScope', '$resource', '$location', function ($rootScop
     signOut: {
       method: 'DELETE',
       params: { userId: 'sign-out' },
+      interceptor: {
+        response: function (res) {
+          $rootScope.$broadcast('reloadNav');
+          $location.path('/');
+        }
+      }
+    },
+    update: { 
+      method:'PUT',
       interceptor: {
         response: function (res) {
           $rootScope.$broadcast('reloadNav');

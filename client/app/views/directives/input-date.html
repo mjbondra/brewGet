@@ -1,11 +1,11 @@
 <label>{{ label }}</label>
 <select class="month" ng-model="month">
   <option value selected disabled>Month</option>
-  <option ng-repeat="m in months" value="{{ m.value | twoCharString }}">{{ m.name }}</option>
+  <option ng-repeat="m in months" value="{{ m.value }}">{{ m.name }}</option>
 </select>
 <select class="day" ng-model="day">
   <option value selected disabled>Day</option>
-  <option ng-repeat="d in days() | dayArray" value="{{ d | twoCharString }}">{{ d | twoCharString }}</option>
+  <option ng-repeat="d in days() | dayArray" value="{{ d }}">{{ d | twoChars }}</option>
 </select>
 <select class="year" ng-model="year">
   <option value selected disabled>Year</option>

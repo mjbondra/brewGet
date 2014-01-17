@@ -31,7 +31,7 @@ app.filter('dayArray', function() {
  * @param {number|string} input - a number, which could be one OR two characters in length
  * @returns {string} - a two character length string equivalent to the input param
  */
-app.filter('twoCharString', function() {
+app.filter('twoChars', function() {
   return function (input) {
     if (typeof input === 'number') input = input.toString();
     if (input.length === 1) input = '0' + input;

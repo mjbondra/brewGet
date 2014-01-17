@@ -29,7 +29,6 @@ app.controller('NavCtrl', ['$scope', '$location', 'Nav', 'Auth', function ($scop
       $scope.Nav = nav;
       Auth({ delay: true }).then(function (auth) {
         $scope.Auth = auth;
-        console.log(auth);
       });
     });
   };
@@ -115,9 +114,12 @@ app.controller('AccountSignUp', ['$scope', 'Head', 'User', function ($scope, Hea
  * ROUTE /#!/account/settings
  * TEMPLATE /partials/account/settings.html
  */
-app.controller('AccountSettings', ['$scope', 'Head', 'User', function ($scope, Head, User) {
+app.controller('AccountSettings', ['$scope', 'Head', 'User', 'Auth', 'Gravatar', function ($scope, Head, User, Auth, Gravatar) {
   Head.title('Account Details & Settings');
   Head.description('Edit the details and settings of your brewGet account.');
+  $scope.username = Auth().username;
+  $scope.user = User.get({ userId: $scope.username });
+  $scope.Gravatar = Gravatar;
 }]);
 
 /**

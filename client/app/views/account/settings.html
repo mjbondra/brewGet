@@ -1,1 +1,11 @@
 <h1>Account Settings</h1>
+<validation-messages></validation-messages>
+<form novalidate>
+  <img ng-src="{{ Gravatar.url(user.email) }}">
+  <label>Username<input type="text" ng-model="user.username"></label>
+  <label>Password<input type="password" ng-model="user.password"></label>
+  <label>Email<input type="email" ng-model="user.email"></label>
+  <label>Location<input type="text" id="location" ng-model="user.location" places types="(cities)" placeholder=""></label>
+  <input-date label="Birthday" form-object="user" date-container="birthday"></input-date>
+  <button ng-click="user.$update({ userId: username })">Sign in</button>
+</form>
