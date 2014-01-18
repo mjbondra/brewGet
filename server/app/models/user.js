@@ -110,10 +110,8 @@ UserSchema.methods = {
       this.location = sanitize(location.formatted_address).escape();
 
       // latitude & longitude
-      if (location.geometry && location.geometry.location) {
-        if (typeof location.geometry.location.b === 'number') this._location.latitude = location.geometry.location.b;
-        if (typeof location.geometry.location.d === 'number') this._location.longitude = location.geometry.location.d;
-      }
+      if (typeof location.latitude === 'number') this._location.latitude = location.latitude;
+      if (typeof location.longitude === 'number') this._location.longitude = location.longitude;
 
       // city & state
       var i = location.address_components.length;

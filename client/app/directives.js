@@ -106,6 +106,8 @@ app.directive('places', ['PlacesAPI', function (PlacesAPI) {
       PlacesAPI.setElementByID(attrs.id, attrs.types);
       scope.$on('place', function (event, place) {
         place.formatted_address = element.val();
+        place.latitude = place.geometry.location.lat();
+        place.longitude = place.geometry.location.lng();
         scope.ngModel = angular.toJson(place);
         scope.$apply('ngModel');
       });
