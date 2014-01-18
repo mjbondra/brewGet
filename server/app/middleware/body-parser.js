@@ -7,6 +7,7 @@ var coBody = require('co-body')
   , coFs = require('co-fs')
   , ffObj = require('../../assets/lib/form-field-objectify')
   , fs = require('fs')
+  , mime = require('mime')
   , uid = require('uid2');
 
 
@@ -51,8 +52,8 @@ module.exports = function (opts) {
 
         // file
         else {
-
           var path = null;
+          if (part.mime === 'application/octet-stream' && part.filename) part.mime = mime.lookup(part.filename);
 
           // pipe acceptable mime-type to temporary upload directory
           if (opts.types.indexOf(part.mime) >= 0 || opts.types.length === 0) {

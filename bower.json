@@ -10,6 +10,7 @@
     "angular-touch": "1.x",
     "font-awesome": "4.x",
     "html5-boilerplate": "4.x",
+    "ng-file-upload": "1.x",
     "normalize-css": "2.x",
     "socket.io": "0.x",
     "susy": "1.x"
