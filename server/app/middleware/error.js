@@ -78,7 +78,7 @@ module.exports = function () {
         }
 
         this.status = err.status || 500;
-        this.body = yield cU.body(cU.msg(msg.status[err.status || 500] || msg.status[500], 'error'));
+        this.body = yield cU.body(cU.msg(msg.status[err.status || 500], 'error'));
       }
     }
   }
