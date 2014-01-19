@@ -4,6 +4,7 @@
  */
 var check = require('../../assets/lib/mongoose-validator').check
   , crypto = require('crypto')
+  , cU = require('../../assets/lib/common-utilities')
   , mongoose = require('mongoose')
   , msg = require('../../config/messages')
   , sanitize = require('validator').sanitize
@@ -42,6 +43,7 @@ var UserSchema = new Schema({
     default: 1 
   },
   salt: String,
+  slug: String,
   username: { 
     type: String, 
     validate: [ check.notNull, msg.username.isNull ], 
@@ -87,6 +89,14 @@ UserSchema.path('hash').validate(function (v) {
     this.invalidate('password', msg.password.isNull);
   }
 }, null);
+
+/**
+ * Pre-save hook
+ */
+UserSchema.pre('save', function (next) {
+  this.slug = cU.slug(this.username);
+  next();
+});
 
 /**
  * Methods 

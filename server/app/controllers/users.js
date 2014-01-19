@@ -20,7 +20,7 @@ var User = mongoose.model('User');
 exports.index = function *(next) {
   try {
     var users = yield Q.ninvoke(User, 'find');
-    this.body = yield cU.censor(users);
+    this.body = yield cU.censor(users, ['_id', '__v', 'hash', 'salt']);
   } catch (err) {
     this.err = err;
     yield next; // 500 Internal Server Error
@@ -35,7 +35,7 @@ exports.show = function *(next) {
   try {
     var user = yield Q.ninvoke(User, 'findOne', { username: this.params.username });
     if (!user) return yield next; // 404 Not Found
-    this.body = yield cU.censor(user);
+    this.body = yield cU.censor(user, ['_id', '__v', 'hash', 'salt']);
   } catch (err) {
     this.err = err;
     yield next; // 500 Internal Server Error
@@ -125,7 +125,7 @@ exports.authenticate = function *(next) {
     this.user = user;
     this.session.user = user.id; // Serialize user to session
     this.status = 201; // 201 Created
-    this.body = yield cU.body(cU.msg(msg.authentication.success(user.username), 'success', 'user', cU.censor(user))); // 201 Created
+    this.body = yield cU.body(cU.msg(msg.authentication.success(user.username), 'success', 'user', cU.censor(user, ['_id', '__v', 'hash', 'salt']))); // 201 Created
   } catch (err) {
     this.err = err;
     yield next;

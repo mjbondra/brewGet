@@ -1,6 +1,6 @@
 
 /**
- * A collection of global functions that pertain to JSON responses
+ * A collection of common utilities
  */
 
 /**
@@ -19,7 +19,7 @@ var msg = require('../../config/messages')
  * Prevents the inclusion of ids, versions, salts, and hashes
  *
  * @param {object|array} obj - Mongoose-modeled document(s)
- * @param {array|string} [keys=['_id','__v','hash','salt']] - an array of keys to omit
+ * @param {array|string} [keys=_id] - an array of keys to omit
  * @returns {object|array} - censored version of Mongoose-modeled document(s)
  */
 exports.censor = function (obj, keys) {
@@ -30,7 +30,7 @@ exports.censor = function (obj, keys) {
     var i = obj.length;
     while(i--) _obj.push(this.censor(obj[i]));
   } else { // is Object
-    var _obj = _.omit(obj && obj._doc ? obj._doc : obj, keys || ['_id', '__v', 'hash', 'salt']);
+    var _obj = _.omit(obj && obj._doc ? obj._doc : obj, keys || '_id');
     _objKeys = Object.keys(_obj);
     var i = _objKeys.length;
     while(i--) _obj[_objKeys[i]] = this.censor(_obj[_objKeys[i]]);
@@ -38,7 +38,15 @@ exports.censor = function (obj, keys) {
   return _obj;
 }
 
-exports.slug = function (str) {}
+/**
+ * Convert string to slug
+ *
+ * @param {string} str - string to convert
+ * @returns {string} - slug
+ */
+exports.slug = function (str) {
+  return str.toLowerCase().replace(/[ |_]/g, '-').replace(/[^\w-]+/g,'');
+}
 
 /*------------------------------------*\
     JSON MESSAGE FUNCTIONS
