@@ -18,13 +18,8 @@ var User = mongoose.model('User');
  * GET /api/users
  */
 exports.index = function *(next) {
-  try {
-    var users = yield Q.ninvoke(User, 'find');
-    this.body = yield cU.censor(users, ['_id', '__v', 'hash', 'salt']);
-  } catch (err) {
-    this.err = err;
-    yield next; // 500 Internal Server Error
-  }
+  var users = yield Q.ninvoke(User, 'find');
+  this.body = yield cU.censor(users, ['_id', '__v', 'hash', 'salt']);
 }
 
 /**
@@ -32,14 +27,9 @@ exports.index = function *(next) {
  * GET /api/users/:username
  */
 exports.show = function *(next) {
-  try {
-    var user = yield Q.ninvoke(User, 'findOne', { username: this.params.username });
-    if (!user) return yield next; // 404 Not Found
-    this.body = yield cU.censor(user, ['_id', '__v', 'hash', 'salt']);
-  } catch (err) {
-    this.err = err;
-    yield next; // 500 Internal Server Error
-  }
+  var user = yield Q.ninvoke(User, 'findOne', { username: this.params.username });
+  if (!user) return yield next; // 404 Not Found
+  this.body = yield cU.censor(user, ['_id', '__v', 'hash', 'salt']);
 }
 
 /**
@@ -47,17 +37,12 @@ exports.show = function *(next) {
  * POST /api/users
  */
 exports.create = function *(next) {
-  try {
-    var user = new User(this.request.body);
-    yield Q.ninvoke(user, 'save');
-    this.user = user;
-    this.session.user = user.id; // Serialize user to session
-    this.status = 201; // 201 Created
-    this.body = yield cU.created('user', user, user.username);
-  } catch (err) {
-    this.err = err;
-    yield next; // 500 Internal Server Error / 422 Unprocessable Entity / 409 Conflict
-  }
+  var user = new User(this.request.body);
+  yield Q.ninvoke(user, 'save');
+  this.user = user;
+  this.session.user = user.id; // Serialize user to session
+  this.status = 201; // 201 Created
+  this.body = yield cU.created('user', user, user.username);
 }
 
 /**
@@ -65,16 +50,11 @@ exports.create = function *(next) {
  * PUT /api/users/:username
  */
 exports.update = function *(next) {
-  try {
-    var user = yield Q.ninvoke(User, 'findOne', { username: this.params.username });
-    if (!user) return yield next; // 404 Not Found
-    user = _.extend(user, this.request.body);
-    yield Q.ninvoke(user, 'save');
-    this.body = yield cU.updated('user', user, user.username);
-  } catch (err) {
-    this.err = err;
-    yield next; // 500 Internal Server Error / 422 Unprocessable Entity / 409 Conflict
-  }
+  var user = yield Q.ninvoke(User, 'findOne', { username: this.params.username });
+  if (!user) return yield next; // 404 Not Found
+  user = _.extend(user, this.request.body);
+  yield Q.ninvoke(user, 'save');
+  this.body = yield cU.updated('user', user, user.username);
 }
 
 /**
@@ -82,15 +62,10 @@ exports.update = function *(next) {
  * DELETE /api/users/:username
  */
 exports.destroy = function *(next) {
-  try {
-    var user = yield Q.ninvoke(User, 'findOneAndRemove', { username: this.params.username });
-    if (!user) return yield next; // 404 Not Found
-    this.session = {};
-    this.body = yield cU.deleted('user', user, user.username);
-  } catch (err) {
-    this.err = err;
-    yield next;
-  }
+  var user = yield Q.ninvoke(User, 'findOneAndRemove', { username: this.params.username });
+  if (!user) return yield next; // 404 Not Found
+  this.session = {};
+  this.body = yield cU.deleted('user', user, user.username);
 }
 
 /*------------------------------------*\
@@ -102,34 +77,29 @@ exports.destroy = function *(next) {
  * POST /api/users/sign-in
  */
 exports.authenticate = function *(next) {
-  try {
-    var msgJSONArray = [];
-    if (typeof this.request.body.username === 'undefined') msgJSONArray.push(cU.msg(msg.username.isNull, 'validation', 'username'));
-    if (typeof this.request.body.password === 'undefined') msgJSONArray.push(cU.msg(msg.password.isNull, 'validation', 'password'));
-    if (msgJSONArray.length > 0) {
-      this.status = 422; // 422 Unprocessable Entity
-      this.body = yield cU.body(msgJSONArray);
-      return;
-    }
-    var user = yield Q.ninvoke(User, 'findOne', { username: this.request.body.username });
-    if (!user) {
-      this.status = 401; // 401 Unauthorized
-      this.body = yield cU.body(cU.msg(msg.authentication.incorrect.user(this.request.body.username), 'authentication', 'user'));
-      return;
-    }
-    if (!user.authenticate(this.request.body.password, user.salt)) {
-      this.status = 401; // 401 Unauthorized
-      this.body = yield cU.body(cU.msg(msg.authentication.incorrect.password, 'authentication', 'user'));
-      return;
-    }
-    this.user = user;
-    this.session.user = user.id; // Serialize user to session
-    this.status = 201; // 201 Created
-    this.body = yield cU.body(cU.msg(msg.authentication.success(user.username), 'success', 'user', cU.censor(user, ['_id', '__v', 'hash', 'salt']))); // 201 Created
-  } catch (err) {
-    this.err = err;
-    yield next;
+  var msgJSONArray = [];
+  if (typeof this.request.body.username === 'undefined') msgJSONArray.push(cU.msg(msg.username.isNull, 'validation', 'username'));
+  if (typeof this.request.body.password === 'undefined') msgJSONArray.push(cU.msg(msg.password.isNull, 'validation', 'password'));
+  if (msgJSONArray.length > 0) {
+    this.status = 422; // 422 Unprocessable Entity
+    this.body = yield cU.body(msgJSONArray);
+    return;
   }
+  var user = yield Q.ninvoke(User, 'findOne', { username: this.request.body.username });
+  if (!user) {
+    this.status = 401; // 401 Unauthorized
+    this.body = yield cU.body(cU.msg(msg.authentication.incorrect.user(this.request.body.username), 'authentication', 'user'));
+    return;
+  }
+  if (!user.authenticate(this.request.body.password, user.salt)) {
+    this.status = 401; // 401 Unauthorized
+    this.body = yield cU.body(cU.msg(msg.authentication.incorrect.password, 'authentication', 'user'));
+    return;
+  }
+  this.user = user;
+  this.session.user = user.id; // Serialize user to session
+  this.status = 201; // 201 Created
+  this.body = yield cU.body(cU.msg(msg.authentication.success(user.username), 'success', 'user', cU.censor(user, ['_id', '__v', 'hash', 'salt']))); // 201 Created
 }
 
 /**

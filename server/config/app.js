@@ -32,6 +32,9 @@ module.exports = function (app, config) {
   app.use(pathRewrite('/', '/index.html'));
   app.use(static(config.path.static));
 
+  // error handling middleware
+  app.use(error());
+
   // sessions 
   app.keys = config.secrets;
   app.use(session({
@@ -62,10 +65,4 @@ module.exports = function (app, config) {
 
   // routes 
   app.use(router(app));
-
-  // errors
-  app.use(error.respond());
-  app.use(error.log());
-  app.use(error.validate());
-
 }
