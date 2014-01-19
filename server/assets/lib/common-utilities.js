@@ -19,25 +19,26 @@ var msg = require('../../config/messages')
  * Prevents the inclusion of ids, versions, salts, and hashes
  *
  * @param {object|array} obj - Mongoose-modeled document(s)
+ * @param {array|string} [keys=['_id','__v','hash','salt']] - an array of keys to omit
  * @returns {object|array} - censored version of Mongoose-modeled document(s)
  */
-censor = function (obj) {
+exports.censor = function (obj, keys) {
   if (typeof obj !== 'object') return obj;
   else if (obj instanceof Date) return obj;
   else if (Array.isArray(obj)) { // is Object Array
     var _obj = [];
-    obj.forEach(function (o, key) {
-      _obj.push(censor(o));
-    });
+    var i = obj.length;
+    while(i--) _obj.push(this.censor(obj[i]));
   } else { // is Object
-    var _obj = _.omit(obj && obj._doc ? obj._doc : obj, '_id', '__v', 'hash', 'salt');
+    var _obj = _.omit(obj && obj._doc ? obj._doc : obj, keys || ['_id', '__v', 'hash', 'salt']);
     _objKeys = Object.keys(_obj);
-    _objKeys.forEach(function (key) {
-      _obj[key] = censor(_obj[key]);
-    });
+    var i = _objKeys.length;
+    while(i--) _obj[_objKeys[i]] = this.censor(_obj[_objKeys[i]]);
   }
   return _obj;
 }
+
+exports.slug = function (str) {}
 
 /*------------------------------------*\
     JSON MESSAGE FUNCTIONS
@@ -54,7 +55,7 @@ censor = function (obj) {
  * @param {string|object|array} [value] - relavent value related to message
  * @returns {object} - a JSON-ready object that contains a message along with relevant identifiers and data
  */
-msgJSON = function (message, type, related, value) {
+exports.msg = function (message, type, related, value) {
   var msgObj = {};
   if (typeof message !== 'undefined') msgObj.message = message;
   if (typeof type !== 'undefined') msgObj.type = type;
@@ -71,7 +72,7 @@ msgJSON = function (message, type, related, value) {
  * @param {array} msgJSONArray - an array of message-containing objects, ideally created individually by msgJSON()
  * @returns {object} - a response-ready JSON object that can be passed directly to this.body
  */
-resJSON = function (msgJSONArray) {
+exports.body = function (msgJSONArray) {
   var _resJSON = {};
   if (!Array.isArray(msgJSONArray)) msgJSONArray = [ msgJSONArray ];
   _resJSON.messages = msgJSONArray;
@@ -90,17 +91,17 @@ resJSON = function (msgJSONArray) {
  * @param {string} [title] - value by which content is known, addressed, or referred
  * @returns {object} - a response-ready JSON object that can be passed directly to this.body
  */
-resCreated = function (contentType, mongooseDoc, title) {
+exports.created = function (contentType, mongooseDoc, title) {
   title = title || mongooseDoc.title;
-  return resJSON(msgJSON(msg[contentType].created(title), 'success', contentType, censor(mongooseDoc)));
+  return this.body(this.msg(msg[contentType].created(title), 'success', contentType, this.censor(mongooseDoc)));
 }
 
-resUpdated = function (contentType, mongooseDoc, title) {
+exports.updated = function (contentType, mongooseDoc, title) {
   title = title || mongooseDoc.title;
-  return resJSON(msgJSON(msg[contentType].updated(title), 'success', contentType, censor(mongooseDoc)));
+  return this.body(this.msg(msg[contentType].updated(title), 'success', contentType, this.censor(mongooseDoc)));
 }
 
-resDeleted = function (contentType, mongooseDoc, title) {
+exports.deleted = function (contentType, mongooseDoc, title) {
   title = title || mongooseDoc.title;
-  return resJSON(msgJSON(msg[contentType].deleted(title), 'success', contentType, censor(mongooseDoc)));
+  return this.body(this.msg(msg[contentType].deleted(title), 'success', contentType, this.censor(mongooseDoc)));
 }

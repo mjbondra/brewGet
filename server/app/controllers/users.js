@@ -2,7 +2,8 @@
 /**
  * Module dependencies
  */
-var mongoose = require('mongoose')
+var cU = require('../../assets/lib/common-utilities')
+  , mongoose = require('mongoose')
   , msg = require('../../config/messages')
   , Q = require('q')
   , _ = require('underscore');
@@ -19,7 +20,7 @@ var User = mongoose.model('User');
 exports.index = function *(next) {
   try {
     var users = yield Q.ninvoke(User, 'find');
-    this.body = yield censor(users);
+    this.body = yield cU.censor(users);
   } catch (err) {
     this.err = err;
     yield next; // 500 Internal Server Error
@@ -34,7 +35,7 @@ exports.show = function *(next) {
   try {
     var user = yield Q.ninvoke(User, 'findOne', { username: this.params.username });
     if (!user) return yield next; // 404 Not Found
-    this.body = yield censor(user);
+    this.body = yield cU.censor(user);
   } catch (err) {
     this.err = err;
     yield next; // 500 Internal Server Error
@@ -52,7 +53,7 @@ exports.create = function *(next) {
     this.user = user;
     this.session.user = user.id; // Serialize user to session
     this.status = 201; // 201 Created
-    this.body = yield resCreated('user', user, user.username);
+    this.body = yield cU.created('user', user, user.username);
   } catch (err) {
     this.err = err;
     yield next; // 500 Internal Server Error / 422 Unprocessable Entity / 409 Conflict
@@ -69,7 +70,7 @@ exports.update = function *(next) {
     if (!user) return yield next; // 404 Not Found
     user = _.extend(user, this.request.body);
     yield Q.ninvoke(user, 'save');
-    this.body = yield resUpdated('user', user, user.username);
+    this.body = yield cU.updated('user', user, user.username);
   } catch (err) {
     this.err = err;
     yield next; // 500 Internal Server Error / 422 Unprocessable Entity / 409 Conflict
@@ -85,7 +86,7 @@ exports.destroy = function *(next) {
     var user = yield Q.ninvoke(User, 'findOneAndRemove', { username: this.params.username });
     if (!user) return yield next; // 404 Not Found
     this.session = {};
-    this.body = yield resDeleted('user', user, user.username);
+    this.body = yield cU.deleted('user', user, user.username);
   } catch (err) {
     this.err = err;
     yield next;
@@ -103,28 +104,28 @@ exports.destroy = function *(next) {
 exports.authenticate = function *(next) {
   try {
     var msgJSONArray = [];
-    if (typeof this.request.body.username === 'undefined') msgJSONArray.push(msgJSON(msg.username.isNull, 'validation', 'username'));
-    if (typeof this.request.body.password === 'undefined') msgJSONArray.push(msgJSON(msg.password.isNull, 'validation', 'password'));
+    if (typeof this.request.body.username === 'undefined') msgJSONArray.push(cU.msg(msg.username.isNull, 'validation', 'username'));
+    if (typeof this.request.body.password === 'undefined') msgJSONArray.push(cU.msg(msg.password.isNull, 'validation', 'password'));
     if (msgJSONArray.length > 0) {
       this.status = 422; // 422 Unprocessable Entity
-      this.body = yield resJSON(msgJSONArray);
+      this.body = yield cU.body(msgJSONArray);
       return;
     }
     var user = yield Q.ninvoke(User, 'findOne', { username: this.request.body.username });
     if (!user) {
       this.status = 401; // 401 Unauthorized
-      this.body = yield resJSON(msgJSON(msg.authentication.incorrect.user(this.request.body.username), 'authentication', 'user'));
+      this.body = yield cU.body(cU.msg(msg.authentication.incorrect.user(this.request.body.username), 'authentication', 'user'));
       return;
     }
     if (!user.authenticate(this.request.body.password, user.salt)) {
       this.status = 401; // 401 Unauthorized
-      this.body = yield resJSON(msgJSON(msg.authentication.incorrect.password, 'authentication', 'user'));
+      this.body = yield cU.body(cU.msg(msg.authentication.incorrect.password, 'authentication', 'user'));
       return;
     }
     this.user = user;
     this.session.user = user.id; // Serialize user to session
     this.status = 201; // 201 Created
-    this.body = yield resJSON(msgJSON(msg.authentication.success(user.username), 'success', 'user', censor(user))); // 201 Created
+    this.body = yield cU.body(cU.msg(msg.authentication.success(user.username), 'success', 'user', cU.censor(user))); // 201 Created
   } catch (err) {
     this.err = err;
     yield next;
@@ -164,5 +165,5 @@ exports.session = function () {
 exports.signOut = function *(next) {
   this.user = null;
   this.session = null;
-  this.body = yield resJSON(msgJSON('logout'));
+  this.body = yield cU.body(cU.msg('logout'));
 }

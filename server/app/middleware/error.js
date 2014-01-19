@@ -2,7 +2,8 @@
 /**
  * Module dependencies
  */
-var mongoose = require('mongoose')
+var cU = require('../../assets/lib/common-utilities')
+  , mongoose = require('mongoose')
   , msg = require('../../config/messages')
   , Q = require('q')
   , _ = require('underscore');
@@ -29,7 +30,7 @@ exports.respond = function () {
     // Catch 404s, and do not yield to other error middleware
     if (!this.err) {
       this.status = 404;
-      this.body = yield resJSON(msgJSON(msg.status[404]));
+      this.body = yield cU.body(cU.msg(msg.status[404]));
       return;
     }
     // yield to error logging
@@ -40,7 +41,7 @@ exports.respond = function () {
 
     // respond to errors with JSON, but do not overwrite an existing response
     this.status = status; 
-    if (!this.body) this.body = yield resJSON(msgJSON(msg.status[status] || msg.status[500], 'error'));
+    if (!this.body) this.body = yield cU.body(cU.msg(msg.status[status] || msg.status[500], 'error'));
   }
 }
 
@@ -91,7 +92,7 @@ exports.validate = function () {
         var collectionField = ( mongoError ? mongoError[2] : 'field' );
         var fieldValue = ( mongoError ? mongoError[3] : 'value' );
         this.err.status = 409; // 409 Conflict
-        this.body = yield resJSON(msgJSON(msg.notUnique(collectionField, fieldValue), 'validation', collectionField, fieldValue));
+        this.body = yield cU.body(cU.msg(msg.notUnique(collectionField, fieldValue), 'validation', collectionField, fieldValue));
       }
 
     // Mongoose validation errors
@@ -99,10 +100,10 @@ exports.validate = function () {
       var msgJSONArray = [];
       var objKeys = Object.keys(err.errors);
       objKeys.forEach(function (key) {
-        msgJSONArray.push(msgJSON(err.errors[key].message, 'validation', err.errors[key].path, err.errors[key].value));
+        msgJSONArray.push(cU.msg(err.errors[key].message, 'validation', err.errors[key].path, err.errors[key].value));
       });
       this.err.status = 422; // 422 Unprocessable Entity
-      this.body = yield resJSON(msgJSONArray);
+      this.body = yield cU.body(msgJSONArray);
     }
   }
 }

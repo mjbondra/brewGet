@@ -32,7 +32,6 @@ var env = process.env.NODE_ENV || 'development'
 
 // global utilities
 require('./assets/lib/console-utilities');
-require('./assets/lib/json-utilities');
 
 // mongo configuration and connection
 require('./config/mongo')(config);
