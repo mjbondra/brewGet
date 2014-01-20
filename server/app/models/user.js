@@ -7,7 +7,7 @@ var validate = require('../../assets/lib/validator-extended')
   , cU = require('../../assets/lib/common-utilities')
   , mongoose = require('mongoose')
   , msg = require('../../config/messages')
-  , sanitize = require('sanitizer')
+  , sanitize = require('../../assets/lib/sanitizer-extended')
   , Schema = mongoose.Schema
   , uid = require('uid2');
 
@@ -18,7 +18,7 @@ var UserSchema = new Schema({
   birthday: {
     type: Date,
     validate: [
-      { validator: validate.is21, msg: msg.birthday.not21 },
+      { validator: validate.over21, msg: msg.birthday.under21 },
       { validator: validate.isDate, msg: msg.birthday.notDate },
       { validator: validate.notNull, msg: msg.birthday.isNull }
     ]
@@ -57,7 +57,7 @@ var UserSchema = new Schema({
 UserSchema.virtual('password')
   .set(function (password) {
     if (!password && !this.isNew) return;
-    this._password = sanitize.escape(password || '');
+    this._password = sanitize.escape(password);
     this.salt = this.makeSalt();
     this.hash = this.encrypt(this._password, this.salt);
   })
@@ -76,8 +76,8 @@ UserSchema.pre('validate', function (next) {
   // parse location strings -- they may be plain strings, or stringified Google Places API objects
   this.parseLocation(this.location);
 
-  this.email = sanitize.escape(this.email || '');
-  this.username = sanitize.escape(this.username || '');
+  this.email = sanitize.escape(this.email);
+  this.username = sanitize.escape(this.username);
   next();
 });
 
@@ -103,7 +103,7 @@ UserSchema.pre('save', function (next) {
  */
 UserSchema.methods = {
   authenticate: function (plainText, salt) {
-    return this.hash === this.encrypt(sanitize.escape(plainText || ''), salt);
+    return this.hash === this.encrypt(sanitize.escape(plainText), salt);
   },
   encrypt: function (plainText, salt) {
     var hash = crypto.createHmac('sha512', salt)
@@ -117,7 +117,7 @@ UserSchema.methods = {
   parseLocation: function (location) {
     try {
       location = JSON.parse(location);
-      this.location = sanitize.escape(location.formatted_address || '');
+      this.location = sanitize.escape(location.formatted_address);
 
       // latitude & longitude
       if (typeof location.latitude === 'number') this._location.latitude = location.latitude;
@@ -126,12 +126,12 @@ UserSchema.methods = {
       // city & state
       var i = location.address_components.length;
       while (i--) {
-        if (location.address_components[i].types[0] === 'locality') this._location.city = sanitize.escape(location.address_components[i].long_name || '');
-        else if (location.address_components[i].types[0] === 'administrative_area_level_1') this._location.state = sanitize.escape(location.address_components[i].short_name || '');
-        else if (location.address_components[i].types[0] === 'country' && location.address_components[i].long_name !== 'United States') this.invalidate('location', msg.location.notUS);
+        if (location.address_components[i].types[0] === 'locality') this._location.city = sanitize.escape(location.address_components[i].long_name);
+        else if (location.address_components[i].types[0] === 'administrative_area_level_1') this._location.state = sanitize.escape(location.address_components[i].short_name);
+        else if (location.address_components[i].types[0] === 'country' && !validate.isUS(location.address_components[i].long_name)) this.invalidate('location', msg.location.notUS);
       }
     } catch (err) {
-      if (typeof this.location === 'string') this.location = sanitize.escape(this.location || '');
+      if (typeof this.location === 'string') this.location = sanitize.escape(this.location);
       else this.location = '';
     }
   }

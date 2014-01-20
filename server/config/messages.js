@@ -39,7 +39,7 @@ module.exports = {
   birthday: {
     isNull: 'Birthday cannot be empty',
     notDate: 'Birthday entered is not a valid date',
-    not21: 'You must be 21'
+    under21: 'You must be 21'
   },
   email: {
     notEmail: 'Email address must be valid',
