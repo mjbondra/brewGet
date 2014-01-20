@@ -20,7 +20,7 @@
     "gulp-rename": "0.x",
     "gulp-uglify": "0.x",
     "mocha": "1.x",
-    "should": "2.x",
+    "should": "3.x",
     "supertest": "0.x"
   },
   "dependencies": {

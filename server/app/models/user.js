@@ -2,14 +2,14 @@
 /**
  * Module dependencies
  */
-var validate = require('../../assets/lib/validator-extended')
-  , crypto = require('crypto')
+var crypto = require('crypto')
   , cU = require('../../assets/lib/common-utilities')
   , mongoose = require('mongoose')
   , msg = require('../../config/messages')
   , sanitize = require('../../assets/lib/sanitizer-extended')
   , Schema = mongoose.Schema
-  , uid = require('uid2');
+  , uid = require('uid2')
+  , validate = require('../../assets/lib/validator-extended');
 
 /**
  * User schema
@@ -128,7 +128,7 @@ UserSchema.methods = {
       while (i--) {
         if (location.address_components[i].types[0] === 'locality') this._location.city = sanitize.escape(location.address_components[i].long_name);
         else if (location.address_components[i].types[0] === 'administrative_area_level_1') this._location.state = sanitize.escape(location.address_components[i].short_name);
-        else if (location.address_components[i].types[0] === 'country' && !validate.isUS(location.address_components[i].long_name)) this.invalidate('location', msg.location.notUS);
+        else if (location.address_components[i].types[0] === 'country' && !validate.inUSA(location.address_components[i].long_name)) this.invalidate('location', msg.location.notUS);
       }
     } catch (err) {
       if (typeof this.location === 'string') this.location = sanitize.escape(this.location);

@@ -2,8 +2,8 @@
  * Extends caja-sanitizer to include additional sanitizers from validator.js
  */
 
-var validate = require('validator')
-  , sanitize = require('sanitizer');
+var sanitize = require('sanitizer')
+  , validate = require('validator');
 
 /**
  * Extend replace function to return empty strings when passed an undefined parameter
