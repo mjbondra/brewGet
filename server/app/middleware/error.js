@@ -9,9 +9,22 @@ var cU = require('../../assets/lib/common-utilities')
   , _ = require('underscore');
 
 /**
- * Models
+ * Error model
  */
-var _Error = mongoose.model('Error');
+var Schema = mongoose.Schema
+  , ErrorSchema = new Schema({
+    method: String,
+    params: Object,
+    referer: String,
+    stack: String,
+    status: Number,
+    url: String,
+    user: { 
+      type : Schema.ObjectId, 
+      ref : 'User' 
+    },
+    userIP: String
+  }), _Error = mongoose.model('Error', ErrorSchema);
 
 /** 
  * Validation error names 
