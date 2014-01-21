@@ -36,6 +36,12 @@ require('./assets/lib/console-utilities');
 // mongo configuration and connection
 require('./config/mongo')(config);
 
+// load subdocument models
+var modelsPath = __dirname + '/app/models/sub';
+fs.readdirSync(modelsPath).forEach(function (file) {
+  if (~file.indexOf('.js')) require(modelsPath + '/' + file);
+});
+
 // load models
 var modelsPath = __dirname + '/app/models';
 fs.readdirSync(modelsPath).forEach(function (file) {

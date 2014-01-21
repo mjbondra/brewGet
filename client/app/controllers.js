@@ -125,7 +125,7 @@ app.controller('AccountSettings', ['$scope', '$upload', 'Head', 'User', 'Auth', 
       for (var i = 0; i < $files.length; i++) {
         var file = $files[i];
         $scope.upload = $upload.upload({
-          url: 'server/upload/url', //upload.php script, node.js route, or servlet url
+          url: 'api/users/' + $scope.username + '/images', //upload.php script, node.js route, or servlet url
           // method: POST or PUT,
           // headers: {'headerKey': 'headerValue'}, withCredential: true,
           data: {myObj: $scope.myModelObj},

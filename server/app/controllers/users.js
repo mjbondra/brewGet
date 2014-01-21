@@ -69,6 +69,30 @@ exports.destroy = function *(next) {
 }
 
 /*------------------------------------*\
+    Images
+\*------------------------------------*/
+
+exports.images = {
+
+  /**
+   * CREATE
+   * POST /api/users/:username/image
+   */
+  create: function *(next) {
+    console.log(this.req.files);
+    yield next;
+  },
+
+  /**
+   * DESTROY
+   * DELETE /api/users/:username/image
+   */
+  destroy: function *(next) {
+    yield next;
+  }
+}
+
+/*------------------------------------*\
     Authentication / Session
 \*------------------------------------*/
 
