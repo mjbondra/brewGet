@@ -14,16 +14,16 @@ var cU = require('../../assets/lib/common-utilities')
 var User = mongoose.model('User');
 
 /**
- * Mongo exclude paramater
+ * Mongo projection paramater; includes or excludes fields
  */
-var exclude = { _id: 0, __v: 0, hash: 0, salt: 0, 'images._id': 0 };
+var projection = { _id: 0, __v: 0, hash: 0, salt: 0, 'images._id': 0 };
 
 /**
  * Index
  * GET /api/users
  */
 exports.index = function *(next) {
-  this.body = yield Q.ninvoke(User, 'find', {}, exclude);
+  this.body = yield Q.ninvoke(User, 'find', {}, projection);
 }
 
 /**
@@ -31,9 +31,9 @@ exports.index = function *(next) {
  * GET /api/users/:username
  */
 exports.show = function *(next) {
-  var user = yield Q.ninvoke(User, 'findOne', { username: this.params.username });
+  var user = yield Q.ninvoke(User, 'findOne', { username: this.params.username }, projection);
   if (!user) return yield next; // 404 Not Found
-  this.body = yield cU.censor(user, ['_id', '__v', 'hash', 'salt']);
+  this.body = user;
 }
 
 /**
