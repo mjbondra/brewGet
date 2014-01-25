@@ -7,7 +7,7 @@ var fs = require('fs')
 gulp.task('browserify', function () {
   gulp.src('./client/config/app.js')
     .pipe(browserify())
-    .pipe(uglify())
+    .pipe(uglify({ outSourceMap: true }))
     .pipe(gulp.dest('./client/assets/js/'))
 });
 
