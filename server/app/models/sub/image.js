@@ -10,6 +10,7 @@ var ImageSchema = new Schema({
   class: [ String ],
   fileName: String,
   id: String,
+  mimetype: String,
   path: String,
   src: String,
   highDPI: {

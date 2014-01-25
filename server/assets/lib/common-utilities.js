@@ -24,18 +24,18 @@ module.exports = {
    * @param {array|string} [keys=_id] - an array of keys to omit
    * @returns {object|array} - censored version of Mongoose-modeled document(s)
    */
-  censor: function (obj, keys) {
+  censor: function *(obj, keys) {
     if (typeof obj !== 'object') return obj;
     else if (obj instanceof Date) return obj;
     else if (Array.isArray(obj)) { // is Object Array
       var _obj = [];
       var i = obj.length;
-      while(i--) _obj.push(this.censor(obj[i], keys));
+      while(i--) _obj.push(yield this.censor(obj[i], keys));
     } else { // is Object
       var _obj = _.omit(obj && obj._doc ? obj._doc : obj, keys || '_id');
       _objKeys = Object.keys(_obj);
       var i = _objKeys.length;
-      while(i--) _obj[_objKeys[i]] = this.censor(_obj[_objKeys[i]], keys);
+      while(i--) _obj[_objKeys[i]] = yield this.censor(_obj[_objKeys[i]], keys);
     }
     return _obj;
   },
@@ -101,16 +101,16 @@ module.exports = {
    * @param {string} [title] - value by which content is known, addressed, or referred
    * @returns {object} - a response-ready JSON object that can be passed directly to this.body
    */
-  created: function (contentType, mongooseDoc, title) {
+  created: function *(contentType, mongooseDoc, title) {
     title = title || mongooseDoc.title;
-    return this.body(this.msg(msg[contentType].created(title), 'success', contentType, this.censor(mongooseDoc)));
+    return this.body(this.msg(msg[contentType].created(title), 'success', contentType, yield this.censor(mongooseDoc)));
   },
-  updated: function (contentType, mongooseDoc, title) {
+  updated: function *(contentType, mongooseDoc, title) {
     title = title || mongooseDoc.title;
-    return this.body(this.msg(msg[contentType].updated(title), 'success', contentType, this.censor(mongooseDoc)));
+    return this.body(this.msg(msg[contentType].updated(title), 'success', contentType, yield this.censor(mongooseDoc)));
   },
-  deleted: function (contentType, mongooseDoc, title) {
+  deleted: function *(contentType, mongooseDoc, title) {
     title = title || mongooseDoc.title;
-    return this.body(this.msg(msg[contentType].deleted(title), 'success', contentType, this.censor(mongooseDoc)));
+    return this.body(this.msg(msg[contentType].deleted(title), 'success', contentType, yield this.censor(mongooseDoc)));
   }
 }

@@ -79,6 +79,11 @@ exports.images = {
    * POST /api/users/:username/image
    */
   create: function *(next) {
+    var user = yield Q.ninvoke(User, 'findOne', { username: this.params.username });
+    if (!user) return yield next; // 404 Not Found
+    if (this.req.files.file) user.images = [ this.req.files.file ];
+    yield Q.ninvoke(user, 'save');
+    var readStream = this.req.files.file.path;
     console.log(this.req.files);
     yield next;
   },
