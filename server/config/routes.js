@@ -23,9 +23,9 @@ module.exports = function (app) {
   // navigation
   app.get('/api/nav', navigation.items)
 
-  // authentication
-  app.post('/api/users/sign-in', users.authenticate);
-  app.delete('/api/users/sign-out', users.signOut);
+  // users sessions
+  app.post('/api/users/sign-in', users.sessions.create);
+  app.delete('/api/users/sign-out', users.sessions.destroy);
 
   // users
   app.get('/api/users', users.index);
