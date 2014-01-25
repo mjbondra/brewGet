@@ -14,12 +14,16 @@ var cU = require('../../assets/lib/common-utilities')
 var User = mongoose.model('User');
 
 /**
+ * Mongo exclude paramater
+ */
+var exclude = { _id: 0, __v: 0, hash: 0, salt: 0, 'images._id': 0 };
+
+/**
  * Index
  * GET /api/users
  */
 exports.index = function *(next) {
-  var users = yield Q.ninvoke(User, 'find');
-  this.body = yield cU.censor(users, ['_id', '__v', 'hash', 'salt']);
+  this.body = yield Q.ninvoke(User, 'find', {}, exclude);
 }
 
 /**
