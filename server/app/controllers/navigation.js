@@ -1,9 +1,9 @@
 
 /**
- * Items
+ * Navigation
  * GET /api/nav
  */
-exports.items = function* () {
+module.exports = function* () {
   var nav = {};
   nav.content = [
     { title: 'Posts', href: '/' },

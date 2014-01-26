@@ -16,12 +16,12 @@ module.exports = function (app) {
   app.get('/test-api/test.json', function *() {
     this.body = {
       "name": "brewGet",
-      "description": "a node/express app that facilitates the trading of beer"
+      "description": "a node/koa app that facilitates the trading of beer"
     }
   })
 
   // navigation
-  app.get('/api/nav', navigation.items)
+  app.get('/api/nav', navigation);
 
   // users sessions
   app.post('/api/users/sign-in', users.sessions.create);
