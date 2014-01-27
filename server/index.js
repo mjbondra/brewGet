@@ -21,11 +21,6 @@
 var koa = require('koa')
   , app = koa();
 
-/**
- * Module dependencies
- */
-var fs = require('fs');
-
 // use environment-specific configuration; default to 'development' if unspecified
 var env = process.env.NODE_ENV || 'development'
   , config = require('./config/config')[env];
@@ -36,17 +31,8 @@ require('./assets/lib/console-utilities');
 // mongo configuration and connection
 require('./config/mongo')(config);
 
-// load subdocument models
-var modelsPath = __dirname + '/app/models/sub';
-fs.readdirSync(modelsPath).forEach(function (file) {
-  if (~file.indexOf('.js')) require(modelsPath + '/' + file);
-});
-
-// load models
-var modelsPath = __dirname + '/app/models';
-fs.readdirSync(modelsPath).forEach(function (file) {
-  if (~file.indexOf('.js')) require(modelsPath + '/' + file);
-});
+// models
+require('./config/models')(__dirname + '/app/models/');
 
 // koa configuration
 require('./config/app')(app, config);
