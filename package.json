@@ -32,7 +32,7 @@
     "koa": "0.x",
     "koa-compress": "1.x",
     "koa-logger": "1.x",
-    "koa-router": "2.3.x",
+    "koa-router": "2.3.1",
     "koa-session-mongoose": "0.x",
     "koa-session-store": "0.x",
     "koa-static-cache": "1.x",
