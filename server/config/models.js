@@ -4,6 +4,9 @@
  */
 var models = [
   'image',
+  'comment',
+  'brewery',
+  'beer',
   'user',
   'post'
 ];

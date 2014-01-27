@@ -13,14 +13,17 @@ var cU = require('../../assets/lib/common-utilities')
  * Schema dependencies; subdocuments
  */
 var ImageSchema = mongoose.model('Image').Schema
-  , BeerSchema = require('../../assets/lib/schema-definitions').beer;
+  , BeerSchema = mongoose.model('Beer').Schema
+  , CommentSchema = mongoose.model('Comment').Schema;
 
 /**
  * Post schema
  */
 var PostSchema = new Schema({
-  beer: BeerSchema,
+  comments: [ CommentSchema ],
+  ft: [ BeerSchema ],
   images: [ ImageSchema ],
+  iso: [ BeerSchema ],
   type: String,
   user: {
     username: String

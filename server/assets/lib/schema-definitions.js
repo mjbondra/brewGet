@@ -11,17 +11,14 @@ var mongoose = require('mongoose');
 /**
  * Schema dependencies; subdocuments
  */
-var ImageSchema = mongoose.model('Image').schema;
+var ImageSchema = mongoose.model('Image').schema
+  , CommentSchema = mongoose.model('Comment').schema;
 
 module.exports = {
   beer: {
     abv: Number,
-    ibu: Number,
-    images: [ ImageSchema ],
-    info: String,
-    name: String,
-    slug: String,
     brewery: {
+      comments: [ CommentSchema ],
       images: [ ImageSchema ],
       info: String,
       location: String,
@@ -34,6 +31,13 @@ module.exports = {
         state: String
       },
       name: String
-    }
+    },
+    comments: [ CommentSchema ],
+    ibu: Number,
+    images: [ ImageSchema ],
+    info: String,
+    name: String,
+    slug: String,
+    style: String
   }
 }
