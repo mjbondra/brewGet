@@ -81,7 +81,12 @@ module.exports = {
    * Unbound validation messages
    */
   default: 'Sorry! There was an error',
-  notUnique: function (collectionField, fieldValue) { return collectionField + ' \'' + fieldValue + '\' already exists, please enter another'; },
+  notUnique: function (dbCollection, collectionField, fieldValue) {
+    if (collectionField === 'slug') {
+      if (dbCollection === 'users') return 'Username already exists, please enter another';
+    }
+    return collectionField + ' \'' + fieldValue + '\' already exists, please enter another';
+  },
 
   /**
    * HTTP status code messages

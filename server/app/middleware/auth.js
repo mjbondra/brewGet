@@ -13,7 +13,7 @@ exports.requires = {
     }
   },
   self: function *(next) {
-    if (this.user && this.user.username === this.params.username) return yield next;
+    if (this.user && this.user.slug === this.params.slug) return yield next;
     this.status = 401;
     this.body = { msg: 'not self' }
   }

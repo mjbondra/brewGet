@@ -49,11 +49,15 @@ var UserSchema = new Schema({
     default: 1 
   },
   salt: String,
-  slug: String,
+  slug: {
+    type: String,
+    index: { unique: true }
+  },
   username: { 
     type: String, 
-    validate: [ validate.notNull, msg.username.isNull ], 
-    index: { unique: true }
+    validate: [
+      { validator: validate.notNull, msg: msg.username.isNull }
+    ]
   }
 });
 
@@ -100,7 +104,7 @@ UserSchema.path('hash').validate(function (v) {
  * Pre-save hook
  */
 UserSchema.pre('save', function (next) {
-  this.slug = cU.slug(this.username);
+  this.slug = cU.slug(this.username, true);
   next();
 });
 

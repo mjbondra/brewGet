@@ -31,10 +31,10 @@ module.exports = {
 
   /**
    * Show
-   * GET /api/users/:username
+   * GET /api/users/:slug
    */
   show: function *(next) {
-    var user = yield Q.ninvoke(User, 'findOne', { username: this.params.username }, projection);
+    var user = yield Q.ninvoke(User, 'findOne', { slug: this.params.slug }, projection);
     if (!user) return yield next; // 404 Not Found
     this.body = user;
   },
@@ -54,10 +54,10 @@ module.exports = {
 
   /**
    * Update
-   * PUT /api/users/:username
+   * PUT /api/users/:slug
    */
   update: function *(next) {
-    var user = yield Q.ninvoke(User, 'findOne', { username: this.params.username });
+    var user = yield Q.ninvoke(User, 'findOne', { slug: this.params.slug });
     if (!user) return yield next; // 404 Not Found
     user = _.extend(user, this.request.body);
     yield Q.ninvoke(user, 'save');
@@ -66,10 +66,10 @@ module.exports = {
 
   /**
    * Destroy
-   * DELETE /api/users/:username
+   * DELETE /api/users/:slug
    */
   destroy: function *(next) {
-    var user = yield Q.ninvoke(User, 'findOneAndRemove', { username: this.params.username });
+    var user = yield Q.ninvoke(User, 'findOneAndRemove', { slug: this.params.slug });
     if (!user) return yield next; // 404 Not Found
     this.session = {};
     this.body = yield cU.deleted('user', user, user.username);
@@ -83,7 +83,7 @@ module.exports = {
 
     /**
      * CREATE
-     * POST /api/users/:username/image
+     * POST /api/users/:slug/image
      */
     create: function *(next) {
       // var user = yield Q.ninvoke(User, 'findOne', { username: this.params.username });
@@ -97,7 +97,7 @@ module.exports = {
 
     /**
      * DESTROY
-     * DELETE /api/users/:username/image
+     * DELETE /api/users/:slug/image
      */
     destroy: function *(next) {
       yield next;
@@ -129,9 +129,11 @@ module.exports = {
 
         // populate cookie for frontend -- presence of this cookie does not grant authenticated access on backend
         if (this.user) {
-          this.cookies.set('auth', JSON.stringify({ isAuthenticated: true, username: this.user.username }), { httpOnly: false, overwrite: true });
+          this.cookies.set('auth', JSON.stringify({ isAuthenticated: true, username: this.user.slug }), { httpOnly: false, overwrite: true });
+          this.cookies.set('username', this.user.username, { httpOnly: false, overwrite: true, signed: true });
         } else {
           this.cookies.set('auth', JSON.stringify({ isAuthenticated: false }), { httpOnly: false, overwrite: true });
+          this.cookies.set('username', null, { httpOnly: false, overwrite: true, signed: true });
         }
       }
     },

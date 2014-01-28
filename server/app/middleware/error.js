@@ -55,7 +55,7 @@ module.exports = function () {
             var collectionField = ( mongoError ? mongoError[2] : 'field' );
             var fieldValue = ( mongoError ? mongoError[3] : 'value' );
             this.status = 409; // 409 Conflict
-            this.body = yield cU.body(cU.msg(msg.notUnique(collectionField, fieldValue), 'validation', collectionField, fieldValue));
+            this.body = yield cU.body(cU.msg(msg.notUnique(dbCollection, collectionField, fieldValue), 'validation', collectionField, fieldValue));
           }
 
         // Mongoose validation errors

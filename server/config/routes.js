@@ -30,11 +30,11 @@ module.exports = function (app) {
   // users
   app.get('/api/users', users.index);
   app.post('/api/users', users.create);
-  app.get('/api/users/:username', users.show);
-  app.put('/api/users/:username', requires.self, users.update);
-  app.delete('/api/users/:username', requires.self, users.destroy);
-  app.post('/api/users/:username/images', requires.self, users.images.create);
-  app.delete('/api/users/:username/images', requires.self, users.images.destroy);
+  app.get('/api/users/:slug', users.show);
+  app.put('/api/users/:slug', requires.self, users.update);
+  app.delete('/api/users/:slug', requires.self, users.destroy);
+  app.post('/api/users/:slug/images', requires.self, users.images.create);
+  app.delete('/api/users/:slug/images', requires.self, users.images.destroy);
 
   // redirect all remaining GET method routes to angular router
   app.get('*', function* () {
