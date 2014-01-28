@@ -149,7 +149,7 @@ module.exports = {
         this.body = yield cU.body(msgJSONArray);
         return;
       }
-      var user = yield Q.ninvoke(User, 'findOne', { username: this.request.body.username });
+      var user = yield Q.ninvoke(User, 'findOne', { $or: [ { username: this.request.body.username }, { email: this.request.body.username } ] });
       if (!user) {
         this.status = 401; // 401 Unauthorized
         this.body = yield cU.body(cU.msg(msg.authentication.incorrect.user(this.request.body.username), 'authentication', 'user'));
