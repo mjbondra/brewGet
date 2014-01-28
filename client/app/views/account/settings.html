@@ -8,5 +8,5 @@
   <label>Email<input type="email" ng-model="user.email"></label>
   <label>Location<input type="text" id="location" ng-model="user.location" places types="(cities)" placeholder=""></label>
   <input-date label="Birthday" form-object="user" date-container="birthday"></input-date>
-  <button ng-click="user.$update({ userId: username })">Sign in</button>
+  <button ng-click="user.$update({ slug: slug })">Sign in</button>
 </form>

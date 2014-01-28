@@ -129,10 +129,8 @@ module.exports = {
 
         // populate cookie for frontend -- presence of this cookie does not grant authenticated access on backend
         if (this.user) {
-          this.cookies.set('auth', JSON.stringify({ isAuthenticated: true, username: this.user.slug }), { httpOnly: false, overwrite: true });
           this.cookies.set('username', this.user.username, { httpOnly: false, overwrite: true, signed: true });
         } else {
-          this.cookies.set('auth', JSON.stringify({ isAuthenticated: false }), { httpOnly: false, overwrite: true });
           this.cookies.set('username', null, { httpOnly: false, overwrite: true, signed: true });
         }
       }

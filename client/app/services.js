@@ -78,6 +78,20 @@ app.factory('HighDPI', function () {
   }
 });
 
+/**
+ * Convert string to slug
+ *
+ * @param {string} str - string to convert
+ * @param {boolean} strip - removes non-word characters; do not replace with '-'
+ * @returns {string} - slug
+ */
+app.factory('Slug', function () {
+  return function (str, strip) {
+    if (strip === true) return str.toLowerCase().replace(/[_]/g, '').replace(/[^\w]+/g,'');
+    return str.toLowerCase().replace(/[ |_]/g, '-').replace(/[^\w-]+/g,'');
+  }
+});
+
 /*------------------------------------*\
     REQUEST/RESPONSE SERVICES
 \*------------------------------------*/
@@ -192,7 +206,7 @@ app.factory('DateHandler', ['_', function (_) {
  * User Service
  */
 app.factory('User', ['$rootScope', '$resource', '$location', function ($rootScope, $resource, $location) {
-  return $resource('api/users/:userId', {}, {
+  return $resource('api/users/:slug', {}, {
     save: { 
       method:'POST', 
       interceptor: {
@@ -204,7 +218,7 @@ app.factory('User', ['$rootScope', '$resource', '$location', function ($rootScop
     },
     signIn: {
       method: 'POST',
-      params: { userId: 'sign-in' },
+      params: { slug: 'sign-in' },
       interceptor: {
         response: function (res) {
           $rootScope.$broadcast('reloadNav');
@@ -214,7 +228,7 @@ app.factory('User', ['$rootScope', '$resource', '$location', function ($rootScop
     },
     signOut: {
       method: 'DELETE',
-      params: { userId: 'sign-out' },
+      params: { slug: 'sign-out' },
       interceptor: {
         response: function (res) {
           $rootScope.$broadcast('reloadNav');
@@ -245,9 +259,9 @@ app.factory('User', ['$rootScope', '$resource', '$location', function ($rootScop
  * @param   {boolean} [opts.delay=false]
  * @param   {number}  [opts.time=300]
  *
- * @returns {object|promise}
+ * @returns {string|promise} - logged-in username
  */
-app.factory('Auth', ['$cookies', '$q', function ($cookies, $q) {
+app.factory('Username', ['$cookies', '$q', function ($cookies, $q) {
 
   // this function is allowed to return a promise that accounts for cookie-setting delays
   // TODO: revisit this to see if this delay is removed or otherwise accounted for by Angular
@@ -255,10 +269,10 @@ app.factory('Auth', ['$cookies', '$q', function ($cookies, $q) {
     opts = opts || {};
     opts.delay = opts.delay || false;
     opts.time = opts.time || 300; // 300ms
-    if (opts.delay === false) return angular.fromJson($cookies.auth);
+    if (opts.delay === false) return $cookies.username;
     var deferred = $q.defer();
     setTimeout(function () {
-      deferred.resolve(angular.fromJson($cookies.auth));
+      deferred.resolve($cookies.username);
     }, opts.time);
     return deferred.promise;
   }

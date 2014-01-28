@@ -21,15 +21,12 @@ app.controller('HeadCtrl', ['$scope', 'Head', function ($scope, Head) {
  * Navigation Controller
  * TEMPLATE /partials/nav/index.html
  */
-app.controller('NavCtrl', ['$scope', '$location', 'Nav', 'Auth', function ($scope, $location, Nav, Auth) {
+app.controller('NavCtrl', ['$scope', '$location', 'Nav', function ($scope, $location, Nav) {
 
   // load nav
   var loadNav = function () {
     Nav().success(function (nav) {
       $scope.Nav = nav;
-      Auth({ delay: true }).then(function (auth) {
-        $scope.Auth = auth;
-      });
     });
   };
   loadNav();
@@ -114,37 +111,30 @@ app.controller('AccountSignUp', ['$scope', 'Head', 'User', function ($scope, Hea
  * ROUTE /#!/account/settings
  * TEMPLATE /partials/account/settings.html
  */
-app.controller('AccountSettings', ['$scope', '$upload', 'Head', 'User', 'Auth', 'Gravatar', function ($scope, $upload, Head, User, Auth, Gravatar) {
+app.controller('AccountSettings', ['$scope', '$upload', 'Head', 'User', 'Username', 'Slug', 'Gravatar', function ($scope, $upload, Head, User, Username, Slug, Gravatar) {
   Head.title('Account Details & Settings');
   Head.description('Edit the details and settings of your brewGet account.');
-  $scope.username = Auth().username;
-  $scope.user = User.get({ userId: $scope.username });
+  $scope.slug = Slug(Username(), true);
+  $scope.user = User.get({ slug: $scope.slug });
   $scope.Gravatar = Gravatar;
   $scope.onFileSelect = function ($files) {
-      //$files: an array of files selected, each file has name, size, and type.
-      for (var i = 0; i < $files.length; i++) {
-        var file = $files[i];
-        $scope.upload = $upload.upload({
-          url: 'api/users/' + $scope.username + '/images', //upload.php script, node.js route, or servlet url
-          // method: POST or PUT,
-          // headers: {'headerKey': 'headerValue'}, withCredential: true,
-          data: { myObj: $scope.myModelObj },
-          file: file,
-          // file: $files, //upload multiple files, this feature only works in HTML5 FromData browsers
-          /* set file formData name for 'Content-Desposition' header. Default: 'file' */
-          fileFormDataName: 'image',
-          /* customize how data is added to formData. See #40#issuecomment-28612000 for example */
-          //formDataAppender: function(formData, key, val){} 
-        }).progress(function (evt) {
-          console.log('percent: ' + parseInt(100.0 * evt.loaded / evt.total));
-        }).success(function (data, status, headers, config) {
-          // file is uploaded successfully
-          console.log(data);
-        });
-        //.error(...)
-        //.then(success, error, progress); 
-      }
-    };
+    for (var i = 0; i < $files.length; i++) {
+      var file = $files[i];
+      $scope.upload = $upload.upload({
+        url: 'api/users/' + $scope.slug + '/images',
+        data: { myObj: $scope.myModelObj },
+        file: file,
+        fileFormDataName: 'image',
+      }).progress(function (evt) {
+        console.log('percent: ' + parseInt(100.0 * evt.loaded / evt.total));
+      }).success(function (data, status, headers, config) {
+        // file is uploaded successfully
+        console.log(data);
+      });
+      //.error(...)
+      //.then(success, error, progress); 
+    }
+  };
 }]);
 
 /**
