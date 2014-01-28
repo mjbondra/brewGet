@@ -70,7 +70,7 @@ describe('Users & Authentication', function () {
     });
   });
 
-  describe('PUT /api/users/:username', function () {
+  describe('PUT /api/users/:slug', function () {
     describe('Invalid session (not self)', function () {
       describe('Non-existent user', function () {
         it('should return JSON and a 401', function (done) {
@@ -179,7 +179,7 @@ describe('Users & Authentication', function () {
     });
   });
 
-  describe('GET /api/users/:username', function () {
+  describe('GET /api/users/:slug', function () {
     describe('Non-existent user', function () {
       it('should return JSON and a 404', function (done) {
         request
@@ -265,7 +265,7 @@ describe('Users & Authentication', function () {
     });
   });
 
-  describe('DELETE /api/users/:username', function () {
+  describe('DELETE /api/users/:slug', function () {
     describe('Invalid session (not self)', function () {
       describe('Non-existent/non-session user', function () {
         it('should return JSON and a 401', function (done) {
