@@ -14,7 +14,8 @@ var crypto = require('crypto')
 /**
  * Schema dependencies; subdocuments
  */
-var ImageSchema = mongoose.model('Image').schema;
+var ImageSchema = mongoose.model('Image').schema
+  , LocationSchema = require('../../assets/lib/schema-definitions').location;
 
 /**
  * User schema
@@ -38,12 +39,7 @@ var UserSchema = new Schema({
   hash: String,
   images: [ ImageSchema ],
   location: String,
-  _location: {
-    city: String,
-    state: String,
-    latitude: Number,
-    longitude: Number
-  },
+  _location: LocationSchema,
   role: { 
     type: Number, 
     default: 1 

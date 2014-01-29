@@ -24,6 +24,10 @@ var PostSchema = new Schema({
   ft: [ BeerSchema ],
   images: [ ImageSchema ],
   iso: [ BeerSchema ],
+  slug: {
+    index: true,
+    type: String
+  },
   type: String,
   user: {
     username: String

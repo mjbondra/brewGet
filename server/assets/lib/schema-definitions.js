@@ -14,30 +14,50 @@ var mongoose = require('mongoose');
 var ImageSchema = mongoose.model('Image').schema
   , CommentSchema = mongoose.model('Comment').schema;
 
-module.exports = {
-  beer: {
-    abv: Number,
-    brewery: {
-      comments: [ CommentSchema ],
-      images: [ ImageSchema ],
-      info: String,
-      location: String,
-      _location: {
-        address: String,
-        city: String,
-        country: String,
-        latitude: Number,
-        longitude: Number,
-        state: String
-      },
-      name: String
-    },
+/**
+ * Location schema
+ */
+exports.location = {
+  address: String,
+  city: String,
+  country: String,
+  latitude: Number,
+  longitude: Number,
+  slug: {
+    city: String,
+    state: String
+  },
+  state: String
+}
+
+/**
+ * Beer/Brewery schema
+ */
+exports.beer = {
+  abv: Number,
+  aliases: Array,
+  brewery: {
+    aliases: Array,
     comments: [ CommentSchema ],
-    ibu: Number,
     images: [ ImageSchema ],
     info: String,
+    location: String,
+    _location: this.location,
     name: String,
-    slug: String,
-    style: String
-  }
+    rating: Number,
+    slug: String
+  },
+  comments: [ CommentSchema ],
+  ibu: Number,
+  images: [ ImageSchema ],
+  info: String,
+  name: String,
+  qty: [{
+    count: Number,
+    unit: String,
+    volume: Number
+  }],
+  rating: Number,
+  slug: String,
+  style: String,
 }

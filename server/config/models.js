@@ -5,6 +5,7 @@
 var models = [
   'image',
   'comment',
+  'location',
   'brewery',
   'beer',
   'user',
