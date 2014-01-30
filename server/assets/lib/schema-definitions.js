@@ -21,6 +21,7 @@ exports.location = {
   address: String,
   city: String,
   country: String,
+  formatted_address: String,
   latitude: Number,
   longitude: Number,
   slug: {

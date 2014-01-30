@@ -6,6 +6,7 @@ var crypto = require('crypto')
   , cU = require('../../assets/lib/common-utilities')
   , mongoose = require('mongoose')
   , msg = require('../../config/messages')
+  , Q = require('q')
   , sanitize = require('../../assets/lib/sanitizer-extended')
   , Schema = mongoose.Schema
   , uid = require('uid2')
@@ -15,6 +16,7 @@ var crypto = require('crypto')
  * Schema dependencies; subdocuments
  */
 var ImageSchema = mongoose.model('Image').schema
+  , Location = mongoose.model('Location')
   , LocationSchema = require('../../assets/lib/schema-definitions').location;
 
 /**
@@ -79,12 +81,27 @@ UserSchema.pre('validate', function (next) {
   if (!this.password && this.isNew) this.password = null;
   if (!this.birthday && this.isNew) this.birthday = null;
 
-  // parse location strings -- they may be plain strings, or stringified Google Places API objects
-  this.parseLocation(this.location);
-
   this.email = sanitize.escape(this.email);
   this.username = sanitize.escape(this.username);
-  next();
+
+  // parse location strings -- they may be plain strings, or stringified Google Places API objects
+  try {
+    var location = new Location(JSON.parse(this.location));
+    this._location = location;
+    this.location = location.formatted_address;
+    Q.ninvoke(location, 'save')
+      .then(function () {
+        next();
+      })
+      .fail(function () {
+        next();
+      });
+    
+  } catch (err) {
+    if (typeof this.location === 'string') this.location = sanitize.escape(this.location);
+    else this.location = '';
+    next();
+  }
 });
 
 /**
@@ -119,27 +136,6 @@ UserSchema.methods = {
   },
   makeSalt: function () {
     return uid(15);
-  },
-  parseLocation: function (location) {
-    try {
-      location = JSON.parse(location);
-      this.location = sanitize.escape(location.formatted_address);
-
-      // latitude & longitude
-      if (typeof location.latitude === 'number') this._location.latitude = location.latitude;
-      if (typeof location.longitude === 'number') this._location.longitude = location.longitude;
-
-      // city & state
-      var i = location.address_components.length;
-      while (i--) {
-        if (location.address_components[i].types[0] === 'locality') this._location.city = sanitize.escape(location.address_components[i].long_name);
-        else if (location.address_components[i].types[0] === 'administrative_area_level_1') this._location.state = sanitize.escape(location.address_components[i].short_name);
-        else if (location.address_components[i].types[0] === 'country' && !validate.inUSA(location.address_components[i].long_name)) this.invalidate('location', msg.location.notUS);
-      }
-    } catch (err) {
-      if (typeof this.location === 'string') this.location = sanitize.escape(this.location);
-      else this.location = '';
-    }
   }
 };
 
