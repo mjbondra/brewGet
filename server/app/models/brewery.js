@@ -5,7 +5,7 @@
 var mongoose = require('mongoose')
   , Schema = mongoose.Schema;
 
-var BrewerySchema = new Schema(require('../../assets/lib/schema-definitions').beer.brewery);
+var BrewerySchema = new Schema(require('../../config/schemas').beer.brewery);
 
 BrewerySchema.index({ slug: 1 }, { unique: true });
 

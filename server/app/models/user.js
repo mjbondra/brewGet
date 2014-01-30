@@ -17,7 +17,7 @@ var crypto = require('crypto')
  */
 var ImageSchema = mongoose.model('Image').schema
   , Location = mongoose.model('Location')
-  , LocationSchema = require('../../assets/lib/schema-definitions').location;
+  , LocationSchema = require('../../config/schemas').location;
 
 /**
  * User schema

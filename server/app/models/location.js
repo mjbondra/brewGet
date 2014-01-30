@@ -7,7 +7,7 @@ var cU = require('../../assets/lib/common-utilities')
   , sanitize = require('../../assets/lib/sanitizer-extended')
   , Schema = mongoose.Schema;
 
-var LocationSchema = new Schema(require('../../assets/lib/schema-definitions').location);
+var LocationSchema = new Schema(require('../../config/schemas').location);
 
 LocationSchema.index({ 'slug.city': 1, 'slug.state': 1 }, { unique: true });
 
