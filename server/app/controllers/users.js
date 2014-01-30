@@ -18,7 +18,6 @@ var User = mongoose.model('User');
  */
 var projection = { _id: 0, __v: 0, hash: 0, salt: 0, 'images._id': 0 };
 
-
 module.exports = {
 
   /**
