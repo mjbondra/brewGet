@@ -13,14 +13,14 @@ module.exports = function* () {
   ];
   if (this.user) {
     nav.actions = [
-      { title: 'Trade', href: '/trade/new' },
+      { title: 'Message', href: '/message/new' },
       { title: 'Post', href: '/posts/new' }
     ];
     nav.account = [
+      { title: 'Activity', href: '/account/dashboard' },
+      { title: 'Inbox', href: '/account/inbox' },
       { title: 'Settings', href: '/account/settings' },
-      { title: 'Sign out', href: '/account/sign-out' },
-      { title: 'MyTrades', href: '/account/my-trades' },
-      { title: 'MyPosts', href: '/account/my-posts' }
+      { title: 'Sign out', href: '/account/sign-out' }
     ];
   } else {
     nav.actions = [
@@ -28,5 +28,5 @@ module.exports = function* () {
       { title: 'Sign in', href: '/account/sign-in' }
     ];
   }
-  this.body = yield nav;
+  this.body = nav;
 }
