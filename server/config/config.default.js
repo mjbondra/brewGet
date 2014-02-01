@@ -18,7 +18,8 @@ module.exports = {
     path: {
       root: rootPath,
       static: rootPath + '/client',
-      tmp: rootPath + '/server/assets/tmp'
+      tmp: rootPath + '/server/assets/tmp',
+      upload: rootPath + '/client/assets/img'
     },
     port: port,
     secrets: ['secretString']
@@ -32,7 +33,8 @@ module.exports = {
     path: {
       root: rootPath,
       static: rootPath + '/client',
-      tmp: rootPath + '/server/assets/tmp'
+      tmp: rootPath + '/server/assets/tmp',
+      upload: rootPath + '/client/assets/img'
     },
     port: port,
     secrets: ['secretString']
@@ -46,7 +48,8 @@ module.exports = {
     path: {
       root: rootPath,
       static: rootPath + '/client',
-      tmp: rootPath + '/server/assets/tmp'
+      tmp: rootPath + '/server/assets/tmp',
+      upload: rootPath + '/client/assets/img'
     },
     port: port,
     secrets: ['secretString']

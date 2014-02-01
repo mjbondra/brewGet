@@ -2,7 +2,9 @@
 /**
  * Module dependencies
  */
-var cU = require('../../assets/lib/common-utilities')
+var coBody = require('co-body')
+  , coBusboy = require('co-busboy')
+  , cU = require('../../assets/lib/common-utilities')
   , mongoose = require('mongoose')
   , msg = require('../../config/messages')
   , Q = require('q')
@@ -11,7 +13,8 @@ var cU = require('../../assets/lib/common-utilities')
 /**
  * Models
  */
-var User = mongoose.model('User');
+var Image = mongoose.model('Image')
+  , User = mongoose.model('User');
 
 /**
  * Mongo projection paramater; includes or excludes fields
@@ -43,7 +46,7 @@ module.exports = {
    * POST /api/users
    */
   create: function *(next) {
-    var user = new User(this.request.body);
+    var user = new User(yield coBody(this));
     yield Q.ninvoke(user, 'save');
     this.user = user;
     this.session.user = user.id; // Serialize user to session
@@ -58,7 +61,7 @@ module.exports = {
   update: function *(next) {
     var user = yield Q.ninvoke(User, 'findOne', { slug: this.params.slug });
     if (!user) return yield next; // 404 Not Found
-    user = _.extend(user, this.request.body);
+    user = _.extend(user, yield coBody(this));
     yield Q.ninvoke(user, 'save');
     this.body = yield cU.updated('user', user, user.username);
   },
@@ -85,12 +88,17 @@ module.exports = {
      * POST /api/users/:slug/image
      */
     create: function *(next) {
-      // var user = yield Q.ninvoke(User, 'findOne', { username: this.params.username });
-      // if (!user) return yield next; // 404 Not Found
-      // if (this.req.files.file) user.images = [ this.req.files.file ];
-      // yield Q.ninvoke(user, 'save');
-      // var readStream = this.req.files.file.path;
-      console.log(this.req.files);
+      var parts = coBusboy(this, { 
+        limits: { 
+          files: 1, 
+          fileSize: 2097152 // 2 MB
+        }
+      });
+      var image = new Image();
+      yield image.stream(parts, {
+        subdir: 'users'
+      });
+
       yield next;
     },
 
@@ -140,21 +148,22 @@ module.exports = {
      * POST /api/users/sign-in
      */
     create: function *(next) {
+      var body = yield coBody(this);
       var msgJSONArray = [];
-      if (typeof this.request.body.username === 'undefined') msgJSONArray.push(cU.msg(msg.username.isNull, 'validation', 'username'));
-      if (typeof this.request.body.password === 'undefined') msgJSONArray.push(cU.msg(msg.password.isNull, 'validation', 'password'));
+      if (typeof body.username === 'undefined') msgJSONArray.push(cU.msg(msg.username.isNull, 'validation', 'username'));
+      if (typeof body.password === 'undefined') msgJSONArray.push(cU.msg(msg.password.isNull, 'validation', 'password'));
       if (msgJSONArray.length > 0) {
         this.status = 422; // 422 Unprocessable Entity
         this.body = yield cU.body(msgJSONArray);
         return;
       }
-      var user = yield Q.ninvoke(User, 'findOne', { $or: [ { username: this.request.body.username }, { email: this.request.body.username } ] });
+      var user = yield Q.ninvoke(User, 'findOne', { $or: [ { username: body.username }, { email: body.username } ] });
       if (!user) {
         this.status = 401; // 401 Unauthorized
-        this.body = yield cU.body(cU.msg(msg.authentication.incorrect.user(this.request.body.username), 'authentication', 'user'));
+        this.body = yield cU.body(cU.msg(msg.authentication.incorrect.user(body.username), 'authentication', 'user'));
         return;
       }
-      if (!user.authenticate(this.request.body.password, user.salt)) {
+      if (!user.authenticate(body.password, user.salt)) {
         this.status = 401; // 401 Unauthorized
         this.body = yield cU.body(cU.msg(msg.authentication.incorrect.password, 'authentication', 'user'));
         return;
