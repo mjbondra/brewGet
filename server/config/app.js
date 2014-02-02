@@ -8,7 +8,7 @@ var compress = require('koa-compress')
   , mongooseStore = require('koa-session-mongoose')
   , router = require('koa-router')
   , session = require('koa-session-store')
-  , static = require('koa-static-cache');
+  , static = require('koa-static');
 
 /**
  * Middleware
@@ -30,7 +30,6 @@ module.exports = function (app, config) {
   app.use(compress());
 
   // static files 
-  app.use(pathRewrite('/', '/index.html'));
   app.use(static(config.path.static));
 
   // error handling middleware

@@ -36,6 +36,7 @@
     "koa-router": "2.3.1",
     "koa-session-mongoose": "0.x",
     "koa-session-store": "0.x",
+    "koa-static": "1.x",
     "koa-static-cache": "1.x",
     "mime": "1.x",
     "mongoose": "3.8.3",
