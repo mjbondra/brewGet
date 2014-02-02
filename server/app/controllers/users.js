@@ -3,7 +3,6 @@
  * Module dependencies
  */
 var coBody = require('co-body')
-  , coBusboy = require('co-busboy')
   , cU = require('../../assets/lib/common-utilities')
   , mongoose = require('mongoose')
   , msg = require('../../config/messages')
@@ -88,17 +87,9 @@ module.exports = {
      * POST /api/users/:slug/image
      */
     create: function *(next) {
-      var parts = coBusboy(this, { 
-        limits: { 
-          files: 1, 
-          fileSize: 2097152 // 2 MB
-        }
-      });
       var image = new Image();
-      yield image.stream(parts, {
-        subdir: 'users'
-      });
-
+      yield image.stream(this, { subdir: 'users' });
+      console.log(image);
       yield next;
     },
 
