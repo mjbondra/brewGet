@@ -128,11 +128,8 @@ app.controller('AccountSettings', ['$scope', '$upload', 'Head', 'User', 'Usernam
       }).progress(function (evt) {
         console.log('percent: ' + parseInt(100.0 * evt.loaded / evt.total));
       }).success(function (data, status, headers, config) {
-        // file is uploaded successfully
         console.log(data);
       });
-      //.error(...)
-      //.then(success, error, progress); 
     }
   };
 }]);

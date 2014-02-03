@@ -30,6 +30,7 @@ var Schema = mongoose.Schema
  * Validation error names 
  */
 var validationsError = [
+  'ImageError',
   'MongoError', 
   'ValidationError'
 ];
@@ -67,6 +68,11 @@ module.exports = function () {
           });
           this.status = 422; // 422 Unprocessable Entity
           this.body = yield cU.body(msgJSONArray);
+        
+        // Image validation errors
+        } else if (err.name === 'ImageError' && err.message) {
+          this.status = 400;
+          this.body = yield cU.body(cU.msg(err.message, 'validation', 'image'));
         }
 
       // non-validation errors

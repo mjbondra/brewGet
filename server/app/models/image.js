@@ -14,6 +14,18 @@ var coBusboy = require('co-busboy')
   , Schema = mongoose.Schema
   , uid = require('uid2');
 
+/**
+ * Custom error type
+ */
+var ImageError = function (message) {
+  this.name = 'ImageError';
+  this.message = (message || '');
+}
+ImageError.prototype = Error.prototype;
+
+/**
+ * Image schema
+ */
 var ImageSchema = new Schema({
   alt: String,
   class: [ String ],
@@ -29,8 +41,10 @@ var ImageSchema = new Schema({
   src: String
 });
 
+/**
+ * Image methods
+ */
 ImageSchema.methods = {
-
   destroy: function *(image) {
     if (image.path) {
       var exists = yield coFs.exists(image.path);
@@ -124,13 +138,13 @@ ImageSchema.methods = {
           }
         } else {
           part.resume();
-          throw new Error(msg.image.mimeError(part.mime));
+          throw new ImageError(msg.image.mimeError(part.mime));
         }
       }
     }
 
     // validation
-    if (limitExceeded === true) throw new Error(msg.image.exceedsFileSize(opts.limits.fileSize));
+    if (limitExceeded === true) throw new ImageError(msg.image.exceedsFileSize(opts.limits.fileSize));
 
     this.alt = opts.alt;
     this.encoding = encoding;
@@ -146,12 +160,10 @@ ImageSchema.methods = {
         var exists = yield coFs.exists(path);
         if (exists) yield coFs.unlink(path);
       }
-      throw new Error(msg.image.unknownError);
+      throw new ImageError(msg.image.unknownError);
     }
 
     this.geometry = ( typeof geometry.promise !== 'undefined' ? yield geometry.promise : geometry );
-
-    
   }
 }
 

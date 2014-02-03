@@ -111,7 +111,7 @@ app.config(['$provide', '$httpProvider', function ($provide, $httpProvider) {
       },
       responseError: function (res) {
         /** response for authentication (401), validation (422), and uniqueness (409) errors */
-        if ((res.status === 401 || res.status === 409 || res.status === 422) && res.data && res.data.messages) {
+        if ((res.status === 400 || res.status === 401 || res.status === 409 || res.status === 422) && res.data && res.data.messages) {
           $rootScope.$broadcast('validationErrors', res.data.messages);
         }
         return $q.reject(res);
