@@ -27,6 +27,13 @@ module.exports = {
     updated: function (username) { return 'User \'' + username + '\' was updated'; }
   },
 
+  image: {
+    created: 'Image was successfully uploaded',
+    deleted: 'Images was successfully deleted',
+    error: 'The was an error while uploading this image',
+    mimeError: function (mime) { return 'File type \'' + mime + '\' is not supported'; }
+  },
+
   /*
    * Field validation messages
    */

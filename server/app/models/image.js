@@ -9,6 +9,7 @@ var coBusboy = require('co-busboy')
   , gm = require('gm')
   , mime = require('mime')
   , mongoose = require('mongoose')
+  , msg = require('../../config/messages')
   , Q = require('q')
   , Schema = mongoose.Schema
   , uid = require('uid2');
@@ -18,16 +19,25 @@ var ImageSchema = new Schema({
   class: [ String ],
   encoding: String,
   filename: String,
-  height: Number,
-  id: String,
+  geometry: {
+    height: Number,
+    width: Number
+  },
   mimetype: String,
   path: String,
   size: Number,
   src: String,
-  width: Number
+  type: String
 });
 
 ImageSchema.methods = {
+
+  destroy: function *(image) {
+    if (image.path) {
+      var exists = yield coFs.exists(image.path);
+      if (exists) yield coFs.unlink(image.path);
+    }
+  },
 
   resize: function *() {},
 
@@ -40,43 +50,102 @@ ImageSchema.methods = {
    */
   stream: function *(ctx, opts) {
     opts = opts || {};
+    opts.alt = opts.alt || 'image';
+    opts.crop = opts.crop || false;
+    opts.width = opts.width || '400';
+    opts.height = opts.height || '400';
     opts.subdir = opts.subdir || '';
     opts.limits = opts.limits || {};
     opts.limits.files = 1;
     opts.limits.fileSize = opts.limits.fileSize || 2097152 // 2 MB;
   
-    var parts = coBusboy(ctx, opts);
+    var parts = coBusboy(ctx, { limits: opts.limits });
 
     var dir = config.path.upload + ( opts.subdir ? '/' + opts.subdir : '' )
-      , filename = new Date().valueOf() + '-' + uid(6)
-      , path = dir + '/' + filename + '.jpg'
-      , types = [ 'image/png', 'image/jpeg', 'image/gif' ]
-      , size = Q.defer();
+      , geometry = ( opts.crop === true ? { height: opts.height, width: opts.width } : Q.defer() )
+      , limitExceeded = false
+      , size = Q.defer()
+      , types = [ 'image/png', 'image/jpeg', 'image/gif' ];
+    
+    var encoding, filename, mimetype, path;
+
+    // reusable callback for graphicsmagick
+    var gmCallback = function (err, stdout, stderr) {
+      var writeStream = fs.createWriteStream(path);
+      stdout.on('error', function (err) {
+        if (path) fs.unlink(path);
+        size.reject(new Error(err));
+      });
+      stdout.on('end', function () {
+        size.resolve(this.bytesRead);
+        if (opts.crop === false && limitExceeded === false) {
+          var readStream = fs.createReadStream(path);
+          gm(readStream).size({ buffer: true }, function (err, size) {
+            if (err) {
+              fs.unlink(path);
+              geometry.reject(new Error(err));
+            } else {
+              geometry.resolve(size);
+            }
+          });
+        }
+      });
+      stdout.pipe(writeStream);
+    }
 
     while (part = yield parts) {
       if (!part.length) {
         if (part.mime === 'application/octet-stream' && part.filename) part.mime = mime.lookup(part.filename);
 
-        part.on('limit', function () {
-          fs.unlink(path);
-        });
+        if (types.indexOf(part.mime) >= 0) {
+          var extension = mime.extension(part.mime);
 
-        gm(part)
-          .resize('400', '400')
-          .strip()
-          .stream('jpeg', function (err, stdout, stderr) {
-            var writeStream = fs.createWriteStream(path);
+          encoding = part.encoding;
+          filename = new Date().valueOf() + '-' + uid(6) + '.' + ( extension === 'jpeg' ? 'jpg' : extension );
+          mimetype = part.mime;
+          path = dir + '/' + filename;
 
-            stdout.on('end', function () {
-              size.resolve(this.bytesRead);
-            });
-
-            stdout.pipe(writeStream);
+          part.on('limit', function () {
+            limitExceeded = true;
+            fs.unlink(path);
+            geometry = {};
+            encoding = null;
+            filename = null;
+            mimetype = null;
+            path = null;
           });
+
+          if (opts.crop === true) {
+            gm(part)
+              .resize(opts.width, opts.height, '^')
+              .gravity('Center')
+              .crop(opts.width, opts.height)
+              .strip()
+              .stream(gmCallback);
+          } else {
+            gm(part)
+              .resize(opts.width, opts.height)
+              .strip()
+              .stream(gmCallback);
+          }
+        } else {
+          part.resume();
+          throw new Error(msg.image.mimeError(part.mime));
+        }
       }
     }
 
+    this.alt = opts.alt;
+    this.encoding = encoding;
+    this.filename = filename;
+    this.mimetype = mimetype;
+    this.path = path;
+    this.src = '/assets/img/' + ( opts.subdir ? opts.subdir + '/' : '' ) + filename;
+    this.type = opts.subdir;
+
+    // (potentially) promised values
     this.size = yield size.promise;
+    this.geometry = ( typeof geometry.promise !== 'undefined' ? yield geometry.promise : geometry );
   }
 }
 

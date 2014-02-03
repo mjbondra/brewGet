@@ -18,7 +18,7 @@ var Image = mongoose.model('Image')
 /**
  * Mongo projection paramater; includes or excludes fields
  */
-var projection = { _id: 0, __v: 0, hash: 0, salt: 0, 'images._id': 0 };
+var projection = { _id: 0, __v: 0, hash: 0, salt: 0, 'images._id': 0, 'images.path': 0 };
 
 module.exports = {
 
@@ -87,10 +87,25 @@ module.exports = {
      * POST /api/users/:slug/image
      */
     create: function *(next) {
+      var user = yield Q.ninvoke(User, 'findOne', { slug: this.params.slug });
+      if (!user) return yield next; // 404 Not Found
       var image = new Image();
-      yield image.stream(this, { subdir: 'users' });
-      console.log(image);
-      yield next;
+      yield image.stream(this, { alt: user.username, crop: true, subdir: 'users' });
+      if (image.filename) {
+        if (user.images.length > 0) { // remove old image(s)
+          var i = user.images.length;
+          while (i--) { 
+            yield image.destroy(user.images[i]);
+          }
+        }
+        user.images = image; // limit user images to a single (current) image
+        yield Q.ninvoke(user, 'save');
+        this.status = 201;
+        this.body = msg.image.created;
+      } else { // image not present
+        this.status = 400;
+        this.body = msg.image.error;
+      }
     },
 
     /**
