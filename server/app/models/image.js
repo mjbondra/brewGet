@@ -26,8 +26,7 @@ var ImageSchema = new Schema({
   mimetype: String,
   path: String,
   size: Number,
-  src: String,
-  type: String
+  src: String
 });
 
 ImageSchema.methods = {
@@ -108,11 +107,6 @@ ImageSchema.methods = {
           part.on('limit', function () {
             limitExceeded = true;
             fs.unlink(path);
-            geometry = {};
-            encoding = null;
-            filename = null;
-            mimetype = null;
-            path = null;
           });
 
           if (opts.crop === true) {
@@ -135,17 +129,29 @@ ImageSchema.methods = {
       }
     }
 
+    // validation
+    if (limitExceeded === true) throw new Error(msg.image.exceedsFileSize(opts.limits.fileSize));
+
     this.alt = opts.alt;
     this.encoding = encoding;
     this.filename = filename;
     this.mimetype = mimetype;
     this.path = path;
     this.src = '/assets/img/' + ( opts.subdir ? opts.subdir + '/' : '' ) + filename;
-    this.type = opts.subdir;
 
     // (potentially) promised values
     this.size = yield size.promise;
+    if (!this.size || this.size === 0) {
+      if (path) {
+        var exists = yield coFs.exists(path);
+        if (exists) yield coFs.unlink(path);
+      }
+      throw new Error(msg.image.unknownError);
+    }
+
     this.geometry = ( typeof geometry.promise !== 'undefined' ? yield geometry.promise : geometry );
+
+    
   }
 }
 

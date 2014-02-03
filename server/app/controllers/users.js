@@ -91,21 +91,16 @@ module.exports = {
       if (!user) return yield next; // 404 Not Found
       var image = new Image();
       yield image.stream(this, { alt: user.username, crop: true, subdir: 'users' });
-      if (image.filename) {
-        if (user.images.length > 0) { // remove old image(s)
-          var i = user.images.length;
-          while (i--) { 
-            yield image.destroy(user.images[i]);
-          }
+      if (user.images.length > 0) { // remove old image(s)
+        var i = user.images.length;
+        while (i--) { 
+          yield image.destroy(user.images[i]);
         }
-        user.images = image; // limit user images to a single (current) image
-        yield Q.ninvoke(user, 'save');
-        this.status = 201;
-        this.body = msg.image.created;
-      } else { // image not present
-        this.status = 400;
-        this.body = msg.image.error;
       }
+      user.images = image; // limit user images to a single (current) image
+      yield Q.ninvoke(user, 'save');
+      this.status = 201;
+      this.body = msg.image.created;
     },
 
     /**

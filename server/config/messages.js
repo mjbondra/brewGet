@@ -30,8 +30,9 @@ module.exports = {
   image: {
     created: 'Image was successfully uploaded',
     deleted: 'Images was successfully deleted',
-    error: 'The was an error while uploading this image',
-    mimeError: function (mime) { return 'File type \'' + mime + '\' is not supported'; }
+    exceedsFileSize: function (size) { return 'Image must be smaller than ' + size / 1024 / 1024 + ' MB'; },
+    mimeError: function (mime) { return 'File type \'' + mime + '\' is not supported'; },
+    unknownError: 'The was an unknown error while uploading this image'
   },
 
   /*
