@@ -38,6 +38,7 @@ var ImageSchema = new Schema({
   highDPI: Boolean,
   mimetype: String,
   path: String,
+  related: String,
   size: Number,
   src: String,
   type: String
@@ -57,6 +58,7 @@ ImageSchema.methods = {
   resize: function *(image, opts) {
     opts = opts || {};
     opts.percentage = opts.percentage || true;
+    opts.geometry = opts.geometry || {};
     opts.geometry.height = opts.geometry.height || 50;
     opts.geometry.width = opts.geometry.width || 50;
 
@@ -76,6 +78,27 @@ ImageSchema.methods = {
         });
         stdout.pipe(writeStream);
       });
+
+    this.alt = image.alt;
+    this.encoding = image.encoding;
+    this.filename = filename;
+    this.highDPI = false;
+    this.mimetype = image.mimetype;
+    this.path = path;
+    this.related = image.related;
+    this.src = '/assets/img/' + ( image.type ? image.type + '/' : '' ) + filename;
+    this.type = image.type;
+
+    if (opts.percentage === true) {
+      this.geometry.height = image.geometry.height * ( opts.geometry.height / 100 );
+      this.geometry.width = image.geometry.width * ( opts.geometry.width / 100 );
+    } else {
+      this.geometry.height = image.geometry.height;
+      this.geometry.width = image.geometry.width;
+    }
+
+    // (potentially) promised values
+    this.size = yield size.promise;
   },
 
   /**
@@ -90,8 +113,8 @@ ImageSchema.methods = {
     opts.alt = opts.alt || 'image';
     opts.crop = opts.crop || false;
     opts.geometry = opts.geometry || {};
-    opts.geometry.height = opts.geometry.height || '400';
-    opts.geometry.width = opts.geometry.width || '400';
+    opts.geometry.height = opts.geometry.height || 400;
+    opts.geometry.width = opts.geometry.width || 400;
     opts.type = opts.type || '';
     opts.limits = opts.limits || {};
     opts.limits.files = 1;
@@ -173,7 +196,7 @@ ImageSchema.methods = {
 
     this.alt = opts.alt;
     this.encoding = encoding;
-    this.filename = filename;
+    this.filename = this.related = filename;
     this.highDPI = true;
     this.mimetype = mimetype;
     this.path = path;
