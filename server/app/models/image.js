@@ -48,6 +48,12 @@ var ImageSchema = new Schema({
  * Image methods
  */
 ImageSchema.methods = {
+
+  /**
+   * Deletes an image from the filesystem
+   *
+   * @param {object} Image - image object
+   */
   destroy: function *(image) {
     if (image.path) {
       var exists = yield coFs.exists(image.path);
@@ -55,12 +61,22 @@ ImageSchema.methods = {
     }
   },
 
+  /**
+   * Handler for resizing an existing image and populating a new image object
+   *
+   * @param   {object}  image                 -   image object
+   * @param   {object}  opts                  -   image options
+   * @param   {object}  opts.geometry         -   image geometry
+   * @param   {number}  opts.geometry.height  -   image height
+   * @param   {number}  opts.geometry.width   -   image width
+   * @param   {boolean} opts.percentage       -   treat geometry as percentage values
+   */
   resize: function *(image, opts) {
     opts = opts || {};
-    opts.percentage = opts.percentage || true;
     opts.geometry = opts.geometry || {};
     opts.geometry.height = opts.geometry.height || 50;
     opts.geometry.width = opts.geometry.width || 50;
+    opts.percentage = opts.percentage || true;
 
     var dir = config.path.upload + ( image.type ? '/' + image.type : '' )
       , extension = mime.extension(image.mimetype)
@@ -105,8 +121,16 @@ ImageSchema.methods = {
    * Handler for form data containing an image
    * ! LIMITED TO SINGLE IMAGE UPLOADS !
    *
-   * @param   {object}  ctx   -   koa context object
-   * @param   {object}  opts
+   * @param   {object}  ctx                   -   koa context object
+   * @param   {object}  opts                  -   image options
+   * @param   {string}  opts.alt              -   image alt text
+   * @param   {boolean} opts.crop             -   create an image that crops to exact dimensions
+   * @param   {object}  opts.geometry         -   image geometry
+   * @param   {number}  opts.geometry.height  -   image height
+   * @param   {number}  opts.geometry.width   -   image width
+   * @param   {string}  opts.type             -   type of image, and name of subdirectory in which to store
+   * @param   {object}  opts.limits           -   busboy limits
+   * @param   {number}  opts.limits.fileSize  -   max file size in bytes
    */
   stream: function *(ctx, opts) {
     opts = opts || {};
@@ -136,7 +160,6 @@ ImageSchema.methods = {
       var writeStream = fs.createWriteStream(path);
       stdout.on('error', function (err) {
         fs.unlink(path);
-        streamError = err;
         size.reject(new Error(err));
       });
       stdout.on('end', function () {
