@@ -126,6 +126,7 @@ ImageSchema.methods = {
       , geometry = ( opts.crop === true ? opts.geometry : Q.defer() )
       , limitExceeded = false
       , size = Q.defer()
+      , streamError = false
       , types = [ 'image/png', 'image/jpeg', 'image/gif' ];
     
     var encoding, filename, mimetype, path;
@@ -135,6 +136,7 @@ ImageSchema.methods = {
       var writeStream = fs.createWriteStream(path);
       stdout.on('error', function (err) {
         fs.unlink(path);
+        streamError = err;
         size.reject(new Error(err));
       });
       stdout.on('end', function () {
@@ -166,6 +168,10 @@ ImageSchema.methods = {
           mimetype = part.mime;
           path = dir + '/' + filename;
 
+          // busboy stream events
+          part.on('error', function (err) {
+            streamError = err;
+          });
           part.on('limit', function () {
             limitExceeded = true;
             fs.unlink(path);
@@ -205,7 +211,7 @@ ImageSchema.methods = {
 
     // (potentially) promised values
     this.size = yield size.promise;
-    if (!this.size || this.size === 0) {
+    if (!this.size || this.size === 0 || streamError !== false) {
       if (path) {
         var exists = yield coFs.exists(path);
         if (exists) yield coFs.unlink(path);

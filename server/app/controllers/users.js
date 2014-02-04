@@ -92,7 +92,7 @@ module.exports = {
       var imageHiDPI = new Image();
       yield imageHiDPI.stream(this, { alt: user.username, crop: true, type: 'users' });
       var imageLoDPI = new Image();
-      yield imageLoDPI.resize(imageHiDPI);
+      yield imageLoDPI.resize(imageHiDPI); // create half-sized version of HighDPI image
       if (user.images.length > 0) { // remove old image(s)
         var i = user.images.length;
         while (i--) { 
