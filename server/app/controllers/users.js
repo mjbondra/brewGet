@@ -90,7 +90,7 @@ module.exports = {
       var user = yield Q.ninvoke(User, 'findOne', { slug: this.params.slug });
       if (!user) return yield next; // 404 Not Found
       var image = new Image();
-      yield image.stream(this, { alt: user.username, crop: true, subdir: 'users' });
+      yield image.stream(this, { alt: user.username, crop: true, type: 'users' });
       if (user.images.length > 0) { // remove old image(s)
         var i = user.images.length;
         while (i--) { 
