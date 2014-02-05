@@ -89,17 +89,25 @@ module.exports = {
     create: function *(next) {
       var user = yield Q.ninvoke(User, 'findOne', { slug: this.params.slug });
       if (!user) return yield next; // 404 Not Found
-      var imageHiDPI = new Image();
+      var imageHiDPI = new Image()
+        , imageLoDPI = new Image()
+        , imageSmHiDPI = new Image()
+        , imageSmLoDPI = new Image()
+
       yield imageHiDPI.stream(this, { alt: user.username, crop: true, type: 'users' });
-      var imageLoDPI = new Image();
-      yield imageLoDPI.resize(imageHiDPI); // create half-sized version of HighDPI image
+      yield Q.all([ // resize multiple images asynchronously; yield until all are complete
+        imageLoDPI.resizeAsync(imageHiDPI), 
+        imageSmHiDPI.resizeAsync(imageHiDPI, { geometry: { height: 78, width: 78 }, highDPI: true, percentage: false }),
+        imageSmLoDPI.resizeAsync(imageHiDPI, { geometry: { height: 39, width: 39 }, percentage: false })
+      ]);
+
       if (user.images.length > 0) { // remove old image(s)
         var i = user.images.length;
         while (i--) { 
           yield imageHiDPI.destroy(user.images[i]);
         }
       }
-      user.images = [ imageHiDPI, imageLoDPI ]; // limit user images to a single (current) image
+      user.images = [ imageHiDPI, imageLoDPI, imageSmHiDPI, imageSmLoDPI ]; // limit user images to a single (current) image
       yield Q.ninvoke(user, 'save');
       this.status = 201;
       this.body = msg.image.created;

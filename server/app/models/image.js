@@ -62,7 +62,7 @@ ImageSchema.methods = {
   },
 
   /**
-   * Handler for resizing an existing image and populating a new image object
+   * Yieldable generator function for resizing an existing image and populating a new image object
    *
    * @param   {object}  image                 -   image object
    * @param   {object}  opts                  -   image options
@@ -76,7 +76,8 @@ ImageSchema.methods = {
     opts.geometry = opts.geometry || {};
     opts.geometry.height = opts.geometry.height || 50;
     opts.geometry.width = opts.geometry.width || 50;
-    opts.percentage = opts.percentage || true;
+    opts.highDPI = ( opts.highDPI === true ? true : false );
+    opts.percentage = ( opts.percentage === false ? false : true );
 
     var dir = config.path.upload + ( image.type ? '/' + image.type : '' )
       , extension = mime.extension(image.mimetype)
@@ -86,7 +87,7 @@ ImageSchema.methods = {
       , size = Q.defer();
 
     gm(readStream)
-      .resize(opts.geometry.width, opts.geometry.height, '%')
+      .resize(opts.geometry.width, opts.geometry.height, ( opts.percentage === true ? '%' : ''))
       .stream(function (err, stdout, stderr) {
         var writeStream = fs.createWriteStream(path);
         stdout.on('end', function () {
@@ -98,7 +99,7 @@ ImageSchema.methods = {
     this.alt = image.alt;
     this.encoding = image.encoding;
     this.filename = filename;
-    this.highDPI = false;
+    this.highDPI = opts.highDPI;
     this.mimetype = image.mimetype;
     this.path = path;
     this.related = image.related;
@@ -115,6 +116,75 @@ ImageSchema.methods = {
 
     // (potentially) promised values
     this.size = yield size.promise;
+  },
+
+  /**
+   * Function for resizing an existing image and populating a new image object asynchronously
+   *
+   * @param   {object}  image                 -   image object
+   * @param   {object}  opts                  -   image options
+   * @param   {object}  opts.geometry         -   image geometry
+   * @param   {number}  opts.geometry.height  -   image height
+   * @param   {number}  opts.geometry.width   -   image width
+   * @param   {boolean} opts.highDPI          -   image is high DPI variant
+   * @param   {boolean} opts.percentage       -   treat geometry as percentage values
+   *
+   * @returns {promise}                       -   promise for a populated image object
+   */
+  resizeAsync: function (image, opts) {
+    var _image = Q.defer();
+
+    opts = opts || {};
+    opts.geometry = opts.geometry || {};
+    opts.geometry.height = opts.geometry.height || 50;
+    opts.geometry.width = opts.geometry.width || 50;
+    opts.highDPI = ( opts.highDPI === true ? true : false );
+    opts.percentage = ( opts.percentage === false ? false : true );
+
+    var dir = config.path.upload + ( image.type ? '/' + image.type : '' )
+      , extension = mime.extension(image.mimetype)
+      , filename = new Date().valueOf() + '-' + uid(6) + '.' + ( extension === 'jpeg' ? 'jpg' : extension )
+      , path = dir + '/' + filename
+      , readStream = fs.createReadStream(image.path)
+      , _size = Q.defer();
+
+    gm(readStream)
+      .resize(opts.geometry.width, opts.geometry.height, ( opts.percentage === true ? '%' : ''))
+      .stream(function (err, stdout, stderr) {
+        var writeStream = fs.createWriteStream(path);
+        stdout.on('end', function () {
+          _size.resolve(this.bytesRead);
+        });
+        stdout.pipe(writeStream);
+      });
+
+    this.alt = image.alt;
+    this.encoding = image.encoding;
+    this.filename = filename;
+    this.highDPI = opts.highDPI;
+    this.mimetype = image.mimetype;
+    this.path = path;
+    this.related = image.related;
+    this.src = '/assets/img/' + ( image.type ? image.type + '/' : '' ) + filename;
+    this.type = image.type;
+
+    if (opts.percentage === true) {
+      this.geometry.height = image.geometry.height * ( opts.geometry.height / 100 );
+      this.geometry.width = image.geometry.width * ( opts.geometry.width / 100 );
+    } else {
+      this.geometry.height = opts.geometry.height;
+      this.geometry.width = opts.geometry.width;
+    }
+
+    // promised values
+    _size.promise.then(function (size) {
+      this.size = size;
+      _image.resolve();
+    }.bind(this)).fail(function (err) {
+      _image.reject(new Error(err));
+    });
+
+    return _image.promise;
   },
 
   /**
