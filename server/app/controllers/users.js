@@ -97,8 +97,8 @@ module.exports = {
       yield imageHiDPI.stream(this, { alt: user.username, crop: true, type: 'users' });
       yield Q.all([ // resize multiple images asynchronously; yield until all are complete
         imageLoDPI.resizeAsync(imageHiDPI), 
-        imageSmHiDPI.resizeAsync(imageHiDPI, { geometry: { height: 78, width: 78 }, highDPI: true, percentage: false }),
-        imageSmLoDPI.resizeAsync(imageHiDPI, { geometry: { height: 39, width: 39 }, percentage: false })
+        imageSmHiDPI.resizeAsync(imageHiDPI, { geometry: { height: 80, width: 80 }, highDPI: true, percentage: false }),
+        imageSmLoDPI.resizeAsync(imageHiDPI, { geometry: { height: 40, width: 40 }, percentage: false })
       ]);
 
       if (user.images.length > 0) { // remove old image(s)
