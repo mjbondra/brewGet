@@ -94,14 +94,16 @@ module.exports = {
         , imageSmHiDPI = new Image()
         , imageSmLoDPI = new Image()
 
+      // stream image from form data
       yield imageHiDPI.stream(this, { alt: user.username, crop: true, type: 'users' });
       yield Q.all([ // resize multiple images asynchronously; yield until all are complete
-        imageLoDPI.resizeAsync(imageHiDPI), 
+        imageLoDPI.resizeAsync(imageHiDPI), // 50% height / 50% width
         imageSmHiDPI.resizeAsync(imageHiDPI, { geometry: { height: 80, width: 80 }, highDPI: true, percentage: false }),
         imageSmLoDPI.resizeAsync(imageHiDPI, { geometry: { height: 40, width: 40 }, percentage: false })
       ]);
 
-      if (user.images.length > 0) { // remove old image(s)
+      // remove old images
+      if (user.images.length > 0) {
         var i = user.images.length;
         while (i--) { 
           yield imageHiDPI.destroy(user.images[i]);
@@ -118,7 +120,19 @@ module.exports = {
      * DELETE /api/users/:slug/image
      */
     destroy: function *(next) {
-      yield next;
+      var user = yield Q.ninvoke(User, 'findOne', { slug: this.params.slug });
+      if (!user) return yield next; // 404 Not Found
+      var _image = new Image();
+
+      // remove images
+      if (user.images.length > 0) {
+        var i = user.images.length;
+        while (i--) { 
+          yield _image.destroy(user.images[i]);
+        }
+      }
+
+      this.body = msg.image.deleted;
     }
   },
 

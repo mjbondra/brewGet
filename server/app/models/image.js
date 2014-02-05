@@ -230,6 +230,7 @@ ImageSchema.methods = {
       var writeStream = fs.createWriteStream(path);
       stdout.on('error', function (err) {
         fs.unlink(path);
+        streamError = err;
         size.reject(new Error(err));
       });
       stdout.on('end', function () {
@@ -239,6 +240,7 @@ ImageSchema.methods = {
           gm(readStream).size({ buffer: true }, function (err, size) {
             if (err) {
               fs.unlink(path);
+              streamError = err;
               geometry.reject(new Error(err));
             } else {
               geometry.resolve(size);
