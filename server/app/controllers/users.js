@@ -60,7 +60,7 @@ module.exports = {
   update: function *(next) {
     var user = yield Q.ninvoke(User, 'findOne', { slug: this.params.slug });
     if (!user) return yield next; // 404 Not Found
-    user = _.extend(user, yield coBody(this));
+    user = _.extend(user, _.omit(yield coBody(this), 'images'));
     yield Q.ninvoke(user, 'save');
     this.body = yield cU.updated('user', user, user.username);
   },
@@ -89,30 +89,32 @@ module.exports = {
     create: function *(next) {
       var user = yield Q.ninvoke(User, 'findOne', { slug: this.params.slug });
       if (!user) return yield next; // 404 Not Found
-      var imageHiDPI = new Image()
+      var image = new Image()
+        , imageHiDPI = new Image()
         , imageLoDPI = new Image()
         , imageSmHiDPI = new Image()
         , imageSmLoDPI = new Image()
 
       // stream image from form data
-      yield imageHiDPI.stream(this, { alt: user.username, crop: true, type: 'users' });
+      yield image.stream(this, { alt: user.username, crop: true, type: 'users' });
       yield Q.all([ // resize multiple images asynchronously; yield until all are complete
-        imageLoDPI.resizeAsync(imageHiDPI), // 50% height / 50% width
-        imageSmHiDPI.resizeAsync(imageHiDPI, { geometry: { height: 80, width: 80 }, highDPI: true, percentage: false }),
-        imageSmLoDPI.resizeAsync(imageHiDPI, { geometry: { height: 40, width: 40 }, percentage: false })
+        imageHiDPI.resizeAsync(image, { highDPI: true }), // 50% height / 50% width
+        imageLoDPI.resizeAsync(image, { geometry: { height: 25, width: 25 }}), // 25% height / 25% width 
+        imageSmHiDPI.resizeAsync(image, { geometry: { height: 80, width: 80 }, highDPI: true, percentage: false }),
+        imageSmLoDPI.resizeAsync(image, { geometry: { height: 40, width: 40 }, percentage: false })
       ]);
 
       // remove old images
       if (user.images.length > 0) {
         var i = user.images.length;
         while (i--) { 
-          yield imageHiDPI.destroy(user.images[i]);
+          yield image.destroy(user.images[i]);
         }
       }
-      user.images = [ imageHiDPI, imageLoDPI, imageSmHiDPI, imageSmLoDPI ]; // limit user images to a single (current) image
+      user.images = [ image, imageHiDPI, imageLoDPI, imageSmHiDPI, imageSmLoDPI ]; // limit user images to a single (current) image
       yield Q.ninvoke(user, 'save');
       this.status = 201;
-      this.body = msg.image.created;
+      this.body = yield cU.censor(user.images, [ '_id', 'path' ]);
     },
 
     /**
@@ -131,7 +133,9 @@ module.exports = {
           yield _image.destroy(user.images[i]);
         }
       }
+      user.images = [];
 
+      yield Q.ninvoke(user, 'save');
       this.body = msg.image.deleted;
     }
   },

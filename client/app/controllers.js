@@ -21,12 +21,12 @@ app.controller('HeadCtrl', ['$scope', 'Head', function ($scope, Head) {
  * Navigation Controller
  * TEMPLATE /partials/nav/index.html
  */
-app.controller('NavCtrl', ['$scope', '$location', 'Nav', function ($scope, $location, Nav) {
+app.controller('NavCtrl', ['$scope', '$location', 'API', function ($scope, $location, API) {
 
   // load nav
   var loadNav = function () {
-    Nav().success(function (nav) {
-      $scope.Nav = nav;
+    API('api/nav').success(function (data) {
+      $scope.Nav = data;
     });
   };
   loadNav();
@@ -88,10 +88,10 @@ app.controller('HomeCtrl', ['$scope', 'Head', 'MikeData', function ($scope, Head
  * ROUTE /#!/users
  * TEMPLATE /partials/users/index.html
  */
-app.controller('UserIndex', ['$scope', 'Head', 'User', 'Gravatar', function ($scope, Head, User, Gravatar) {
+app.controller('UserIndex', ['$scope', 'Head', 'User', 'ImageSelect', function ($scope, Head, User, ImageSelect) {
   Head.title('Users');
   Head.description('An index of users on brewGet.');
-  $scope.Gravatar = Gravatar;
+  $scope.ImageSelect = ImageSelect;
   $scope.users = User.query();
 }]);
 
@@ -111,12 +111,18 @@ app.controller('AccountSignUp', ['$scope', 'Head', 'User', function ($scope, Hea
  * ROUTE /#!/account/settings
  * TEMPLATE /partials/account/settings.html
  */
-app.controller('AccountSettings', ['$scope', '$upload', 'Head', 'User', 'Username', 'Slug', 'Gravatar', function ($scope, $upload, Head, User, Username, Slug, Gravatar) {
+app.controller('AccountSettings', ['$scope', '$upload', 'API', 'Head', 'User', 'Username', 'Slug', 'ImageSelect', function ($scope, $upload, API, Head, User, Username, Slug, ImageSelect) {
   Head.title('Account Details & Settings');
   Head.description('Edit the details and settings of your brewGet account.');
   $scope.slug = Slug(Username(), true);
   $scope.user = User.get({ slug: $scope.slug });
-  $scope.Gravatar = Gravatar;
+  $scope.ImageSelect = ImageSelect;
+
+  $scope.imageDelete = function () {
+    API('api/users/' + $scope.slug + '/images', 'DELETE').success(function (data, status, headers, config) {
+      $scope.user.images = [];
+    });
+  };
   $scope.onFileSelect = function ($files) {
     for (var i = 0; i < $files.length; i++) {
       var file = $files[i];
@@ -128,6 +134,7 @@ app.controller('AccountSettings', ['$scope', '$upload', 'Head', 'User', 'Usernam
       }).progress(function (evt) {
         console.log('percent: ' + parseInt(100.0 * evt.loaded / evt.total));
       }).success(function (data, status, headers, config) {
+        $scope.user.images = data;
         console.log(data);
       });
     }

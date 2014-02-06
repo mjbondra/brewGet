@@ -205,7 +205,7 @@ ImageSchema.methods = {
   stream: function *(ctx, opts) {
     opts = opts || {};
     opts.alt = opts.alt || 'image';
-    opts.crop = opts.crop || false;
+    opts.crop = ( opts.crop === true ? true : false );
     opts.geometry = opts.geometry || {};
     opts.geometry.height = opts.geometry.height || 400;
     opts.geometry.width = opts.geometry.width || 400;

@@ -289,6 +289,18 @@ input-date {
   }
 }
 
+.fa {
+  &.fa-times-circle {
+    cursor: pointer;
+  }
+}
+
+
+.user-image {
+  height: 100px;
+  width: 100px;
+}
+
 /*------------------------------------*\
     CONTENT
 \*------------------------------------*/

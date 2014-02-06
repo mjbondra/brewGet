@@ -30,7 +30,7 @@ app.factory('Gravatar', ['HighDPI', function (HighDPI) {
   return {
     url: function (email, options, https) {
       options = options || {};
-      options.s = ( HighDPI() ? options.s * 2 : options.s ) || ( HighDPI() ? 200 : 100 );
+      options.s = options.s || 100;
       if (email) return gravatar.url(email, options, https);
     }
   };
@@ -61,6 +61,16 @@ app.factory('PlacesAPI', ['$rootScope', function ($rootScope) {
     UTILITY SERVICES
 \*------------------------------------*/
 
+/**
+ * API Service
+ */
+app.factory('API', ['$http', function ($http) {
+  return function (url, method) {
+    method = method || 'GET';
+    return $http({ method: method, url: url, params: { t: new Date().getTime() }});
+  };
+}]);
+
 /** 
  * HighDPI Service - inspired by RetinaJS (http://retinajs.com/)
  *
@@ -77,6 +87,30 @@ app.factory('HighDPI', function () {
     return false;
   }
 });
+
+/** 
+ * Image selection service that will pull an appropriately sized image an array of images
+ *
+ * @param {array} - an array of images
+ */
+app.factory('ImageSelect', ['Gravatar', 'HighDPI', function (Gravatar, HighDPI) {
+  return function (images, size, opts) {
+    if (!images) return 'assets/img/bottle.png';
+    var i = images.length
+      , image = {}
+      , opts = opts || {}
+      , size = size || { height: 200, width: 200 };
+    opts.https = ( opts.https === true ? true : false );
+    size.height = ( HighDPI() ? size.height * 2 : size.height );
+    size.width = ( HighDPI() ? size.width * 2 : size.width );
+    while (i--) {
+      if (images[i].geometry.width === size.width && images[i].geometry.height === size.height) image = images[i];
+    }
+    if (image.src) return image.src;
+    else if (opts.email) return Gravatar.url(opts.email, { s: size.width }, opts.https);
+    else return 'assets/img/bottle.png';
+  }
+}]);
 
 /**
  * Convert string to slug
@@ -143,15 +177,6 @@ app.factory('Head', function () {
     }
   };
 });
-
-/**
- * <nav> Service
- */
-app.factory('Nav', ['$http', function ($http) {
-  return function () {
-    return $http.get('api/nav', { params: { t: new Date().getTime() }});
-  };
-}]);
 
 /*------------------------------------*\
     DIRECTIVE SERVICES
