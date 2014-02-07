@@ -1,9 +1,12 @@
 <h1>Account Settings</h1>
 <validation-messages></validation-messages>
 <form novalidate>
-  <img class="user-image" ng-src="{{ ImageSelect(user.images, { width: 100, height: 100 }, { email: user.email }) }}">
-  <i class="fa fa-times-circle" ng-click="imageDelete()"></i>
-  <input type="file" ng-file-select="onFileSelect($files)">
+  <div class="input-image-container">
+    <img class="user-image" ng-src="{{ ImageSelect(user.images, { width: 100, height: 100 }, { email: user.email }) }}">
+    <a class="button" href="//gravatar.com/emails" target="_blank" ng-if="!user.images || user.images.length === 0">Manage Gravatars</a>
+    <label class="button">Upload Image<input id="image" type="file" ng-file-select="onFileSelect($files)"></label>
+    <button ng-click="imageDelete()" ng-if="user.images">Delete Image</button>
+  </div>
   <label>Username<input type="text" ng-model="user.username"></label>
   <label>Password<input type="password" ng-model="user.password"></label>
   <label>Email<input type="email" ng-model="user.email"></label>

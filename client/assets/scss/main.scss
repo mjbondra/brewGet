@@ -207,6 +207,10 @@ a {
     UTILITIES
 \*------------------------------------*/
 
+.button {
+  @extend button;
+}
+
 .ng-animate { 
   border-collapse: collapse; 
 }
@@ -295,11 +299,53 @@ input-date {
   }
 }
 
-
-.user-image {
-  height: 100px;
-  width: 100px;
+.input-image-container {
+  padding: 10px;
+  height: 120px;
+  background-color: $ltr-brown;
+  .user-image {
+    position: absolute;
+    border: {
+      right: 10px solid $ltr-brown;
+    }
+    height: 100px;
+    width: 110px;
+    background: {
+      color: white;
+    }
+  }
+  .button {
+    height: 45px;
+    line-height: 45px;
+    text-align: center;
+  }
+  a.button {
+    display: block;
+    text-decoration: none;
+  }
+  label.button {
+    input {
+      position: absolute;
+      margin: {
+        top: -35px;
+      }
+      z-index: -1;
+      opacity: 0;
+      width: 90px;
+    }
+  }
+  button {
+    margin: {
+      top: 0;
+      bottom: 10px;
+    }
+    padding: {
+      left: 120px;
+    }
+  }
 }
+
+
 
 /*------------------------------------*\
     CONTENT

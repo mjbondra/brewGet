@@ -132,10 +132,9 @@ app.controller('AccountSettings', ['$scope', '$upload', 'API', 'Head', 'User', '
         file: file,
         fileFormDataName: 'image',
       }).progress(function (evt) {
-        console.log('percent: ' + parseInt(100.0 * evt.loaded / evt.total));
+        // $scope.progress = parseInt(100.0 * evt.loaded / evt.total);
       }).success(function (data, status, headers, config) {
         $scope.user.images = data;
-        console.log(data);
       });
     }
   };
