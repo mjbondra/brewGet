@@ -117,6 +117,7 @@ app.controller('AccountSettings', ['$scope', '$upload', 'API', 'Head', 'User', '
   $scope.slug = Slug(Username(), true);
   $scope.user = User.get({ slug: $scope.slug });
   $scope.ImageSelect = ImageSelect;
+  $scope.loading = false;
 
   $scope.imageDelete = function () {
     API('api/users/' + $scope.slug + '/images', 'DELETE').success(function (data, status, headers, config) {

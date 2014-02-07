@@ -303,12 +303,24 @@ input-date {
   padding: 10px;
   height: 120px;
   background-color: $ltr-brown;
+  &.loading:after {
+    display: block;
+    position: absolute;
+    margin: {
+      top: -110px;
+    }
+    width: 100px;
+    height: 100px;
+    background: {
+      color: black;
+    }
+    content: '';
+  }
   .user-image {
     position: absolute;
     border: {
       right: 10px solid $ltr-brown;
     }
-    height: 100px;
     width: 110px;
     background: {
       color: white;
@@ -345,7 +357,10 @@ input-date {
   }
 }
 
-
+.user-image {
+  height: 100px;
+  width: 100px;
+}
 
 /*------------------------------------*\
     CONTENT
