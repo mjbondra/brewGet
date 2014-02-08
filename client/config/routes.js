@@ -18,22 +18,28 @@ app.config(['$routeProvider', '$locationProvider', function ($routeProvider, $lo
     controller: 'HomeCtrl'
   });
 
-  /** user & account routes */
+  // user routes
   $routeProvider.when('/users', {
     templateUrl: '/app/views/users/index.html',
-    controller: 'UserIndex'
+    controller: 'user.index'
   });
+  $routeProvider.when('/users/:slug', {
+    templateUrl: '/app/views/users/show.html',
+    controller: 'user.show'
+  });
+
+  // account routes
   $routeProvider.when('/account/sign-up', {
     templateUrl: '/app/views/account/sign-up.html',
-    controller: 'AccountSignUp'
+    controller: 'account.signup'
   });
   $routeProvider.when('/account/settings', {
     templateUrl: '/app/views/account/settings.html',
-    controller: 'AccountSettings'
+    controller: 'account.settings'
   });
   $routeProvider.when('/account/sign-in', {
     templateUrl: '/app/views/account/sign-in.html',
-    controller: 'AccountSignIn'
+    controller: 'account.signin'
   });
   $routeProvider.when('/account/sign-out', {
     resolve: {
@@ -43,7 +49,7 @@ app.config(['$routeProvider', '$locationProvider', function ($routeProvider, $lo
     }
   });
 
-  /* default route */
+  // default route
   $routeProvider.otherwise({ 
     redirectTo: '/'
   });

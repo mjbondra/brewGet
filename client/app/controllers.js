@@ -88,7 +88,7 @@ app.controller('HomeCtrl', ['$scope', 'Head', 'MikeData', function ($scope, Head
  * ROUTE /#!/users
  * TEMPLATE /partials/users/index.html
  */
-app.controller('UserIndex', ['$scope', 'Head', 'User', 'ImageSelect', function ($scope, Head, User, ImageSelect) {
+app.controller('user.index', ['$scope', 'Head', 'User', 'ImageSelect', function ($scope, Head, User, ImageSelect) {
   Head.title('Users');
   Head.description('An index of users on brewGet.');
   $scope.ImageSelect = ImageSelect;
@@ -96,14 +96,22 @@ app.controller('UserIndex', ['$scope', 'Head', 'User', 'ImageSelect', function (
 }]);
 
 /**
- * Account sign up
- * ROUTE /#!/account/sign-up
- * TEMPLATE /partials/account/sign-up.html
+ * User show
+ * ROUTE /#!/users/:slug
+ * TEMPLATE /partials/users/show.html
  */
-app.controller('AccountSignUp', ['$scope', 'Head', 'User', function ($scope, Head, User) {
-  Head.title('Sign up');
-  Head.description('Sign up for an account on brewGet.');
-  $scope.user = new User();
+app.controller('user.show', ['$scope', '$routeParams', 'Head', 'User', 'ImageSelect', function ($scope, $routeParams, Head, User, ImageSelect) {
+  $scope.user = User.get({ slug: $routeParams.slug });
+  $scope.ImageSelect = ImageSelect;
+  if ($scope.user.$promise) {
+    $scope.user.$promise.then(function (user) {
+      Head.title(user.username || 'User not found');
+      Head.description('User information for ' + user.username);
+    }).catch(function () {
+      Head.title('User not found');
+      Head.description('User not found');
+    });
+  }
 }]);
 
 /**
@@ -111,7 +119,7 @@ app.controller('AccountSignUp', ['$scope', 'Head', 'User', function ($scope, Hea
  * ROUTE /#!/account/settings
  * TEMPLATE /partials/account/settings.html
  */
-app.controller('AccountSettings', ['$scope', '$upload', 'API', 'Head', 'User', 'Username', 'Slug', 'ImageSelect', function ($scope, $upload, API, Head, User, Username, Slug, ImageSelect) {
+app.controller('account.settings', ['$scope', '$upload', 'API', 'Head', 'User', 'Username', 'Slug', 'ImageSelect', function ($scope, $upload, API, Head, User, Username, Slug, ImageSelect) {
   Head.title('Account Details & Settings');
   Head.description('Edit the details and settings of your brewGet account.');
   $scope.slug = Slug(Username(), true);
@@ -146,8 +154,19 @@ app.controller('AccountSettings', ['$scope', '$upload', 'API', 'Head', 'User', '
  * ROUTE /#!/account/sign-in
  * TEMPLATE /partials/account/sign-in.html
  */
-app.controller('AccountSignIn', ['$scope', 'Head', 'User', function ($scope, Head, User) {
+app.controller('account.signin', ['$scope', 'Head', 'User', function ($scope, Head, User) {
   Head.title('Sign in');
   Head.description('Sign in to your brewGet account.');
+  $scope.user = new User();
+}]);
+
+/**
+ * Account sign up
+ * ROUTE /#!/account/sign-up
+ * TEMPLATE /partials/account/sign-up.html
+ */
+app.controller('account.signup', ['$scope', 'Head', 'User', function ($scope, Head, User) {
+  Head.title('Sign up');
+  Head.description('Sign up for an account on brewGet.');
   $scope.user = new User();
 }]);
