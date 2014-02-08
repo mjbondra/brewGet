@@ -13,7 +13,7 @@ var app = angular.module('brewGet.controllers', ['angularFileUpload']);
 /** 
  * Head Controller
  */
-app.controller('HeadCtrl', ['$scope', 'Head', function ($scope, Head) {
+app.controller('html.head', ['$scope', 'Head', function ($scope, Head) {
   $scope.Head = Head;
 }]);
 
@@ -21,7 +21,7 @@ app.controller('HeadCtrl', ['$scope', 'Head', function ($scope, Head) {
  * Navigation Controller
  * TEMPLATE /partials/nav/index.html
  */
-app.controller('NavCtrl', ['$scope', '$location', 'API', function ($scope, $location, API) {
+app.controller('html.nav', ['$scope', '$location', 'API', function ($scope, $location, API) {
 
   // load nav
   var loadNav = function () {
@@ -88,7 +88,7 @@ app.controller('HomeCtrl', ['$scope', 'Head', 'MikeData', function ($scope, Head
  * ROUTE /#!/users
  * TEMPLATE /partials/users/index.html
  */
-app.controller('user.index', ['$scope', 'Head', 'User', 'ImageSelect', function ($scope, Head, User, ImageSelect) {
+app.controller('users.index', ['$scope', 'Head', 'User', 'ImageSelect', function ($scope, Head, User, ImageSelect) {
   Head.title('Users');
   Head.description('An index of users on brewGet.');
   $scope.ImageSelect = ImageSelect;
@@ -100,7 +100,7 @@ app.controller('user.index', ['$scope', 'Head', 'User', 'ImageSelect', function 
  * ROUTE /#!/users/:slug
  * TEMPLATE /partials/users/show.html
  */
-app.controller('user.show', ['$scope', '$routeParams', 'Head', 'User', 'ImageSelect', function ($scope, $routeParams, Head, User, ImageSelect) {
+app.controller('users.show', ['$scope', '$routeParams', 'Head', 'User', 'ImageSelect', function ($scope, $routeParams, Head, User, ImageSelect) {
   $scope.user = User.get({ slug: $routeParams.slug });
   $scope.ImageSelect = ImageSelect;
   if ($scope.user.$promise) {
@@ -119,7 +119,7 @@ app.controller('user.show', ['$scope', '$routeParams', 'Head', 'User', 'ImageSel
  * ROUTE /#!/account/settings
  * TEMPLATE /partials/account/settings.html
  */
-app.controller('account.settings', ['$scope', '$upload', 'API', 'Head', 'User', 'Username', 'Slug', 'ImageSelect', function ($scope, $upload, API, Head, User, Username, Slug, ImageSelect) {
+app.controller('users.edit', ['$scope', '$upload', 'API', 'Head', 'User', 'Username', 'Slug', 'ImageSelect', function ($scope, $upload, API, Head, User, Username, Slug, ImageSelect) {
   Head.title('Account Details & Settings');
   Head.description('Edit the details and settings of your brewGet account.');
   $scope.slug = Slug(Username(), true);
@@ -154,7 +154,7 @@ app.controller('account.settings', ['$scope', '$upload', 'API', 'Head', 'User', 
  * ROUTE /#!/account/sign-in
  * TEMPLATE /partials/account/sign-in.html
  */
-app.controller('account.signin', ['$scope', 'Head', 'User', function ($scope, Head, User) {
+app.controller('users.session', ['$scope', 'Head', 'User', function ($scope, Head, User) {
   Head.title('Sign in');
   Head.description('Sign in to your brewGet account.');
   $scope.user = new User();
@@ -165,8 +165,96 @@ app.controller('account.signin', ['$scope', 'Head', 'User', function ($scope, He
  * ROUTE /#!/account/sign-up
  * TEMPLATE /partials/account/sign-up.html
  */
-app.controller('account.signup', ['$scope', 'Head', 'User', function ($scope, Head, User) {
+app.controller('users.new', ['$scope', 'Head', 'User', function ($scope, Head, User) {
   Head.title('Sign up');
   Head.description('Sign up for an account on brewGet.');
   $scope.user = new User();
+}]);
+
+/*------------------------------------*\
+    POST CONTROLLERS
+\*------------------------------------*/
+
+/**
+ * Post index
+ * ROUTE /#!/
+ * TEMPLATE /partials/posts/index.html
+ */
+app.controller('posts.index', ['$scope', 'Head', function ($scope, Head) {
+  Head.title('Posts');
+  Head.description('Posts');
+}]);
+
+/**
+ * Post show
+ * ROUTE /#!/
+ * TEMPLATE /partials/posts/show.html
+ */
+app.controller('posts.show', ['$scope', 'Head', function ($scope, Head) {
+  Head.title('Post');
+  Head.description('Post');
+}]);
+
+/**
+ * Post new
+ * ROUTE /#!/
+ * TEMPLATE /partials/posts/new.html
+ */
+app.controller('posts.new', ['$scope', 'Head', function ($scope, Head) {
+  Head.title('New Post');
+  Head.description('New Post');
+}]);
+
+/**
+ * Post edit
+ * ROUTE /#!/
+ * TEMPLATE /partials/posts/edit.html
+ */
+app.controller('posts.edit', ['$scope', 'Head', function ($scope, Head) {
+  Head.title('Edit Post');
+  Head.description('Edit Post');
+}]);
+
+/*------------------------------------*\
+    MESSAGE CONTROLLERS
+\*------------------------------------*/
+
+/**
+ * Post index
+ * ROUTE /#!/
+ * TEMPLATE /partials/posts/index.html
+ */
+app.controller('messages.index', ['$scope', 'Head', function ($scope, Head) {
+  Head.title('Messages');
+  Head.description('Messages');
+}]);
+
+/**
+ * Post show
+ * ROUTE /#!/
+ * TEMPLATE /partials/posts/show.html
+ */
+app.controller('messages.show', ['$scope', 'Head', function ($scope, Head) {
+  Head.title('Message');
+  Head.description('Message');
+}]);
+
+/**
+ * Post new
+ * ROUTE /#!/
+ * TEMPLATE /partials/posts/new.html
+ */
+app.controller('messages.new', ['$scope', 'Head', function ($scope, Head) {
+  Head.title('New Message');
+  Head.description('New Message');
+}]);
+
+/**
+ * Post edit
+ * ROUTE /#!/
+ * TEMPLATE /partials/posts/edit.html
+ */
+app.controller('messages.edit', ['$scope', 'Head', function ($scope, Head) {
+  Head.title('Edit Message');
+  Head.description('Edit Message');
 }]);

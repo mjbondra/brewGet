@@ -13,7 +13,7 @@ module.exports = function* () {
   ];
   if (this.user) {
     nav.actions = [
-      { title: 'Message', href: '/message/new' },
+      { title: 'Message', href: '/messages/new' },
       { title: 'Post', href: '/posts/new' }
     ];
     nav.account = [

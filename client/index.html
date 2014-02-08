@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" ng-app="brewGet">
-  <head ng-controller="HeadCtrl">
+  <head ng-controller="html.head">
     <base href="/">
     <meta name="fragment" content="!">
     <meta charset="utf-8">
@@ -17,7 +17,7 @@
   <body>
     <header>
       <h1 class="branding"><a href="/">brewGet</a></h1>
-      <nav class="primary-nav" ng-include="'app/views/navigation/index.html'" ng-controller="NavCtrl"></nav>
+      <nav class="primary-nav" ng-include="'app/views/navigation/index.html'" ng-controller="html.nav"></nav>
     </header>
     <global-messages></global-messages>
     <main ng-view></main>

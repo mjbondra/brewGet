@@ -21,25 +21,25 @@ app.config(['$routeProvider', '$locationProvider', function ($routeProvider, $lo
   // user routes
   $routeProvider.when('/users', {
     templateUrl: '/app/views/users/index.html',
-    controller: 'user.index'
+    controller: 'users.index'
   });
   $routeProvider.when('/users/:slug', {
     templateUrl: '/app/views/users/show.html',
-    controller: 'user.show'
+    controller: 'users.show'
   });
 
   // account routes
   $routeProvider.when('/account/sign-up', {
-    templateUrl: '/app/views/account/sign-up.html',
-    controller: 'account.signup'
+    templateUrl: '/app/views/users/new.html',
+    controller: 'users.new'
   });
   $routeProvider.when('/account/settings', {
-    templateUrl: '/app/views/account/settings.html',
-    controller: 'account.settings'
+    templateUrl: '/app/views/users/edit.html',
+    controller: 'users.edit'
   });
   $routeProvider.when('/account/sign-in', {
-    templateUrl: '/app/views/account/sign-in.html',
-    controller: 'account.signin'
+    templateUrl: '/app/views/users/session.html',
+    controller: 'users.session'
   });
   $routeProvider.when('/account/sign-out', {
     resolve: {
@@ -47,6 +47,34 @@ app.config(['$routeProvider', '$locationProvider', function ($routeProvider, $lo
         User.signOut();
       }]
     }
+  });
+
+  // post routes
+  $routeProvider.when('/posts', {
+    templateUrl: '/app/views/posts/index.html',
+    controller: 'posts.index'
+  });
+  $routeProvider.when('/posts/new', {
+    templateUrl: '/app/views/posts/new.html',
+    controller: 'posts.new'
+  });
+  $routeProvider.when('/posts/:slug', {
+    templateUrl: '/app/views/posts/show.html',
+    controller: 'posts.show'
+  });
+
+  // message routes
+  $routeProvider.when('/account/inbox', {
+    templateUrl: '/app/views/messages/index.html',
+    controller: 'messages.index'
+  });
+  $routeProvider.when('/messages/new', {
+    templateUrl: '/app/views/messages/new.html',
+    controller: 'messages.new'
+  });
+  $routeProvider.when('/messages/:slug', {
+    templateUrl: '/app/views/messages/show.html',
+    controller: 'messages.show'
   });
 
   // default route

@@ -1,6 +1,6 @@
 <h1>Users</h1>
 <article ng-repeat="user in users">
-  <h2>{{ user.username }}</h2>
+  <h2><a ng-href="{{ '/users/' + user.slug }}">{{ user.username }}</a></h2>
   <img class="user-image" ng-src="{{ ImageSelect(user.images, { width: 100, height: 100 }, { email: user.email }) }}">
   <a ng-href="{{ 'mailto:' + user.email }}">{{ user.email }}</a>
   <p>{{ user.location }}</p>
