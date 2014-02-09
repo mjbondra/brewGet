@@ -117,7 +117,7 @@ app.controller('users.show', ['$scope', '$routeParams', 'Head', 'User', 'ImageSe
 /**
  * Account settings
  * ROUTE /#!/account/settings
- * TEMPLATE /partials/account/settings.html
+ * TEMPLATE /partials/users/edit.html
  */
 app.controller('users.edit', ['$scope', '$upload', 'API', 'Head', 'User', 'Username', 'Slug', 'ImageSelect', function ($scope, $upload, API, Head, User, Username, Slug, ImageSelect) {
   Head.title('Account Details & Settings');
@@ -152,7 +152,7 @@ app.controller('users.edit', ['$scope', '$upload', 'API', 'Head', 'User', 'Usern
 /**
  * Account sign in
  * ROUTE /#!/account/sign-in
- * TEMPLATE /partials/account/sign-in.html
+ * TEMPLATE /partials/users/session.html
  */
 app.controller('users.session', ['$scope', 'Head', 'User', function ($scope, Head, User) {
   Head.title('Sign in');
@@ -163,12 +163,22 @@ app.controller('users.session', ['$scope', 'Head', 'User', function ($scope, Hea
 /**
  * Account sign up
  * ROUTE /#!/account/sign-up
- * TEMPLATE /partials/account/sign-up.html
+ * TEMPLATE /partials/users/new.html
  */
 app.controller('users.new', ['$scope', 'Head', 'User', function ($scope, Head, User) {
   Head.title('Sign up');
   Head.description('Sign up for an account on brewGet.');
   $scope.user = new User();
+}]);
+
+/**
+ * Account activity
+ * ROUTE /#!/account/activity
+ * TEMPLATE /partials/users/activity.html
+ */
+app.controller('users.activity', ['$scope', 'Head', function ($scope, Head) {
+  Head.title('Activity');
+  Head.description('Activity');
 }]);
 
 /*------------------------------------*\

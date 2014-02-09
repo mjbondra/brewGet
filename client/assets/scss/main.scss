@@ -211,86 +211,12 @@ a {
   @extend button;
 }
 
+.container {
+  padding: 10px;
+}
+
 .ng-animate { 
   border-collapse: collapse; 
-}
-
-/*--Angular Directives--*/
-
-validation-messages, global-messages {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  i {
-    position: absolute;
-    z-index: 1;
-    top: 10px;
-    right: 15px;
-    @include font-details(1.5em, white);
-  }
-  ul {
-    @include transition(max-height 2s ease-out, opacity 1s ease-out);
-    display: block;   
-    margin: 0;
-    padding: 0;
-    max-height: 0;
-    overflow: hidden;
-    opacity: 0;
-    list-style: none;
-    &.active-messages {
-      opacity: 1;
-      max-height: 200px;
-    }
-    li {
-      padding: 2px 15px;
-      @include enzo(1.125em, white, 300);
-      &.success {
-        background-color: $green;
-      }
-      &.validation, &.authentication {
-        background-color: $red;
-      }
-      &:first-child {
-        padding: {
-          top: 10px;
-          right: 45px;
-        }
-      }
-      &:last-child {
-        padding-bottom: 10px;
-      }
-    }
-  }
-}
-
-input-date {
-  label {
-    margin: {
-      bottom: 0;
-    }
-  }
-  select {
-    float: left;
-    margin: {
-      bottom: 15px;
-    }
-    border: {
-      right: 2px solid white;
-    }
-    &.month {
-      width: 40%;
-    }
-    &.day {
-      width: 25%;
-    }
-    &.year {
-      border: {
-        right: none;
-      }
-      width: 35%;
-    }
-  }
 }
 
 .fa {
@@ -299,8 +225,8 @@ input-date {
   }
 }
 
-.input-image-container {
-  padding: 10px;
+.input-image {
+  @extend .container;
   height: 120px;
   background-color: $ltr-brown;
   &.loading:after {
@@ -357,9 +283,123 @@ input-date {
   }
 }
 
+.user {
+  @extend .container;
+  border: {
+    top: 1px solid $ltr-brown;
+  }
+  min-height: 120px;
+  h2 {
+    float: left;
+    margin: {
+      top: 0;
+      right: 110px;
+      bottom: 0;
+    }
+    a {
+      color: $brown;
+      text-decoration: none;
+    }
+  }
+  .user-image {
+    position: absolute;
+    right: 25px;
+  }
+  .user-email {
+    clear: left;
+    overflow-wrap: break-word;
+  }
+  .user-email, .user-location {
+    display: block;
+    margin: { 
+      right: 110px;
+    }
+  }
+}
+
 .user-image {
   height: 100px;
   width: 100px;
+}
+
+/*--Angular Directives--*/
+
+validation-messages, global-messages {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  i {
+    position: absolute;
+    z-index: 1;
+    top: 10px;
+    right: 15px;
+    @include font-details(1.5em, white);
+  }
+  ul {
+    @include transition(max-height 2s ease-out, opacity 1s ease-out);
+    display: block;   
+    margin: 0;
+    padding: 0;
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    list-style: none;
+    &.active-messages {
+      opacity: 1;
+      max-height: 200px;
+    }
+    li {
+      padding: 2px 15px;
+      @include enzo(1.125em, white, 300);
+      &.success {
+        background-color: $green;
+      }
+      &.validation, &.authentication {
+        background-color: $red;
+      }
+      &:first-child {
+        padding: {
+          top: 10px;
+          right: 45px;
+        }
+      }
+      &:last-child {
+        padding: {
+          bottom: 10px;
+        }
+      }
+    }
+  }
+}
+
+input-date {
+  label {
+    margin: {
+      bottom: 0;
+    }
+  }
+  select {
+    float: left;
+    margin: {
+      bottom: 15px;
+    }
+    border: {
+      right: 2px solid white;
+    }
+    &.month {
+      width: 40%;
+    }
+    &.day {
+      width: 25%;
+    }
+    &.year {
+      border: {
+        right: none;
+      }
+      width: 35%;
+    }
+  }
 }
 
 /*------------------------------------*\
@@ -442,7 +482,9 @@ nav.primary-nav {
             }
           }
           &.expanded-tree {
-            margin-bottom: 45px;
+            margin: {
+              bottom: 45px;
+            }
             background-color: $lt-brown;
             ul {
               z-index: 1;

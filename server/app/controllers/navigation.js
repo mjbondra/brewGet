@@ -17,7 +17,7 @@ module.exports = function* () {
       { title: 'Post', href: '/posts/new' }
     ];
     nav.account = [
-      { title: 'Activity', href: '/account/dashboard' },
+      { title: 'Activity', href: '/account/activity' },
       { title: 'Inbox', href: '/account/inbox' },
       { title: 'Settings', href: '/account/settings' },
       { title: 'Sign out', href: '/account/sign-out' }

@@ -18,7 +18,7 @@ app.config(['$routeProvider', '$locationProvider', function ($routeProvider, $lo
     controller: 'HomeCtrl'
   });
 
-  // user routes
+  // user / account routes
   $routeProvider.when('/users', {
     templateUrl: '/app/views/users/index.html',
     controller: 'users.index'
@@ -27,8 +27,6 @@ app.config(['$routeProvider', '$locationProvider', function ($routeProvider, $lo
     templateUrl: '/app/views/users/show.html',
     controller: 'users.show'
   });
-
-  // account routes
   $routeProvider.when('/account/sign-up', {
     templateUrl: '/app/views/users/new.html',
     controller: 'users.new'
@@ -36,6 +34,10 @@ app.config(['$routeProvider', '$locationProvider', function ($routeProvider, $lo
   $routeProvider.when('/account/settings', {
     templateUrl: '/app/views/users/edit.html',
     controller: 'users.edit'
+  });
+  $routeProvider.when('/account/activity', {
+    templateUrl: '/app/views/users/activity.html',
+    controller: 'users.activity'
   });
   $routeProvider.when('/account/sign-in', {
     templateUrl: '/app/views/users/session.html',
