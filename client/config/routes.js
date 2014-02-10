@@ -79,6 +79,34 @@ app.config(['$routeProvider', '$locationProvider', function ($routeProvider, $lo
     controller: 'messages.show'
   });
 
+  // beer routes
+  $routeProvider.when('/beers', {
+    templateUrl: '/app/views/beers/index.html',
+    controller: 'beers.index'
+  });
+  $routeProvider.when('/beers/new', {
+    templateUrl: '/app/views/beers/new.html',
+    controller: 'beers.new'
+  });
+  $routeProvider.when('/beers/:slug', {
+    templateUrl: '/app/views/beers/show.html',
+    controller: 'beers.show'
+  });
+
+  // brewery routes
+  $routeProvider.when('/breweries', {
+    templateUrl: '/app/views/breweries/index.html',
+    controller: 'breweries.index'
+  });
+  $routeProvider.when('/breweries/new', {
+    templateUrl: '/app/views/breweries/new.html',
+    controller: 'breweries.new'
+  });
+  $routeProvider.when('/breweries/:slug', {
+    templateUrl: '/app/views/breweries/show.html',
+    controller: 'breweries.show'
+  });
+
   // default route
   $routeProvider.otherwise({ 
     redirectTo: '/'

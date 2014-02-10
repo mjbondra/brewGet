@@ -268,3 +268,91 @@ app.controller('messages.edit', ['$scope', 'Head', function ($scope, Head) {
   Head.title('Edit Message');
   Head.description('Edit Message');
 }]);
+
+/*------------------------------------*\
+    BEER CONTROLLERS
+\*------------------------------------*/
+
+/**
+ * Beer index
+ * ROUTE /#!/
+ * TEMPLATE /partials/beers/index.html
+ */
+app.controller('beers.index', ['$scope', 'Head', function ($scope, Head) {
+  Head.title('Beers');
+  Head.description('Beers');
+}]);
+
+/**
+ * Beer show
+ * ROUTE /#!/
+ * TEMPLATE /partials/beers/show.html
+ */
+app.controller('beers.show', ['$scope', 'Head', function ($scope, Head) {
+  Head.title('Beer');
+  Head.description('Beer');
+}]);
+
+/**
+ * Beer new
+ * ROUTE /#!/
+ * TEMPLATE /partials/beers/new.html
+ */
+app.controller('beers.new', ['$scope', 'Head', function ($scope, Head) {
+  Head.title('Add Beer');
+  Head.description('Add Beer');
+}]);
+
+/**
+ * Beer edit
+ * ROUTE /#!/
+ * TEMPLATE /partials/beers/edit.html
+ */
+app.controller('beers.edit', ['$scope', 'Head', function ($scope, Head) {
+  Head.title('Edit Beer');
+  Head.description('Edit Beer');
+}]);
+
+/*------------------------------------*\
+    BREWERY CONTROLLERS
+\*------------------------------------*/
+
+/**
+ * Brewery index
+ * ROUTE /#!/
+ * TEMPLATE /partials/breweries/index.html
+ */
+app.controller('breweries.index', ['$scope', 'Head', function ($scope, Head) {
+  Head.title('Breweries');
+  Head.description('Breweries');
+}]);
+
+/**
+ * Brewery show
+ * ROUTE /#!/
+ * TEMPLATE /partials/breweries/show.html
+ */
+app.controller('breweries.show', ['$scope', 'Head', function ($scope, Head) {
+  Head.title('Brewery');
+  Head.description('Brewery');
+}]);
+
+/**
+ * Brewery new
+ * ROUTE /#!/
+ * TEMPLATE /partials/breweries/new.html
+ */
+app.controller('breweries.new', ['$scope', 'Head', function ($scope, Head) {
+  Head.title('Add Brewery');
+  Head.description('Add Brewery');
+}]);
+
+/**
+ * Brewery edit
+ * ROUTE /#!/
+ * TEMPLATE /partials/breweries/edit.html
+ */
+app.controller('breweries.edit', ['$scope', 'Head', function ($scope, Head) {
+  Head.title('Edit Brewery');
+  Head.description('Edit Brewery');
+}]);

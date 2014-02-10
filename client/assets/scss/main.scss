@@ -283,11 +283,15 @@ a {
   }
 }
 
-.user {
+.row {
   @extend .container;
   border: {
     top: 1px solid $ltr-brown;
   }
+}
+
+.user {
+  @extend .row;
   min-height: 120px;
   h2 {
     float: left;
@@ -301,18 +305,18 @@ a {
       text-decoration: none;
     }
   }
-  .user-image {
+  img {
     position: absolute;
     right: 25px;
   }
-  .user-email {
-    clear: left;
-    overflow-wrap: break-word;
-  }
-  .user-email, .user-location {
+  span {
     display: block;
     margin: { 
       right: 110px;
+    }
+    clear: left;
+    &.user-email {
+      word-wrap: break-word;
     }
   }
 }

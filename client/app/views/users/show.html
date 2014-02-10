@@ -1,4 +1,4 @@
 <h1>{{ user.username }}</h1>
-<img class="user-image" ng-src="{{ ImageSelect(user.images, { width: 200, height: 200 }, { email: user.email }) }}">
-<a ng-href="{{ 'mailto:' + user.email }}">{{ user.email }}</a>
-<p>{{ user.location }}</p>
+<a ng-href="{{ '/users/' + user.slug }}"><img class="user-image" ng-src="{{ ImageSelect(user.images, { width: 100, height: 100 }, { email: user.email }) }}"></a>
+<span class="user-email"><a ng-href="{{ 'mailto:' + user.email }}">{{ user.email }}</a></span>
+<span class="user-location">{{ user.location }}</span>
