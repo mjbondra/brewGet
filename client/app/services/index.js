@@ -10,7 +10,8 @@ var app = angular.module('brewGet.services', ['ngResource']);
  * Module dependencies
  */
 var _ = require('underscore')
-  , gravatar = require('gravatar');
+  , gravatar = require('gravatar')
+  , slug = require('../../../server/assets/lib/slug-utilities').slug;
 
 /*------------------------------------*\
     EXTERNAL LIBRARY SERVICES
@@ -112,6 +113,19 @@ app.factory('ImageSelect', ['Gravatar', 'HighDPI', function (Gravatar, HighDPI) 
   }
 }]);
 
+/** 
+ * Location parsing service
+ */
+app.factory('LocationParse', function () {
+  return function (resource, opts) {
+    if (resource._location && resource._location.country === 'United States') {
+      return (resource._location.city ? resource._location.city + ', ' : '') + ( resource._location.state ? resource._location.state : '' );
+    } else {
+      return resource.location;
+    }
+  }
+});
+
 /**
  * Convert string to slug
  *
@@ -120,10 +134,7 @@ app.factory('ImageSelect', ['Gravatar', 'HighDPI', function (Gravatar, HighDPI) 
  * @returns {string} - slug
  */
 app.factory('Slug', function () {
-  return function (str, strip) {
-    if (strip === true) return str.toLowerCase().replace(/[_]/g, '').replace(/[^\w]+/g,'');
-    return str.toLowerCase().replace(/[ |_]/g, '-').replace(/[^\w-]+/g,'');
-  }
+  return slug;
 });
 
 /*------------------------------------*\

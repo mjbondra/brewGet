@@ -100,6 +100,7 @@ UserSchema.pre('validate', function (next) {
   } catch (err) {
     if (typeof this.location === 'string') this.location = sanitize.escape(this.location);
     else this.location = '';
+    this._location = {};
     next();
   }
 });

@@ -7,6 +7,7 @@
  * Module dependencies
  */
 var msg = require('../../config/messages')
+  , slug = require('./slug-utilities').slug
   , _ = require('underscore');
 
 module.exports = {
@@ -47,10 +48,7 @@ module.exports = {
    * @param {boolean} strip - removes non-word characters; do not replace with '-'
    * @returns {string} - slug
    */
-  slug: function (str, strip) {
-    if (strip === true) return str.toLowerCase().replace(/[_]/g, '').replace(/[^\w]+/g,'');
-    return str.toLowerCase().replace(/[ |_]/g, '-').replace(/[^\w-]+/g,'');
-  },
+  slug: slug,
 
   /*------------------------------------*\
       JSON MESSAGE FUNCTIONS

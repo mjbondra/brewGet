@@ -20,7 +20,7 @@ gulp.task('config', function () {
 });
 
 gulp.task('watch', function () {
-  gulp.watch(['./client/config/*.js', './client/app/*.js'], ['browserify'])
+  gulp.watch(['./client/config/*.js', './client/app/*/*.js'], ['browserify'])
 });
 
 gulp.task('default', ['config', 'browserify']);

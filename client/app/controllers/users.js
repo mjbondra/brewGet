@@ -7,10 +7,11 @@ var app = angular.module('brewGet.controllers.users', ['angularFileUpload']);
  * ROUTE /#!/users
  * TEMPLATE /partials/users/index.html
  */
-app.controller('users.index', ['$scope', 'Head', 'User', 'ImageSelect', function ($scope, Head, User, ImageSelect) {
+app.controller('users.index', ['$scope', 'Head', 'User', 'ImageSelect', 'LocationParse', function ($scope, Head, User, ImageSelect, LocationParse) {
   Head.title('Users');
   Head.description('An index of users on brewGet.');
   $scope.ImageSelect = ImageSelect;
+  $scope.LocationParse = LocationParse;
   $scope.users = User.query();
 }]);
 
@@ -19,9 +20,10 @@ app.controller('users.index', ['$scope', 'Head', 'User', 'ImageSelect', function
  * ROUTE /#!/users/:slug
  * TEMPLATE /partials/users/show.html
  */
-app.controller('users.show', ['$scope', '$routeParams', 'Head', 'User', 'ImageSelect', function ($scope, $routeParams, Head, User, ImageSelect) {
+app.controller('users.show', ['$scope', '$routeParams', 'Head', 'User', 'ImageSelect', 'LocationParse', function ($scope, $routeParams, Head, User, ImageSelect, LocationParse) {
   $scope.user = User.get({ slug: $routeParams.slug });
   $scope.ImageSelect = ImageSelect;
+  $scope.LocationParse = LocationParse;
   if ($scope.user.$promise) {
     $scope.user.$promise.then(function (user) {
       Head.title(user.username || 'User not found');
@@ -45,7 +47,6 @@ app.controller('users.edit', ['$scope', '$upload', 'API', 'Head', 'User', 'Usern
   $scope.user = User.get({ slug: $scope.slug });
   $scope.ImageSelect = ImageSelect;
   $scope.loading = false;
-
   $scope.imageDelete = function () {
     API('api/users/' + $scope.slug + '/images', 'DELETE').success(function (data, status, headers, config) {
       $scope.user.images = [];
