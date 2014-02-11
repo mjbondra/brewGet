@@ -25,7 +25,7 @@ gulp.task('compass', ['bower'], function () {
   gulp.src('./client/assets/scss/*.scss')
     .pipe(plumber())
     .pipe(compass({ sass: './client/assets/scss', css: './client/assets/css' }))
-    .pipe(minify())
+    .pipe(minify({ keepSpecialComments: 0 }))
     .pipe(gulp.dest('./client/assets/css/'));
 });
 
