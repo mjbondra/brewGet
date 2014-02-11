@@ -20,7 +20,10 @@ var ImageSchema = mongoose.model('Image').Schema
  * Post schema
  */
 var PostSchema = new Schema({
+  body: String,
+  category: String,
   comments: [ CommentSchema ],
+  date: Date,
   ft: [ BeerSchema ],
   images: [ ImageSchema ],
   iso: [ BeerSchema ],
@@ -28,6 +31,7 @@ var PostSchema = new Schema({
     index: true,
     type: String
   },
+  title: String,
   type: String,
   user: {
     username: String

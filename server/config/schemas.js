@@ -49,6 +49,7 @@ exports.beer = {
     slug: String
   },
   comments: [ CommentSchema ],
+  date: Date,
   ibu: Number,
   images: [ ImageSchema ],
   info: String,

@@ -239,6 +239,13 @@ app.factory('DateHandler', ['_', function (_) {
 \*------------------------------------*/
 
 /**
+ * Post Service
+ */
+app.factory('Post', ['$resource', '$location', function ($resource, $location) {
+  return $resource('api/posts/:slug', {});
+}]);
+
+/**
  * User Service
  */
 app.factory('User', ['$rootScope', '$resource', '$location', function ($rootScope, $resource, $location) {

@@ -27,9 +27,12 @@ app.controller('posts.show', ['$scope', 'Head', function ($scope, Head) {
  * ROUTE /#!/
  * TEMPLATE /partials/posts/new.html
  */
-app.controller('posts.new', ['$scope', 'Head', function ($scope, Head) {
+app.controller('posts.new', ['$scope', 'Head', 'Post', function ($scope, Head, Post) {
   Head.title('New Post');
   Head.description('New Post');
+  $scope.post = new Post();
+  $scope.post.beer = [{}];
+  $scope.beerCount = 1;
 }]);
 
 /**

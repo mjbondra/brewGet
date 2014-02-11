@@ -1,6 +1,22 @@
 <h1>New Post</h1>
 <validation-messages></validation-messages>
 <form novalidate>
-  <label>Title<input type="text"></label>
+  Category
+  <label><input type="radio" value="trade" ng-model="post.category">Trade</label>
+  <label><input type="radio" value="general" ng-model="post.category">General Discussion</label>
+  <label ng-if="post.category === 'general'">Title<input type="text" ng-model="post.title"></label>
+  <section ng-repeat="beer in post.beer" ng-if="post.category === 'trade'">
+    Type
+    <label><input type="radio" value="request" ng-model="post.type">Request</label>
+    <label><input type="radio" value="offer" ng-model="post.type">Offer</label>
+    <label>Beer<input type="text"></label>
+    <label>Brewery<input type="text"></label>
+    <label>Brewery Location<input type="text"></label>
+    <label>Style<input type="text"></label>
+    <label>ABV<input type="text"></label>
+    <label>IBU<input type="text"></label>
+    <label>Date/Year<input type="text"></label>
+  </section>
+  <label>Body<input type="text" ng-model="post.body"></label>
   <button>Post</button>
 </form>
