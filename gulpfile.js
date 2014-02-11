@@ -10,10 +10,10 @@ var fs = require('fs')
   , uglify = require('gulp-uglify');
 
 gulp.task('bower', function () {
-  bower();
+  return bower();
 });
 
-gulp.task('browserify', function () {
+gulp.task('browserify', ['bower'], function () {
   gulp.src('./client/config/app.js')
     .pipe(plumber())
     .pipe(browserify())
@@ -21,7 +21,7 @@ gulp.task('browserify', function () {
     .pipe(gulp.dest('./client/assets/js/'));
 });
 
-gulp.task('compass', function () {
+gulp.task('compass', ['bower'], function () {
   gulp.src('./client/assets/scss/*.scss')
     .pipe(plumber())
     .pipe(compass({ sass: './client/assets/scss', css: './client/assets/css' }))
@@ -37,7 +37,7 @@ gulp.task('config', function () {
 
 gulp.task('watch', function () {
   gulp.watch(['./client/config/*.js', './client/app/**/*.js'], ['browserify']);
-  gulp.watch(['./client/assets/scss/*.scss'], ['compass']);
+  gulp.watch(['./client/assets/scss/*.scss', './client/assets/scss/**/*.scss'], ['compass']);
 });
 
 gulp.task('default', ['bower', 'browserify', 'compass', 'config']);
