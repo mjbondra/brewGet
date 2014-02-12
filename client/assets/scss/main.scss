@@ -127,7 +127,8 @@ input[type=password],
 input[type=submit], 
 input[type=reset],
 select,
-button {
+button,
+textarea {
   @include appearance(none);
   @include border-radius(0);
   padding: 0 10px;
@@ -143,7 +144,8 @@ input[type=number],
 input[type=color],
 input[type=email], 
 input[type=password],
-select {
+select,
+textarea {
   @include single-transition(background-color, 500ms, ease-out);
   border: none;
   background-color: $ltr-brown;
@@ -159,6 +161,11 @@ select {
       color: $brown;
     }
   }
+}
+
+textarea {
+  padding: 10px;
+  height: 250px;
 }
 
 select {
