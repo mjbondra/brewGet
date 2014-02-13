@@ -2,25 +2,27 @@
 <validation-messages></validation-messages>
 <form novalidate>
   Category
-  <div class="tabs">
-    <label><input type="radio" value="trade" ng-model="post.category">Trade</label>
-    <label><input type="radio" value="general" ng-model="post.category">General Discussion</label>  
+  <div class="input-post-category">
+    <label ng-class="{ active: post.category === 'trade' }"><input type="radio" value="trade" ng-model="post.category">Trade</label>
+    <label ng-class="{ active: post.category === 'general' }"><input type="radio" value="general" ng-model="post.category">Discussion</label>  
   </div>
   <label ng-if="post.category === 'general'">Title<input type="text" ng-model="post.title"></label>
-  <section ng-repeat="beer in post.beer" ng-if="post.category === 'trade'">
+  <section class="input-beer" ng-repeat="beer in post.beer" ng-if="post.category === 'trade'">
     Type
-    <div class="tabs">
-      <label><input type="radio" value="request" ng-model="post.type">Request</label>
-      <label><input type="radio" value="offer" ng-model="post.type">Offer</label>
+    <div class="input-trade-type">
+      <label ng-class="{ active: beer.type === 'request' }"><input type="radio" value="request" ng-model="beer.type">Request</label>
+      <label ng-class="{ active: beer.type === 'offer' }"><input type="radio" value="offer" ng-model="beer.type">Offer</label>
     </div>
-    <label>Beer<input type="text"></label>
-    <label>Brewery<input type="text"></label>
-    <label>Brewery Location<input type="text"></label>
-    <label>Style<input type="text"></label>
-    <label>ABV<input type="text"></label>
-    <label>IBU<input type="text"></label>
-    <label>Date/Year<input type="text"></label>
+    <label>Beer<input type="text" ng-model="beer.name"></label>
+    <label>Brewery<input type="text" ng-model="beer.brewery.name"></label>
+    <label>Brewery Location<input type="text" id="location" ng-model="beer.brewery.location" places types="(cities)" placeholder=""></label>
+    <label>Style<input type="text" ng-model="beer.style"></label>
+    <label>ABV<input type="text" ng-model="beer.abv"></label>
+    <label>IBU<input type="text" ng-model="beer.ibu"></label>
+    <label>Date/Year<input type="text" ng-model="beer.date"></label>
+    <button>Add Another</button>
   </section>
   <label>Body<textarea ng-model="post.body"></textarea></label>
   <button>Post</button>
+  {{ post }}
 </form>
