@@ -14,15 +14,14 @@
       <label ng-class="{ active: beer.type === 'offer' }"><input type="radio" value="offer" ng-model="beer.type">Offer</label>
     </div>
     <label>Beer<input type="text" ng-model="beer.name"></label>
-    <label>Brewery<input type="text" ng-model="beer.brewery.name"></label>
-    <label>Brewery Location<input type="text" id="{{ 'location[' + $index + ']' }}" ng-model="beer.brewery.location" places types="(cities)" placeholder=""></label>
-    <label>Style<input type="text" ng-model="beer.style"></label>
-    <label>ABV<input type="text" ng-model="beer.abv"></label>
-    <label>IBU<input type="text" ng-model="beer.ibu"></label>
-    <label>Date/Year<input type="text" ng-model="beer.date"></label>
-    <button>Add Another</button>
+    <label ng-if="beer.name">Brewery<input type="text" ng-model="beer.brewery.name"></label>
+    <label ng-if="beer.brewery.name">Brewery Location<input type="text" id="{{ 'location[' + $index + ']' }}" ng-model="beer.brewery.location" places types="(cities)" placeholder=""></label>
+    <label ng-if="beer.name">Style<input type="text" ng-model="beer.style"></label>
+    <label ng-if="beer.name">ABV<input type="text" ng-model="beer.abv"></label>
+    <label ng-if="beer.name">IBU<input type="text" ng-model="beer.ibu"></label>
+    <label ng-if="beer.name">Date/Year<input type="text" ng-model="beer.date"></label>
+    <button ng-if="beer.name">Add Another</button>
   </section>
-  <label>Body<textarea ng-model="post.body"></textarea></label>
-  <button>Post</button>
-  {{ post }}
+  <label ng-if="post.category">{{ post.category === 'trade' ? 'Additional Information' : 'Body' }}<textarea ng-model="post.body"></textarea></label>
+  <button ng-if="post.category">Post</button>
 </form>
