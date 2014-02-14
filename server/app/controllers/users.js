@@ -6,7 +6,7 @@ var coBody = require('co-body')
   , cU = require('../../assets/lib/common-utilities')
   , mongoose = require('mongoose')
   , msg = require('../../config/messages')
-  , Q = require('q')
+  , Promise = require('bluebird')
   , _ = require('underscore');
 
 /**
@@ -27,7 +27,7 @@ module.exports = {
    * GET /api/users
    */
   index: function *(next) {
-    this.body = yield Q.ninvoke(User, 'find', {}, projection);
+    this.body = yield Promise.promisify(User.find, User)({}, projection);
   },
 
   /**
@@ -35,7 +35,7 @@ module.exports = {
    * GET /api/users/:slug
    */
   show: function *(next) {
-    var user = yield Q.ninvoke(User, 'findOne', { slug: this.params.slug }, projection);
+    var user = yield Promise.promisify(User.findOne, User)({ slug: this.params.slug }, projection);
     if (!user) return yield next; // 404 Not Found
     this.body = user;
   },
@@ -46,7 +46,7 @@ module.exports = {
    */
   create: function *(next) {
     var user = new User(yield coBody(this));
-    yield Q.ninvoke(user, 'save');
+    yield Promise.promisify(user.save, user)().catch(function (err) { throw err; });
     this.user = user;
     this.session.user = user.id; // Serialize user to session
     this.status = 201; // 201 Created
@@ -58,10 +58,10 @@ module.exports = {
    * PUT /api/users/:slug
    */
   update: function *(next) {
-    var user = yield Q.ninvoke(User, 'findOne', { slug: this.params.slug });
+    var user = yield Promise.promisify(User.findOne, User)({ slug: this.params.slug });
     if (!user) return yield next; // 404 Not Found
     user = _.extend(user, _.omit(yield coBody(this), 'images'));
-    yield Q.ninvoke(user, 'save');
+    yield Promise.promisify(user.save, user)().catch(function (err) { throw err; });
     this.body = yield cU.updated('user', user, user.username);
   },
 
@@ -70,7 +70,7 @@ module.exports = {
    * DELETE /api/users/:slug
    */
   destroy: function *(next) {
-    var user = yield Q.ninvoke(User, 'findOneAndRemove', { slug: this.params.slug });
+    var user = Promise.promisify(User.findOneAndRemove, User)({ slug: this.params.slug });
     if (!user) return yield next; // 404 Not Found
     this.session = {};
     this.body = yield cU.deleted('user', user, user.username);
@@ -87,7 +87,7 @@ module.exports = {
      * POST /api/users/:slug/image
      */
     create: function *(next) {
-      var user = yield Q.ninvoke(User, 'findOne', { slug: this.params.slug });
+      var user = yield Promise.promisify(User.findOne, User)({ slug: this.params.slug });
       if (!user) return yield next; // 404 Not Found
       var image = new Image()
         , imageHiDPI = new Image()
@@ -97,12 +97,12 @@ module.exports = {
 
       // stream image from form data
       yield image.stream(this, { alt: user.username, crop: true, type: 'users' });
-      yield Q.all([ // resize multiple images asynchronously; yield until all are complete
+      yield [ // resize multiple images asynchronously; yield until all are complete
         imageHiDPI.resizeAsync(image, { highDPI: true }), // 50% height / 50% width
         imageLoDPI.resizeAsync(image, { geometry: { height: 25, width: 25 }}), // 25% height / 25% width 
         imageSmHiDPI.resizeAsync(image, { geometry: { height: 80, width: 80 }, highDPI: true, percentage: false }),
         imageSmLoDPI.resizeAsync(image, { geometry: { height: 40, width: 40 }, percentage: false })
-      ]);
+      ];
 
       // remove old images
       if (user.images.length > 0) {
@@ -112,7 +112,8 @@ module.exports = {
         }
       }
       user.images = [ image, imageHiDPI, imageLoDPI, imageSmHiDPI, imageSmLoDPI ]; // limit user images to a single (current) image
-      yield Q.ninvoke(user, 'save');
+      
+      yield Promise.promisify(user.save, user)().catch(function (err) { throw err; });
       this.status = 201;
       this.body = yield cU.censor(user.images, [ '_id', 'path' ]);
     },
@@ -122,7 +123,7 @@ module.exports = {
      * DELETE /api/users/:slug/image
      */
     destroy: function *(next) {
-      var user = yield Q.ninvoke(User, 'findOne', { slug: this.params.slug });
+      var user = yield Promise.promisify(User.findOne, User)({ slug: this.params.slug });
       if (!user) return yield next; // 404 Not Found
       var _image = new Image();
 
@@ -134,8 +135,7 @@ module.exports = {
         }
       }
       user.images = [];
-
-      yield Q.ninvoke(user, 'save');
+      yield Promise.promisify(user.save, user)().catch(function (err) { throw err; });
       this.body = msg.image.deleted;
     }
   },
@@ -155,11 +155,9 @@ module.exports = {
 
         // deserialize user from session
         if (this.session.user && !this.user) {
-          try {
-            this.user = yield Q.ninvoke(User, 'findById', this.session.user);
-          } catch (err) {
+          this.user = yield Promise.promisify(User.findById, User)(this.session.user).catch(function (err) {
             console.failure('There was an error while trying to deserialize session user', { id: this.session.user }, err.stack);
-          }
+          });
         }
         yield next;
 
@@ -186,7 +184,7 @@ module.exports = {
         this.body = yield cU.body(msgJSONArray);
         return;
       }
-      var user = yield Q.ninvoke(User, 'findOne', { $or: [ { username: body.username }, { email: body.username } ] });
+      var user = yield Promise.promisify(User.findOne, User)({ $or: [ { username: body.username }, { email: body.username } ] });
       if (!user) {
         this.status = 401; // 401 Unauthorized
         this.body = yield cU.body(cU.msg(msg.authentication.incorrect.user(body.username), 'authentication', 'user'));

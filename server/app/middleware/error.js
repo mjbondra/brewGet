@@ -5,7 +5,7 @@
 var cU = require('../../assets/lib/common-utilities')
   , mongoose = require('mongoose')
   , msg = require('../../config/messages')
-  , Q = require('q')
+  , Promise = require('bluebird')
   , _ = require('underscore');
 
 /**
@@ -42,6 +42,9 @@ module.exports = function () {
 
     // error handling for downstream middleware
     } catch (err) {
+
+      // shift rejection errors to their cause if they involve validation
+      if (err.name === 'RejectionError' && err.cause && validationsError.indexOf(err.cause.name) >= 0) err = err.cause;
 
       // validation errors
       if (validationsError.indexOf(err.name) >= 0) {
@@ -90,7 +93,7 @@ module.exports = function () {
             user: typeof this.user !== 'undefined' ? this.user.id : null,
             userIP: this.ip
           });
-          yield Q.ninvoke(_error, 'save');
+          yield Promise.promisify(_error.save, _error);
         } catch (err) {
           // print error logging error to console, but do not overwrite original error
           console.failure(err.stack);
