@@ -32,6 +32,9 @@ app.controller('posts.new', ['$scope', 'Head', 'Post', function ($scope, Head, P
   Head.description('New Post');
   $scope.post = new Post();
   $scope.post.beer = [{}];
+  $scope.addBeer = function () {
+    $scope.post.beer.push({});
+  }
 }]);
 
 /**

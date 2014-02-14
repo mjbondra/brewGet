@@ -21,6 +21,13 @@ module.exports = {
   /**
    * Model messages (CRUD, etc)
    */
+
+  post: {
+    created: function (title) { return 'Post \'' + title + '\' was created'; },
+    deleted: function (title) { return 'Post \'' + title + '\' was deleted'; },
+    updated: function (title) { return 'Post \'' + title + '\' was updated'; }
+  },
+
   user: {
     created: function (username) { return 'User \'' + username + '\' was created'; },
     deleted: function (username) { return 'User \'' + username + '\' was deleted'; },

@@ -5,6 +5,7 @@
 var cU = require('../../assets/lib/common-utilities')
   , mongoose = require('mongoose')
   , msg = require('../../config/messages')
+  , Q = require('q')
   , sanitize = require('../../assets/lib/sanitizer-extended')
   , Schema = mongoose.Schema
   , validate = require('../../assets/lib/validator-extended');
@@ -13,20 +14,19 @@ var cU = require('../../assets/lib/common-utilities')
  * Schema dependencies; subdocuments
  */
 var ImageSchema = mongoose.model('Image').Schema
-  , BeerSchema = mongoose.model('Beer').Schema
+  , Beer = mongoose.model('Beer')
+  , BeerSchema = Beer.Schema
   , CommentSchema = mongoose.model('Comment').Schema;
 
 /**
  * Post schema
  */
 var PostSchema = new Schema({
+  beer: [ BeerSchema ],
   body: String,
   category: String,
   comments: [ CommentSchema ],
-  date: Date,
-  ft: [ BeerSchema ],
   images: [ ImageSchema ],
-  iso: [ BeerSchema ],
   slug: {
     index: true,
     type: String
@@ -34,8 +34,27 @@ var PostSchema = new Schema({
   title: String,
   type: String,
   user: {
-    username: String
+    username: String,
+    slug: {
+      index: true,
+      type: String
+    }
   }
+});
+
+/**
+ * Pre-validation hook; Sanitizers
+ */
+PostSchema.pre('validate', function (next) {
+  next();
+});
+
+/**
+ * Pre-save hook
+ */
+PostSchema.pre('save', function (next) {
+  this.slug = cU.slug(this.title, true);
+  next();
 });
 
 mongoose.model('Post', PostSchema);

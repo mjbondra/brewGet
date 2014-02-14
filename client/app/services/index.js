@@ -247,7 +247,17 @@ app.factory('DateHandler', ['_', function (_) {
  * Post Service
  */
 app.factory('Post', ['$resource', '$location', function ($resource, $location) {
-  return $resource('api/posts/:slug', {});
+  return $resource('api/posts/:slug', {}, {
+    save: {
+      method:'POST',
+      interceptor: {
+        response: function (res) {
+          console.log(res);
+          $location.path('/');
+        }
+      }
+    }
+  });
 }]);
 
 /**

@@ -4,9 +4,9 @@
   Category
   <div class="input-post-category">
     <label ng-class="{ active: post.category === 'trade' }"><input type="radio" value="trade" ng-model="post.category">Trade</label>
-    <label ng-class="{ active: post.category === 'general' }"><input type="radio" value="general" ng-model="post.category">Discussion</label>  
+    <label ng-class="{ active: post.category === 'discussion' }"><input type="radio" value="discussion" ng-model="post.category">Discussion</label>  
   </div>
-  <label ng-if="post.category === 'general'">Title<input type="text" ng-model="post.title"></label>
+  <label ng-if="post.category === 'discussion'">Title<input type="text" ng-model="post.title"></label>
   <section class="input-beer" ng-repeat="beer in post.beer" ng-if="post.category === 'trade'">
     Type
     <div class="input-trade-type">
@@ -20,9 +20,8 @@
     <label>ABV<input type="text" ng-model="beer.abv"></label>
     <label>IBU<input type="text" ng-model="beer.ibu"></label>
     <label>Date/Year<input type="text" ng-model="beer.date"></label>
-    <button>Add Another</button>
+    <button ng-click="addBeer()" ng-if="post.beer.length === $index + 1">Add Another</button>
   </section>
   <label ng-if="post.category">{{ post.category === 'trade' ? 'Additional Information' : 'Body' }}<textarea ng-model="post.body"></textarea></label>
-  <button ng-if="post.category">Post</button>
-  {{ post }}
+  <button ng-click="post.$save()">Post</button>
 </form>

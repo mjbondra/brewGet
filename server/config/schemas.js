@@ -62,4 +62,5 @@ exports.beer = {
   rating: Number,
   slug: String,
   style: String,
+  year: Number
 }

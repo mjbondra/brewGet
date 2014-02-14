@@ -9,6 +9,7 @@ var requires = require('../app/middleware/auth').requires;
  */
 var locations = require('../app/controllers/locations')
   , navigation = require('../app/controllers/navigation')
+  , posts = require('../app/controllers/posts')
   , users = require('../app/controllers/users');
 
 module.exports = function (app) {
@@ -27,6 +28,9 @@ module.exports = function (app) {
   // users sessions
   app.post('/api/users/sign-in', users.sessions.create);
   app.delete('/api/users/sign-out', users.sessions.destroy);
+
+  // posts
+  app.post('/api/posts', posts.create);
 
   // users
   app.get('/api/users', users.index);
