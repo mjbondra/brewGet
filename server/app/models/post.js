@@ -24,7 +24,12 @@ var ImageSchema = mongoose.model('Image').Schema
 var PostSchema = new Schema({
   beer: [ BeerSchema ],
   body: String,
-  category: String,
+  category: {
+    type: String,
+    validate: [ 
+      { validator: validate.notNull, msg: msg.category.isNull }
+    ]
+  },
   comments: [ CommentSchema ],
   images: [ ImageSchema ],
   slug: {
@@ -46,6 +51,7 @@ var PostSchema = new Schema({
  * Pre-validation hook; Sanitizers
  */
 PostSchema.pre('validate', function (next) {
+  if (!this.category && this.isNew) this.category = null;
   next();
 });
 

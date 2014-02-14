@@ -48,6 +48,9 @@ module.exports = {
   body: {
     isNull: 'Body field cannot be empty' 
   },
+  category: {
+    isNull: 'You must select a post category'
+  },
   comments: {
     isNull: 'Comments cannot be empty'
   },
@@ -84,6 +87,9 @@ module.exports = {
   },
   title: {
     isNull: 'Title cannot be empty'
+  },
+  type: {
+    isNull: 'Please select a trade type; \'offer\' or \'request\''
   },
   url: {
     notUrl: 'Url must be valid'
