@@ -104,7 +104,7 @@ app.directive('places', ['PlacesAPI', function (PlacesAPI) {
     link: function (scope, element, attrs) {
       attrs.types = attrs.types || 'geocode';
       PlacesAPI.setElementByID(attrs.id, attrs.types);
-      scope.$on('place', function (event, place) {
+      scope.$on(attrs.id, function (event, place) {
         place.formatted_address = element.val();
         place.latitude = place.geometry.location.lat();
         place.longitude = place.geometry.location.lng();

@@ -15,7 +15,7 @@
     </div>
     <label>Beer<input type="text" ng-model="beer.name"></label>
     <label>Brewery<input type="text" ng-model="beer.brewery.name"></label>
-    <label>Brewery Location<input type="text" id="location" ng-model="beer.brewery.location" places types="(cities)" placeholder=""></label>
+    <label>Brewery Location<input type="text" id="{{ 'location[' + $index + ']' }}" ng-model="beer.brewery.location" places types="(cities)" placeholder=""></label>
     <label>Style<input type="text" ng-model="beer.style"></label>
     <label>ABV<input type="text" ng-model="beer.abv"></label>
     <label>IBU<input type="text" ng-model="beer.ibu"></label>

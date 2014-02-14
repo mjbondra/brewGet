@@ -31,7 +31,7 @@ app.controller('posts.new', ['$scope', 'Head', 'Post', function ($scope, Head, P
   Head.title('New Post');
   Head.description('New Post');
   $scope.post = new Post();
-  $scope.post.beer = [{}];
+  $scope.post.beer = [{},{}];
 }]);
 
 /**

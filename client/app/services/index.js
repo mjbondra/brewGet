@@ -43,17 +43,22 @@ app.factory('Gravatar', ['HighDPI', function (HighDPI) {
 app.factory('PlacesAPI', ['$rootScope', function ($rootScope) {
   var maps = window.google.maps
     , places = maps.places
-    , autocomplete
     , element;
   return {
     setElementByID: function (elementID, types) {
       element = document.getElementById(elementID);
-      autocomplete = new places.Autocomplete(element, { types: [ types ] });
-      maps.event.addListener(autocomplete, 'place_changed', function () {
-        var place = autocomplete.getPlace();
-        if (!place.geometry) return;
-        $rootScope.$broadcast('place', place);
-      });
+      if (element !== null) {
+        var autocomplete = new places.Autocomplete(element, { types: [ types ] });
+        maps.event.addListener(autocomplete, 'place_changed', function () {
+          var place = autocomplete.getPlace();
+          if (!place.geometry) return;
+          $rootScope.$broadcast(elementID, place);
+        });
+      } else {
+        setTimeout(function () {
+          this.setElementByID(elementID, types);
+        }.bind(this), 300); // try again
+      }
     }
   };
 }]);
