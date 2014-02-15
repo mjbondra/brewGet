@@ -6,7 +6,7 @@ var coBody = require('co-body')
   , cU = require('../../assets/lib/common-utilities')
   , mongoose = require('mongoose')
   , msg = require('../../config/messages')
-  , Q = require('q')
+  , Promise = require('bluebird')
   , _ = require('underscore');
 
 /**
@@ -25,7 +25,7 @@ module.exports = {
   create: function *(next) {
     var post = new Post(yield coBody(this));
     post.user = this.user;
-    yield Q.ninvoke(post, 'save');
+    yield Promise.promisify(post.save, post)().catch(function (err) { throw err; });
     this.status = 201; // 201 Created
     this.body = yield cU.created('post', post, post.title);
   },

@@ -4,7 +4,7 @@
  */
 var cU = require('../../assets/lib/common-utilities')
   , mongoose = require('mongoose')
-  , Q = require('q');
+  , Promise = require('bluebird');
 
 /**
  * Models
@@ -23,7 +23,7 @@ module.exports = {
    * GET /api/locations
    */
   index: function *(next) {
-    this.body = yield Q.ninvoke(Location, 'find', {}, projection);
+    this.body = yield Promise.promisify(Location.find, Location)({}, projection);
   },
 
   /**
@@ -31,7 +31,7 @@ module.exports = {
    * GET /api/locations/:state
    */
   state: function *(next) {
-    var state = yield Q.ninvoke(Location, 'find', { 'slug.state': this.params.state }, projection);
+    var state = yield Promise.promisify(Location.find, Location)({ 'slug.state': this.params.state }, projection);
     if (!state.length) return yield next; // 404 Not Found
     this.body = state;
   },
@@ -41,7 +41,7 @@ module.exports = {
    * GET /api/locations/:state/:city
    */
   city: function *(next) {
-    var city = yield Q.ninvoke(Location, 'findOne', { 'slug.state': this.params.state, 'slug.city': this.params.city }, projection);
+    var city = yield Promise.promisify(Location.findOne, Location)({ 'slug.state': this.params.state, 'slug.city': this.params.city }, projection);
     if (!city) return yield next; // 404 Not Found
     this.body = city;
   }

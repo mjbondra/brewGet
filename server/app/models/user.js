@@ -6,7 +6,7 @@ var crypto = require('crypto')
   , cU = require('../../assets/lib/common-utilities')
   , mongoose = require('mongoose')
   , msg = require('../../config/messages')
-  , Q = require('q')
+  , Promise = require('bluebird')
   , sanitize = require('../../assets/lib/sanitizer-extended')
   , Schema = mongoose.Schema
   , uid = require('uid2')
@@ -89,14 +89,11 @@ UserSchema.pre('validate', function (next) {
     var location = new Location(JSON.parse(this.location));
     this._location = location;
     this.location = location.formatted_address;
-    Q.ninvoke(location, 'save')
-      .then(function () {
-        next();
-      })
-      .fail(function () {
-        next();
-      });
-    
+    Promise.promisify(location.save, location)().then(function () {
+      next();
+    }).catch(function (err) {
+      next();
+    });
   } catch (err) {
     if (typeof this.location === 'string') this.location = sanitize.escape(this.location);
     else this.location = '';

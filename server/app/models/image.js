@@ -10,7 +10,7 @@ var coBusboy = require('co-busboy')
   , mime = require('mime')
   , mongoose = require('mongoose')
   , msg = require('../../config/messages')
-  , Q = require('q')
+  , Promise = require('bluebird')
   , Schema = mongoose.Schema
   , uid = require('uid2');
 
@@ -84,7 +84,7 @@ ImageSchema.methods = {
       , filename = new Date().valueOf() + '-' + uid(6) + '.' + ( extension === 'jpeg' ? 'jpg' : extension )
       , path = dir + '/' + filename
       , readStream = fs.createReadStream(image.path)
-      , size = Q.defer();
+      , size = Promise.defer();
 
     gm(readStream)
       .resize(opts.geometry.width, opts.geometry.height, ( opts.percentage === true ? '%' : ''))
@@ -132,7 +132,7 @@ ImageSchema.methods = {
    * @returns {promise}                       -   promise for a populated image object
    */
   resizeAsync: function (image, opts) {
-    var _image = Q.defer();
+    var _image = Promise.defer();
 
     opts = opts || {};
     opts.geometry = opts.geometry || {};
@@ -146,7 +146,7 @@ ImageSchema.methods = {
       , filename = new Date().valueOf() + '-' + uid(6) + '.' + ( extension === 'jpeg' ? 'jpg' : extension )
       , path = dir + '/' + filename
       , readStream = fs.createReadStream(image.path)
-      , _size = Q.defer();
+      , _size = Promise.defer();
 
     gm(readStream)
       .resize(opts.geometry.width, opts.geometry.height, ( opts.percentage === true ? '%' : ''))
@@ -180,7 +180,7 @@ ImageSchema.methods = {
     _size.promise.then(function (size) {
       this.size = size;
       _image.resolve();
-    }.bind(this)).fail(function (err) {
+    }.bind(this)).catch(function (err) {
       _image.reject(new Error(err));
     });
 
@@ -217,9 +217,9 @@ ImageSchema.methods = {
     var parts = coBusboy(ctx, { limits: opts.limits });
 
     var dir = config.path.upload + ( opts.type ? '/' + opts.type : '' )
-      , geometry = ( opts.crop === true ? opts.geometry : Q.defer() )
+      , geometry = ( opts.crop === true ? opts.geometry : Promise.defer() )
       , limitExceeded = false
-      , size = Q.defer()
+      , size = Promise.defer()
       , streamError = false
       , types = [ 'image/png', 'image/jpeg', 'image/gif' ];
     

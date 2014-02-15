@@ -5,7 +5,7 @@
 var cU = require('../../assets/lib/common-utilities')
   , mongoose = require('mongoose')
   , msg = require('../../config/messages')
-  , Q = require('q')
+  , Promise = require('bluebird')
   , sanitize = require('../../assets/lib/sanitizer-extended')
   , Schema = mongoose.Schema
   , validate = require('../../assets/lib/validator-extended');

@@ -3,7 +3,7 @@
  * Module dependencies
  */
 var mongoose = require('mongoose')
-  , Q = require('q')
+  , Promise = require('bluebird')
   , Schema = mongoose.Schema;
 
 var BrewerySchema = new Schema(require('../../config/schemas').beer.brewery)
@@ -20,14 +20,11 @@ BrewerySchema.pre('validate', function (next) {
     var location = new Location(JSON.parse(this.location));
     this._location = location;
     this.location = location.formatted_address;
-    Q.ninvoke(location, 'save')
-      .then(function () {
-        next();
-      })
-      .fail(function () {
-        next();
-      });
-    
+    Promise.promisify(location.save, location)().then(function () {
+      next();
+    }).catch(function (err) {
+      next();
+    });
   } catch (err) {
     if (typeof this.location === 'string') this.location = sanitize.escape(this.location);
     else this.location = '';
