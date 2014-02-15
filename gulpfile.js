@@ -17,6 +17,8 @@ gulp.task('browserify', ['bower'], function () {
   gulp.src('./client/config/app.js')
     .pipe(plumber())
     .pipe(browserify())
+    .pipe(gulp.dest('./client/assets/js/'))
+    .pipe(rename('app.min.js'))
     .pipe(uglify({ outSourceMap: true }))
     .pipe(gulp.dest('./client/assets/js/'));
 });
@@ -25,6 +27,8 @@ gulp.task('compass', ['bower'], function () {
   gulp.src('./client/assets/scss/*.scss')
     .pipe(plumber())
     .pipe(compass({ sass: './client/assets/scss', css: './client/assets/css' }))
+    .pipe(gulp.dest('./client/assets/css/'))
+    .pipe(rename('main.min.css'))
     .pipe(minify({ keepSpecialComments: 0 }))
     .pipe(gulp.dest('./client/assets/css/'));
 });
