@@ -29,7 +29,7 @@ gulp.task('compass', ['bower'], function () {
     .pipe(compass({ sass: './client/assets/scss', css: './client/assets/css' }))
     .pipe(gulp.dest('./client/assets/css/'))
     .pipe(rename('main.min.css'))
-    .pipe(minify({ keepSpecialComments: 0 }))
+    .pipe(minify({ keepSpecialComments: false }))
     .pipe(gulp.dest('./client/assets/css/'));
 });
 
