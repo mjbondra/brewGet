@@ -98,17 +98,17 @@ module.exports = {
       // stream image from form data
       yield image.stream(this, { alt: user.username, crop: true, type: 'users' });
       yield [ // resize multiple images asynchronously; yield until all are complete
-        imageHiDPI.resizeAsync(image, { highDPI: true }), // 50% height / 50% width
-        imageLoDPI.resizeAsync(image, { geometry: { height: 25, width: 25 }}), // 25% height / 25% width 
-        imageSmHiDPI.resizeAsync(image, { geometry: { height: 80, width: 80 }, highDPI: true, percentage: false }),
-        imageSmLoDPI.resizeAsync(image, { geometry: { height: 40, width: 40 }, percentage: false })
+        imageHiDPI.resize(image, { highDPI: true }), // 50% height / 50% width
+        imageLoDPI.resize(image, { geometry: { height: 25, width: 25 }}), // 25% height / 25% width 
+        imageSmHiDPI.resize(image, { geometry: { height: 80, width: 80 }, highDPI: true, percentage: false }),
+        imageSmLoDPI.resize(image, { geometry: { height: 40, width: 40 }, percentage: false })
       ];
 
       // remove old images
       if (user.images.length > 0) {
         var i = user.images.length;
-        while (i--) { 
-          yield image.destroy(user.images[i]);
+        while (i--) {
+          yield user.images[i].destroy();
         }
       }
       user.images = [ image, imageHiDPI, imageLoDPI, imageSmHiDPI, imageSmLoDPI ]; // limit user images to a single (current) image
@@ -125,13 +125,12 @@ module.exports = {
     destroy: function *(next) {
       var user = yield Promise.promisify(User.findOne, User)({ slug: this.params.slug });
       if (!user) return yield next; // 404 Not Found
-      var _image = new Image();
 
       // remove images
       if (user.images.length > 0) {
         var i = user.images.length;
-        while (i--) { 
-          yield _image.destroy(user.images[i]);
+        while (i--) {
+          yield user.images[i].destroy();
         }
       }
       user.images = [];
