@@ -9,6 +9,8 @@ var coBody = require('co-body')
   , Promise = require('bluebird')
   , _ = require('underscore');
 
+// Promise.prototype.catch(function (err) { throw err; });
+
 /**
  * Models
  */
@@ -46,7 +48,7 @@ module.exports = {
    */
   create: function *(next) {
     var user = new User(yield coBody(this));
-    yield Promise.promisify(user.save, user)().catch(function (err) { throw err; });
+    yield Promise.promisify(user.save, user)();
     this.user = user;
     this.session.user = user.id; // Serialize user to session
     this.status = 201; // 201 Created
@@ -61,7 +63,7 @@ module.exports = {
     var user = yield Promise.promisify(User.findOne, User)({ slug: this.params.slug });
     if (!user) return yield next; // 404 Not Found
     user = _.extend(user, _.omit(yield coBody(this), 'images'));
-    yield Promise.promisify(user.save, user)().catch(function (err) { throw err; });
+    yield Promise.promisify(user.save, user)();
     this.body = yield cU.updated('user', user, user.username);
   },
 
@@ -113,7 +115,7 @@ module.exports = {
       }
       user.images = [ image, imageHiDPI, imageLoDPI, imageSmHiDPI, imageSmLoDPI ]; // limit user images to a single (current) image
       
-      yield Promise.promisify(user.save, user)().catch(function (err) { throw err; });
+      yield Promise.promisify(user.save, user)();
       this.status = 201;
       this.body = yield cU.censor(user.images, [ '_id', 'path' ]);
     },
@@ -134,7 +136,7 @@ module.exports = {
         }
       }
       user.images = [];
-      yield Promise.promisify(user.save, user)().catch(function (err) { throw err; });
+      yield Promise.promisify(user.save, user)();
       this.body = msg.image.deleted;
     }
   },
