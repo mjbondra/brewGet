@@ -9,8 +9,6 @@ var coBody = require('co-body')
   , Promise = require('bluebird')
   , _ = require('underscore');
 
-// Promise.prototype.catch(function (err) { throw err; });
-
 /**
  * Models
  */

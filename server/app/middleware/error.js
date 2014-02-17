@@ -93,7 +93,7 @@ module.exports = function () {
             user: typeof this.user !== 'undefined' ? this.user.id : null,
             userIP: this.ip
           });
-          yield Promise.promisify(_error.save, _error);
+          yield Promise.promisify(_error.save, _error)();
         } catch (err) {
           // print error logging error to console, but do not overwrite original error
           console.failure(err.stack);
