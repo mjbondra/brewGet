@@ -30,6 +30,7 @@ module.exports = function (app) {
   app.delete('/api/users/sign-out', users.sessions.destroy);
 
   // posts
+  app.get('/api/posts', posts.index);
   app.post('/api/posts', posts.create);
 
   // users

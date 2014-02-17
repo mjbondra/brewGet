@@ -12,10 +12,28 @@ var coBody = require('co-body')
 /**
  * Models
  */
-var Post = mongoose.model('Post');
+var Image = mongoose.model('Image')
+  , Post = mongoose.model('Post');
+
+/**
+ * Mongo projection paramater; includes or excludes fields
+ */
+var projection = { _id: 0, __v: 0 };
 
 module.exports = {
-  index: function *(next) {},
+
+  /**
+   * Index
+   * GET /api/posts
+   */
+  index: function *(next) {
+    this.body = yield Promise.promisify(Post.find, Post)({}, projection);
+  },
+
+  /**
+   * Show
+   * GET /api/posts/:slug
+   */
   show: function *(next) {},
 
   /**
@@ -30,6 +48,6 @@ module.exports = {
     this.body = yield cU.created('post', post, post.title);
   },
 
-  update: function *() {},
+  update: function *(next) {},
   destroy: function *(next) {}
 }

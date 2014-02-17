@@ -25,6 +25,7 @@ var PostSchema = new Schema({
   beer: [ BeerSchema ],
   body: String,
   category: {
+    index: true,
     type: String,
     validate: [ 
       { validator: validate.notNull, msg: msg.category.isNull }
