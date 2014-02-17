@@ -12,7 +12,9 @@ Instructions and requirements for installing this web application.
 ###Dependencies
 
 [Node.js](https://nodejs.org/)  
+[GraphicsMagick](http://www.graphicsmagick.org/)  
 [MongoDB](http://www.mongodb.org/)  
+
 
 ######Dependency Notes
 
@@ -52,7 +54,7 @@ The MIT License (MIT)
 
 * [AngularJS](http://angularjs.org/)
 * [Bluebird](https://github.com/petkaantonov/bluebird)
-* [Bower](http://bower.io/)
+* [Bower](http://bower.io/) / [Gulp-Bower](https://github.com/zont/gulp-bower)
 * [Browserify](http://browserify.org/) / [Gulp-Browserify](https://github.com/deepak1556/gulp-browserify)
 * [Busboy](https://github.com/mscdex/busboy) / [Co-Busboy](https://github.com/cojs/busboy)
 * [Co-Body](https://github.com/visionmedia/co-body)
@@ -77,7 +79,6 @@ The MIT License (MIT)
 * [Normalize.css](http://necolas.github.io/normalize.css/)
 * [Should](https://github.com/visionmedia/should.js)
 * [Supertest](https://github.com/visionmedia/supertest)
-* [Qs](https://github.com/visionmedia/node-querystring)
 * [Socket.IO](http://socket.io/)
 * [Sass](http://sass-lang.com/)
 * [Susy](http://susy.oddbird.net/)
@@ -93,14 +94,20 @@ brewGet
 |
 |--client (AngularJS app)
 |	|--app
-|	|	|--views
-|	|	|	+--[AngularJS html templates]
+|	|	|--controllers
+|	|	|	+--[AngularJS controllers]
 |	|	|
-|	|	|--controllers.js (AngularJS controllers)
-|	|	|--directives.js (AngularJS directives)
-|	|	|--filters.js (AngularJS filters)
-|	|	|--index.js (AngularJS app load file)
-|	|	+--services.js (AngularJS services)
+|	|	|--directives
+|	|	|	+--[AngularJS directives]
+|	|	|
+|	|	|--filters
+|	|	|	+--[AngularJS filters]
+|	|	|
+|	|	|--services
+|	|	|	+--[AngularJS services]
+|	|	|
+|	|	+--views
+|	|		+--[AngularJS views]
 |	|
 |	|--assets
 |	|	|--css
@@ -110,7 +117,8 @@ brewGet
 |	|	|	+--[web fonts]
 |	|	|
 |	|	|--js
-|	|	|	+--app.js (Browserified and Uglified app file)
+|	|	|	|--app.js (Browserified app file)
+|	|	|	+--app.min.js (Browserified and Uglified app file)
 |	|	|
 |	|	|--img
 |	|	|	+--[images]
@@ -118,17 +126,15 @@ brewGet
 |	|	|--lib
 |	|	|	+--[Bower installed libraries]
 |	|	|
-|	|	|--scss
-|	|	|	+--[Sass files]
-|	|	|
-|	|	+--config.rb (Compass configuration)
+|	|	+--scss
+|	|		+--[Sass files]
 |	|
 |	|--config
-|	|	|--angular.js (AngularJS core load file)
 |	|	|--app.js (AngularJS app configuration file)
 |	|	+--routes.js (AngularJS routes)
 |	|
-|	+--index.html (AngularJS html template)
+|	|--index.html (AngularJS html template)
+|	+--favicon.ico (app favicon)
 |
 |--node_mondules
 |	+--[npm installed libraries]
@@ -169,6 +175,7 @@ brewGet
 |--.gitignore
 |--.travis.yml
 |--bower.json
+|--config.rb
 |--Gemfile
 |--Gemfile.lock
 |--gulpfile.js
