@@ -15,6 +15,10 @@ Instructions and requirements for installing this web application.
 [GraphicsMagick](http://www.graphicsmagick.org/)  
 [MongoDB](http://www.mongodb.org/)  
 
+######Dev Dependencies
+
+[Ruby](https://www.ruby-lang.org)  
+[Compass](http://compass-style.org/)
 
 ######Dependency Notes
 
@@ -22,9 +26,10 @@ brewGet is built with [Koa](http://koajs.com/), which requires Node 0.11.9 or gr
 
 ###Getting Started
 
-While in the project root directory:   
+While in the project root directory:  
 
 ```
+bundle install
 npm install
 node --harmony server
 ```
