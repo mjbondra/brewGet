@@ -13,10 +13,8 @@ var compress = require('koa-compress')
 /**
  * Middleware
  */
-var bodyParser = require('../app/middleware/body-parser')
-  , error = require('../app/middleware/error')
+var error = require('../app/middleware/error')
   , notFound = require('../app/middleware/404')
-  , pathRewrite = require('../app/middleware/path-rewrite')
   , user = require('../app/controllers/users').sessions.show;
 
 module.exports = function (app, config) {

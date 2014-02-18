@@ -2,17 +2,16 @@
   "name": "brewGet",
   "version": "0.1.1",
   "dependencies": {
-    "angular": "1.2.12",
-    "angular-animate": "1.2.12",
-    "angular-cookies": "1.2.12",
-    "angular-resource": "1.2.12",
-    "angular-route": "1.2.12",
-    "angular-touch": "1.2.12",
+    "angular": "1.2.13",
+    "angular-animate": "1.2.13",
+    "angular-cookies": "1.2.13",
+    "angular-resource": "1.2.13",
+    "angular-route": "1.2.13",
+    "angular-touch": "1.2.13",
     "font-awesome": "4.x",
     "html5-boilerplate": "4.x",
     "ng-file-upload": "1.2.7",
-    "normalize-css": "2.x",
-    "socket.io": "0.x",
+    "normalize-css": "3.x",
     "susy": "1.x"
   }
 }
