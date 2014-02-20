@@ -36,7 +36,10 @@ exports.location = {
  */
 exports.beer = {
   abv: Number,
-  aliases: Array,
+  aliases: [{
+    name: String,
+    slug: String
+  }],
   brewery: {
     aliases: Array,
     comments: [ CommentSchema ],
@@ -61,6 +64,13 @@ exports.beer = {
   }],
   rating: Number,
   slug: String,
-  style: String,
+  style: {
+    aliases: [{
+      name: String,
+      slug: String
+    }],
+    name: String,
+    slug: String
+  },
   year: Number
 }

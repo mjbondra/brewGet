@@ -6,7 +6,7 @@
     <label ng-class="{ active: post.category === 'trade' }"><input type="radio" value="trade" ng-model="post.category">Trade</label>
     <label ng-class="{ active: post.category === 'discussion' }"><input type="radio" value="discussion" ng-model="post.category">Discussion</label>  
   </div>
-  <section class="input-beer" ng-repeat="beer in post.beer" ng-if="post.category === 'trade'">
+  <section class="input-beer" ng-repeat="beer in post.beers" ng-if="post.category === 'trade'">
     Type
     <div class="input-trade-type">
       <label ng-class="{ active: beer.type === 'request' }"><input type="radio" value="request" ng-model="beer.type">Request</label>
@@ -15,11 +15,11 @@
     <label>Beer<input type="text" ng-model="beer.name"></label>
     <label>Brewery<input type="text" ng-model="beer.brewery.name"></label>
     <label>Brewery Location<input type="text" id="{{ 'location[' + $index + ']' }}" ng-model="beer.brewery.location" places types="(cities)" placeholder=""></label>
-    <label>Style<input type="text" ng-model="beer.style"></label>
+    <label>Style<input type="text" ng-model="beer.style.name"></label>
     <label>ABV<input type="text" ng-model="beer.abv"></label>
     <label>IBU<input type="text" ng-model="beer.ibu"></label>
     <label>Date/Year<input type="text" ng-model="beer.date"></label>
-    <button ng-click="addBeer()" ng-if="post.beer.length === $index + 1">Add Another</button>
+    <button ng-click="addBeer()" ng-if="post.beers.length === $index + 1">Add Another</button>
   </section>
   <section class="input-common" ng-if="post.category">
     <label ng-if="post.category === 'discussion'">Title<input type="text" ng-model="post.title"></label>

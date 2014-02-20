@@ -22,7 +22,7 @@ var ImageSchema = mongoose.model('Image').Schema
  * Post schema
  */
 var PostSchema = new Schema({
-  beer: [ BeerSchema ],
+  beers: [ BeerSchema ],
   body: String,
   category: {
     index: true,
@@ -53,6 +53,10 @@ var PostSchema = new Schema({
  */
 PostSchema.pre('validate', function (next) {
   if (!this.category && this.isNew) this.category = null;
+  var i = this.beers.length;
+  while (i--) {
+    console.log(this.beers[i]);
+  }
   next();
 });
 

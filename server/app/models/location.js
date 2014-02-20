@@ -21,7 +21,7 @@ LocationSchema.virtual('address_components')
     while (i--) {
       if (address_components[i].types[0] === 'locality') this.city = sanitize.escape(address_components[i].long_name);
       else if (address_components[i].types[0] === 'administrative_area_level_1') this.state = sanitize.escape(address_components[i].short_name);
-      else if (address_components[i].types[0] === 'country') this.country = sanitize.escape(address_components[i].long_name)
+      else if (address_components[i].types[0] === 'country') this.country = sanitize.escape(address_components[i].long_name);
     }
   })
   .get(function () { 
