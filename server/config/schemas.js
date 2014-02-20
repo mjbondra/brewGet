@@ -41,7 +41,10 @@ exports.beer = {
     slug: String
   }],
   brewery: {
-    aliases: Array,
+    aliases: [{
+      name: String,
+      slug: String
+    }],
     comments: [ CommentSchema ],
     images: [ ImageSchema ],
     info: String,
@@ -52,7 +55,6 @@ exports.beer = {
     slug: String
   },
   comments: [ CommentSchema ],
-  date: Date,
   ibu: Number,
   images: [ ImageSchema ],
   info: String,
@@ -71,6 +73,5 @@ exports.beer = {
     }],
     name: String,
     slug: String
-  },
-  year: Number
+  }
 }

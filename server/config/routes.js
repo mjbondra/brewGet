@@ -12,6 +12,7 @@ var beers = require('../app/controllers/beers')
   , locations = require('../app/controllers/locations')
   , navigation = require('../app/controllers/navigation')
   , posts = require('../app/controllers/posts')
+  , styles = require('../app/controllers/styles')
   , users = require('../app/controllers/users');
 
 module.exports = function (app) {
@@ -41,6 +42,9 @@ module.exports = function (app) {
   // posts
   app.get('/api/posts', posts.index);
   app.post('/api/posts', posts.create);
+
+  // styles
+  app.get('/api/styles', styles.index);
 
   // users sessions
   app.post('/api/users/sign-in', users.sessions.create);

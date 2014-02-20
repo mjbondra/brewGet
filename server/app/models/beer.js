@@ -3,6 +3,7 @@
  * Module dependencies
  */
 var mongoose = require('mongoose')
+  , Promise = require('bluebird')
   , Schema = mongoose.Schema;
 
 var BeerSchema = new Schema(require('../../config/schemas').beer)

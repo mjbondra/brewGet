@@ -7,6 +7,7 @@ var models = [
   'comment',
   'location',
   'brewery',
+  'style',
   'beer',
   'user',
   'post'

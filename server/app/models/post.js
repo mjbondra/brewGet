@@ -13,10 +13,13 @@ var cU = require('../../assets/lib/common-utilities')
 /**
  * Schema dependencies; subdocuments
  */
-var ImageSchema = mongoose.model('Image').Schema
+var ImageSchema = mongoose.model('Image').schema
   , Beer = mongoose.model('Beer')
-  , BeerSchema = Beer.Schema
-  , CommentSchema = mongoose.model('Comment').Schema;
+  , BeerSchema = Beer.schema
+  , CommentSchema = mongoose.model('Comment').schema;
+
+BeerSchema.date = Date;
+BeerSchema.year = String;
 
 /**
  * Post schema
