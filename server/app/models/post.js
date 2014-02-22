@@ -57,7 +57,7 @@ var PostSchema = new Schema({
  */
 PostSchema.pre('validate', function (next) {
   if (!this.category && this.isNew) this.category = null;
-  next();
+  this.processNest(next, 2);
 });
 
 /**
@@ -65,36 +65,54 @@ PostSchema.pre('validate', function (next) {
  */
 PostSchema.pre('save', function (next) {
   this.slug = cU.slug(this.title, true);
-
-  // process validated beers against beer model; retreive existing, save new
-  var i = this.beers.length
-    , beers = [];
-  while (i--) {
-    beers.push(Promise.promisify(Beer.findOne, Beer)({ 
-      slug: cU.slug(this.beers[i].name),
-      'brewery.slug': cU.slug(this.beers[i].brewery.name)
-    }));
-  }
-  Promise.all(beers).bind(this).then(function (beers) {
-    i = beers.length;
-    while (i--) {
-      if (!beers[i]) {
-        beers[i] = new Beer(this._doc.beers[beers.length - (i + 1)]);
-        beers[i] = Promise.promisify(beers[i].save, beers[i])();
-      }
-    }
-    return Promise.all(beers);
-  }).then(function (beers) {
-    i = beers.length;
-    while (i--) {
-      if (beers[i][0]) beers[i] = beers[i][0];
-      this.beers[beers.length - (i + 1)] = beers[i];
-    }
-    next();
-  }).catch(function (err) {
-    next();
-  });
-
+  next();
 });
+
+/**
+ * Methods 
+ */
+PostSchema.methods = {
+  
+  /**
+   * Process beers against beer model; retreive existing, save new
+   *
+   * @param {function} next - function that calls next function
+   * @param {number} limit - number of times the function can be called again to correct for async uniqueness errors
+   * @param {number} [count=0] - number of times the function has been called
+   */
+  processNest: function (next, limit, count) {
+    if (!count) count = 1;
+    else count++;
+
+    var i = this.beers.length
+      , beers = [];
+    while (i--) {
+      beers.push(Promise.promisify(Beer.findOne, Beer)({ 
+        'aliases.slug': cU.slug(this.beers[i].name),
+        'brewery.aliases.slug': cU.slug(this.beers[i].brewery.name)
+      }));
+    }
+    Promise.all(beers).bind(this).then(function (beers) {
+      i = beers.length;
+      while (i--) {
+        if (!beers[i]) {
+          beers[i] = new Beer(this._doc.beers[beers.length - (i + 1)]);
+          beers[i] = Promise.promisify(beers[i].save, beers[i])();
+        }
+      }
+      return Promise.all(beers);
+    }).then(function (beers) {
+      i = beers.length;
+      while (i--) {
+        if (beers[i][0]) beers[i] = beers[i][0];
+        this.beers[beers.length - (i + 1)] = beers[i];
+      }
+      next();
+    }).catch(function (err) {
+      if (count >= limit) return next(err);
+      this.processNest(next, limit, count);
+    });
+  }
+};
 
 mongoose.model('Post', PostSchema);

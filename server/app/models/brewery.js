@@ -5,12 +5,14 @@
 var cU = require('../../assets/lib/common-utilities')
   , mongoose = require('mongoose')
   , Promise = require('bluebird')
+  , sanitize = require('../../assets/lib/sanitizer-extended')
   , Schema = mongoose.Schema;
 
 var BrewerySchema = new Schema(require('../../config/schemas').beer.brewery)
   , Location = mongoose.model('Location');
 
 BrewerySchema.index({ slug: 1 }, { unique: true });
+BrewerySchema.index({ 'aliases.slug': 1 }, { unique: true });
 
 /**
  * Pre-validation hook; Sanitizers
