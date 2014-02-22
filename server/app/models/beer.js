@@ -17,42 +17,40 @@ BeerSchema.index({ slug: 1, 'brewery.slug': 1 }, { unique: true });
  * Pre-validation hook; Sanitizers
  */
 BeerSchema.pre('validate', function (next) {
-  var nestedDocs = [];
-  if (this.brewery && this.brewery.name) {
-    this.brewery.slug = cU.slug(this.brewery.name);
-    nestedDocs.push(Promise.promisify(Brewery.findOne, Brewery)({ slug: this.brewery.slug }));
-  }
-  if (this.style && this.style.name) {
-    this.style.slug = cU.slug(this.style.name);
-    nestedDocs.push(Promise.promisify(Style.findOne, Style)({ slug: this.style.slug }));
-  } 
-  
-  // if (this.brewery && this.brewery.name) {
-  //   this.brewery.slug = cU.slug(this.brewery.name);
-  //   Promise.promisify(Brewery.findOne, Brewery)({ slug: this.brewery.slug }).bind(this).then(function (brewery) {
-  //     if (!brewery) {
-  //       brewery = new Brewery(this._doc.brewery);
-  //       Promise.promisify(brewery.save, brewery)().bind(this).then(function (brewery) {
-  //         this.brewery = brewery[0];
-  //         next();
-  //       }).catch(function (err) {
-  //         next();
-  //       });
-  //     } else {
-  //       this.brewery = brewery;
-  //       next();
-  //     }
-  //   }).catch(function (err) {
-  //     next();
-  //   });
-  // } else next();
+  next();
 });
 
 /**
  * Pre-save hook
  */
 BeerSchema.pre('save', function (next) {
-  next();
+  this.slug = cU.slug(this.name);
+  if (this.isNew) this.aliases.push({ name: this.name, slug: this.slug });
+
+  // process validated style and brewery against their individual models; retreive existing, save new
+  Promise.all([
+    Promise.promisify(Brewery.findOne, Brewery)({ slug: cU.slug(this.brewery.name) }),
+    Promise.promisify(Style.findOne, Style)({ slug: cU.slug(this.style.name) })
+  ]).bind(this).spread(function (brewery, style) {
+    if (!brewery) {
+      brewery = new Brewery(this._doc.brewery);
+      brewery = Promise.promisify(brewery.save, brewery)();
+    }
+    if (!style) {
+      style = new Style(this._doc.style);
+      style = Promise.promisify(style.save, style)();
+    }
+    return Promise.all([ brewery, style ]);
+  }).spread(function (brewery, style) {
+    if (brewery[0]) brewery = brewery[0];
+    if (style[0]) style = style[0];
+    this.brewery = brewery;
+    this.style = style;
+    next();
+  }).catch(function (err) {
+    next();
+  });
+
 });
 
 mongoose.model('Beer', BeerSchema);

@@ -2,7 +2,8 @@
 /**
  * Module dependencies
  */
-var mongoose = require('mongoose')
+var cU = require('../../assets/lib/common-utilities')
+  , mongoose = require('mongoose')
   , Promise = require('bluebird')
   , Schema = mongoose.Schema;
 
@@ -15,7 +16,7 @@ BrewerySchema.index({ slug: 1 }, { unique: true });
  * Pre-validation hook; Sanitizers
  */
 BrewerySchema.pre('validate', function (next) {
-  // parse location strings -- they may be plain strings, or stringified Google Places API objects
+  // parse location strings before validation -- they may be plain strings, or stringified Google Places API objects
   try {
     var location = new Location(JSON.parse(this.location));
     this._location = location;
@@ -37,6 +38,9 @@ BrewerySchema.pre('validate', function (next) {
  * Pre-save hook
  */
 BrewerySchema.pre('save', function (next) {
+  this.slug = cU.slug(this.name);
+  if (this.isNew) this.aliases.push({ name: this.name, slug: this.slug });
+
   next();
 });
 

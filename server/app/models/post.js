@@ -57,37 +57,7 @@ var PostSchema = new Schema({
  */
 PostSchema.pre('validate', function (next) {
   if (!this.category && this.isNew) this.category = null;
-  var i = this.beers.length
-    , beers = []
-    , _beers = []
-    , newBeers = [];
-  while (i--) {
-    if (this.beers[i].name && this.beers[i].brewery && this.beers[i].brewery.name) {
-      this.beers[i].slug = cU.slug(this.beers[i].name);
-      this.beers[i].brewery.slug = cU.slug(this.beers[i].brewery.name);
-      beers.push(Promise.promisify(Beer.findOne, Beer)({ slug: this.beers[i].slug, 'brewery.slug': this.beers[i].brewery.slug }));
-      _beers.push(this.beers[i]);
-    } 
-  }
-  Promise.all(beers).bind(this).then(function (beers) {
-    i = beers.length;
-    while (i--) {
-      if (!beers[i]) {
-        beers[i] = new Beer(_beers[i]);
-        newBeers.push(Promise.promisify(beers[i].save, beers[i])());
-      }
-    }
-    this.beers = beers;
-    if (newBeers.length > 0) {
-      Promise.all(newBeers).then(function (beers) {
-        next();
-      });
-    } else {
-      next();
-    }
-  }).catch(function (err) {
-    next();
-  });  
+  next();
 });
 
 /**
@@ -95,7 +65,36 @@ PostSchema.pre('validate', function (next) {
  */
 PostSchema.pre('save', function (next) {
   this.slug = cU.slug(this.title, true);
-  next();
+
+  // process validated beers against beer model; retreive existing, save new
+  var i = this.beers.length
+    , beers = [];
+  while (i--) {
+    beers.push(Promise.promisify(Beer.findOne, Beer)({ 
+      slug: cU.slug(this.beers[i].name),
+      'brewery.slug': cU.slug(this.beers[i].brewery.name)
+    }));
+  }
+  Promise.all(beers).bind(this).then(function (beers) {
+    i = beers.length;
+    while (i--) {
+      if (!beers[i]) {
+        beers[i] = new Beer(this._doc.beers[beers.length - (i + 1)]);
+        beers[i] = Promise.promisify(beers[i].save, beers[i])();
+      }
+    }
+    return Promise.all(beers);
+  }).then(function (beers) {
+    i = beers.length;
+    while (i--) {
+      if (beers[i][0]) beers[i] = beers[i][0];
+      this.beers[beers.length - (i + 1)] = beers[i];
+    }
+    next();
+  }).catch(function (err) {
+    next();
+  });
+
 });
 
 mongoose.model('Post', PostSchema);
