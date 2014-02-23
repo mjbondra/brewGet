@@ -20,5 +20,12 @@ var Style = mongoose.model('Style');
 var projection = { _id: 0, __v: 0 };
 
 module.exports = {
-  index: function *(next) {}
+
+  /**
+   * Index
+   * GET /api/styles
+   */
+  index: function *(next) {
+    this.body = yield Promise.promisify(Style.find, Style)({}, projection);
+  }
 }

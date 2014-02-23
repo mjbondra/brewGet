@@ -21,5 +21,53 @@ var Image = mongoose.model('Image')
 var projection = { _id: 0, __v: 0 };
 
 module.exports = {
-  index: function *(next) {}
+
+  /**
+   * Index
+   * GET /api/beers
+   */
+  index: function *(next) {
+    this.body = yield Promise.promisify(Beer.find, Beer)({}, projection);
+  },
+
+  breweries: {
+
+    /**
+     * Index (by brewery)
+     * GET /api/breweries/:brewery/beers
+     */
+    index: function *(next) {
+      this.body = yield Promise.promisify(Beer.find, Beer)({ 'brewery.aliases.slug': this.params.brewery }, projection);
+    }
+  },
+
+  locations: {
+
+    /**
+     * Index (by state)
+     * GET /api/locations/:state/beers
+     */
+    state: function *(next) {
+      this.body = yield Promise.promisify(Beer.find, Beer)({ 'brewery._location.slug.state': this.params.state }, projection);
+    },
+
+    /**
+     * Index (by city)
+     * GET /api/locations/:state/:city/beers
+     */
+    city: function *(next) {
+      this.body = yield Promise.promisify(Beer.find, Beer)({ 'brewery._location.slug.state': this.params.state, 'brewery._location.slug.city': this.params.city }, projection);
+    }
+  },
+
+  styles: {
+
+    /**
+     * Index (by style)
+     * GET /api/styles/:style/beers
+     */
+    index: function *(next) {
+      this.body = yield Promise.promisify(Beer.find, Beer)({ 'style.aliases.slug': this.params.style }, projection);
+    }
+  }
 }

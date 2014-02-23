@@ -27,6 +27,10 @@ module.exports = function (app) {
 
   // beers
   app.get('/api/beers', beers.index);
+  app.get('/api/breweries/:brewery/beers', beers.breweries.index);
+  app.get('/api/locations/:state/beers', beers.locations.state);
+  app.get('/api/locations/:state/:city/beers', beers.locations.city);
+  app.get('/api/styles/:style/beers', beers.styles.index);
 
   // breweries
   app.get('/api/breweries', breweries.index);
