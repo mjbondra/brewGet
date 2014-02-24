@@ -28,5 +28,15 @@ module.exports = {
    */
   index: function *(next) {
     this.body = yield Promise.promisify(Brewery.find, Brewery)({}, projection);
-  }
+  },
+
+  /**
+   * Show
+   * GET /api/users/:slug
+   */
+   show: function *(next) {
+      var brewery = yield Promise.promisify(Brewery.findOne, Brewery)({ 'aliases.slug': this.params.slug }, projection);
+      if (!brewery) return yield next; // 404 Not Found
+      this.body = brewery;
+   }
 }

@@ -30,6 +30,16 @@ module.exports = {
     this.body = yield Promise.promisify(Beer.find, Beer)({}, projection);
   },
 
+  /**
+   * Show
+   * GET /api/beers/:brewery/:beer
+   */
+  show: function *(next) {
+    var beer = yield Promise.promisify(Beer.findOne, Beer)({ 'brewery.aliases.slug': this.params.brewery, 'aliases.slug': this.params.beer }, projection);
+    if (!beer) return yield next; // 404 Not Found
+    this.body = beer;
+  },
+
   breweries: {
 
     /**

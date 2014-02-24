@@ -27,5 +27,15 @@ module.exports = {
    */
   index: function *(next) {
     this.body = yield Promise.promisify(Style.find, Style)({}, projection);
+  },
+
+  /**
+   * Show
+   * GET /api/styles/:slug
+   */
+  show: function *(next) {
+    var style = yield Promise.promisify(Style.findOne, Style)({ 'aliases.slug': this.params.slug }, projection);
+    if (!style) return yield next; // 404 Not Found
+    this.body = style;
   }
 }

@@ -27,6 +27,7 @@ module.exports = function (app) {
 
   // beers
   app.get('/api/beers', beers.index);
+  app.get('/api/beers/:brewery/:beer', beers.show);
   app.get('/api/breweries/:brewery/beers', beers.breweries.index);
   app.get('/api/locations/:state/beers', beers.locations.state);
   app.get('/api/locations/:state/:city/beers', beers.locations.city);
@@ -34,6 +35,7 @@ module.exports = function (app) {
 
   // breweries
   app.get('/api/breweries', breweries.index);
+  app.get('/api/breweries/:slug', breweries.show);
 
   // locations
   app.get('/api/locations', locations.index);
@@ -49,6 +51,7 @@ module.exports = function (app) {
 
   // styles
   app.get('/api/styles', styles.index);
+  app.get('/api/styles/:slug', styles.show);
 
   // users sessions
   app.post('/api/users/sign-in', users.sessions.create);
