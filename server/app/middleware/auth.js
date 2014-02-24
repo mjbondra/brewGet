@@ -1,19 +1,19 @@
 
 exports.requires = {
   authentication: function *(next) {
-    if (this.user) return yield next;
+    if (this.session.user) return yield next;
     this.status = 401;
     this.body = { msg: 'not auth' }
   },
   role: function (role) {
     return function *(next) {
-      if (this.user && this.user.role === role) return yield next;
+      if (this.session.user && this.session.user.role === role) return yield next;
       this.status = 401;
       this.body = { msg: 'not role' }
     }
   },
   self: function *(next) {
-    if (this.user && this.user.slug === this.params.slug) return yield next;
+    if (this.session.user && this.session.user.slug === this.params.slug) return yield next;
     this.status = 401;
     this.body = { msg: 'not self' }
   }

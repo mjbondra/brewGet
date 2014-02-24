@@ -11,7 +11,7 @@ module.exports = function* () {
     { title: 'Beers', href: '/beers' },
     { title: 'Breweries', href: '/breweries' }
   ];
-  if (this.user) {
+  if (typeof this.session.user === 'object') {
     nav.actions = [
       { title: 'Message', href: '/messages/new' },
       { title: 'Post', href: '/posts/new' }

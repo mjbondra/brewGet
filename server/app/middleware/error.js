@@ -90,7 +90,7 @@ module.exports = function () {
             stack: err.stack,
             status: err.status || 500,
             url: this.url,
-            user: typeof this.user !== 'undefined' ? this.user.id : null,
+            user: ( this.session && this.session.user ? ( this.session.user.id ? this.session.user.id  : this.session.user ) : null ),
             userIP: this.ip
           });
           yield Promise.promisify(_error.save, _error)();

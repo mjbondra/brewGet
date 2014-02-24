@@ -42,7 +42,7 @@ module.exports = {
    */
   create: function *(next) {
     var post = new Post(yield coBody(this));
-    post.user = this.user;
+    post.user = this.session.user;
     yield Promise.promisify(post.save, post)();
     this.status = 201; // 201 Created
     this.body = yield cU.created('post', post, post.title);

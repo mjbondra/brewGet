@@ -24,9 +24,9 @@ module.exports = {
   load: function (obj) {
     obj = obj || {};
     return function *(next) {
-      this.req.user = yield Promise.promisify(User.findOne, User)({ slug: this.params.slug }, ( obj.censor ? projection : null ));
+      this.user = yield Promise.promisify(User.findOne, User)({ slug: this.params.slug }, ( obj.censor ? projection : null ));
       yield next;
-      delete this.req.user;
+      delete this.user;
     };
   },
 
@@ -43,8 +43,8 @@ module.exports = {
    * GET /api/users/:slug
    */
   show: function *(next) {
-    if (!this.req.user) return yield next; // 404 Not Found
-    this.body = this.req.user;
+    if (!this.user) return yield next; // 404 Not Found
+    this.body = this.user;
   },
 
   /**
@@ -54,8 +54,7 @@ module.exports = {
   create: function *(next) {
     var user = new User(yield coBody(this));
     yield Promise.promisify(user.save, user)();
-    this.user = user;
-    this.session.user = user.id; // Serialize user to session
+    this.session.user = user;
     this.status = 201; // 201 Created
     this.body = yield cU.created('user', user, user.username);
   },
@@ -65,10 +64,10 @@ module.exports = {
    * PUT /api/users/:slug
    */
   update: function *(next) {
-    if (!this.req.user) return yield next; // 404 Not Found
-    this.req.user = _.extend(this.req.user, _.omit(yield coBody(this), 'images'));
-    yield Promise.promisify(this.req.user.save, this.req.user)();
-    this.body = yield cU.updated('user', this.req.user, this.req.user.username);
+    if (!this.user) return yield next; // 404 Not Found
+    this.user = _.extend(this.user, _.omit(yield coBody(this), 'images'));
+    yield Promise.promisify(this.user.save, this.user)();
+    this.body = yield cU.updated('user', this.user, this.user.username);
   },
 
   /**
@@ -152,37 +151,27 @@ module.exports = {
   sessions: {
 
     /**
-     * Deserialize user from session
-     * Make available to app as this.user
+     * Deserialize/serialize user object in session
+     * Make available to app as this.session.user
      */
     show: function () {
       return function *(next) {
 
-        // deserialize user from session
-        if (this.session.user && !this.user) {
-          this.user = yield Promise.promisify(User.findById, User)(this.session.user).catch(function (err) {
+        // deserialize user object in session
+        if (typeof this.session.user === 'string') {
+          this.session.user = yield Promise.promisify(User.findById, User)(this.session.user).catch(function (err) {
             console.failure('There was an error while trying to deserialize session user', { id: this.session.user }, err.stack);
           });
         }
-        // if (typeof this.session.user === 'string') {
-        //   this.session.user = yield Promise.promisify(User.findById, User)(this.session.user).catch(function (err) {
-        //     console.failure('There was an error while trying to deserialize session user', { id: this.session.user }, err.stack);
-        //   });
-        // }
         yield next;
 
-        // populate cookie for frontend -- presence of this cookie does not grant authenticated access on backend
-        if (this.user) {
-          this.cookies.set('username', this.user.username, { httpOnly: false, overwrite: true, signed: true });
+        // serialize user object in session
+        if (this.session && this.session.user && this.session.user.username) {
+          this.cookies.set('username', this.session.user.username, { httpOnly: false, overwrite: true, signed: true });
+          this.session.user = this.session.user.id;
         } else {
           this.cookies.set('username', null, { httpOnly: false, overwrite: true, signed: true });
         }
-        // if (typeof this.session.user === 'object' && this.session.user.username) {
-        //   this.cookies.set('username', this.session.user.username, { httpOnly: false, overwrite: true, signed: true });
-        //   this.session.user = this.session.user.id;
-        // } else {
-        //   this.cookies.set('username', null, { httpOnly: false, overwrite: true, signed: true });
-        // }
       }
     },
 
@@ -211,8 +200,7 @@ module.exports = {
         this.body = yield cU.body(cU.msg(msg.authentication.incorrect.password, 'authentication', 'user'));
         return;
       }
-      this.user = user;
-      this.session.user = user.id; // Serialize user to session
+      this.session.user = user;
       this.status = 201; // 201 Created
       this.body = yield cU.body(cU.msg(msg.authentication.success(user.username), 'success', 'user', cU.censor(user, ['_id', '__v', 'hash', 'salt']))); // 201 Created
     },
@@ -222,7 +210,6 @@ module.exports = {
      * DELETE /api/users/sign-out
      */
     destroy: function *(next) {
-      this.user = null;
       this.session = null;
       this.body = yield cU.body(cU.msg('logout'));
     } 
