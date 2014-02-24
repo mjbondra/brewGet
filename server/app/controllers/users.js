@@ -21,6 +21,14 @@ var Image = mongoose.model('Image')
 var projection = { _id: 0, __v: 0, hash: 0, salt: 0, 'images._id': 0, 'images.path': 0 };
 
 module.exports = {
+  load: function (obj) {
+    obj = obj || {};
+    return function *(next) {
+      this.req.user = yield Promise.promisify(User.findOne, User)({ slug: this.params.slug }, ( obj.censor ? projection : null ));
+      yield next;
+      delete this.req.user;
+    };
+  },
 
   /**
    * Index
@@ -35,9 +43,8 @@ module.exports = {
    * GET /api/users/:slug
    */
   show: function *(next) {
-    var user = yield Promise.promisify(User.findOne, User)({ slug: this.params.slug }, projection);
-    if (!user) return yield next; // 404 Not Found
-    this.body = user;
+    if (!this.req.user) return yield next; // 404 Not Found
+    this.body = this.req.user;
   },
 
   /**
@@ -58,11 +65,10 @@ module.exports = {
    * PUT /api/users/:slug
    */
   update: function *(next) {
-    var user = yield Promise.promisify(User.findOne, User)({ slug: this.params.slug });
-    if (!user) return yield next; // 404 Not Found
-    user = _.extend(user, _.omit(yield coBody(this), 'images'));
-    yield Promise.promisify(user.save, user)();
-    this.body = yield cU.updated('user', user, user.username);
+    if (!this.req.user) return yield next; // 404 Not Found
+    this.req.user = _.extend(this.req.user, _.omit(yield coBody(this), 'images'));
+    yield Promise.promisify(this.req.user.save, this.req.user)();
+    this.body = yield cU.updated('user', this.req.user, this.req.user.username);
   },
 
   /**
@@ -158,6 +164,11 @@ module.exports = {
             console.failure('There was an error while trying to deserialize session user', { id: this.session.user }, err.stack);
           });
         }
+        // if (typeof this.session.user === 'string') {
+        //   this.session.user = yield Promise.promisify(User.findById, User)(this.session.user).catch(function (err) {
+        //     console.failure('There was an error while trying to deserialize session user', { id: this.session.user }, err.stack);
+        //   });
+        // }
         yield next;
 
         // populate cookie for frontend -- presence of this cookie does not grant authenticated access on backend
@@ -166,6 +177,12 @@ module.exports = {
         } else {
           this.cookies.set('username', null, { httpOnly: false, overwrite: true, signed: true });
         }
+        // if (typeof this.session.user === 'object' && this.session.user.username) {
+        //   this.cookies.set('username', this.session.user.username, { httpOnly: false, overwrite: true, signed: true });
+        //   this.session.user = this.session.user.id;
+        // } else {
+        //   this.cookies.set('username', null, { httpOnly: false, overwrite: true, signed: true });
+        // }
       }
     },
 
