@@ -84,6 +84,8 @@ UserSchema.pre('validate', function (next) {
   this.email = sanitize.escape(this.email);
   this.username = sanitize.escape(this.username);
 
+  // ensure that the nest is not processed if nothing has changed
+  if (this._location && this._location.formatted_address && this.location === this._location.formatted_address) return next();
   this.processNest(next, 2);
 });
 

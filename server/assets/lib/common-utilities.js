@@ -29,13 +29,13 @@ module.exports = {
     if (typeof obj !== 'object') return obj;
     else if (obj instanceof Date) return obj;
     else if (Array.isArray(obj)) { // is Object Array
-      var _obj = [];
-      var i = obj.length;
+      var _obj = []
+        , i = obj.length;
       while(i--) _obj.push(yield this.censor(obj[i], keys));
     } else { // is Object
-      var _obj = _.omit(obj && obj._doc ? obj._doc : obj, keys || '_id');
-      _objKeys = Object.keys(_obj);
-      var i = _objKeys.length;
+      var _obj = _.omit(obj && obj._doc ? obj._doc : obj, keys || '_id')
+        , _objKeys = Object.keys(_obj)
+        , i = _objKeys.length;
       while(i--) _obj[_objKeys[i]] = yield this.censor(_obj[_objKeys[i]], keys);
     }
     return _obj;

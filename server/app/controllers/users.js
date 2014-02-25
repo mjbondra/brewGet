@@ -18,16 +18,13 @@ var Image = mongoose.model('Image')
 /**
  * Mongo projection paramater; includes or excludes fields
  */
-var projection = { _id: 0, __v: 0, hash: 0, salt: 0, 'images._id': 0, 'images.path': 0 };
+var projection = { _id: 0, __v: 0, hash: 0, salt: 0, 'images._id': 0, 'images.__v': 0, 'images.path': 0 };
 
 module.exports = {
-  load: function (obj) {
-    obj = obj || {};
-    return function *(next) {
-      this.user = yield Promise.promisify(User.findOne, User)({ slug: this.params.slug }, ( obj.censor ? projection : null ));
-      yield next;
-      delete this.user;
-    };
+  load: function *(next) {
+    this.user = yield Promise.promisify(User.findOne, User)({ slug: this.params.slug });
+    yield next;
+    delete this.user;
   },
 
   /**
@@ -44,7 +41,7 @@ module.exports = {
    */
   show: function *(next) {
     if (!this.user) return yield next; // 404 Not Found
-    this.body = this.user;
+    this.body = yield cU.censor(this.user, ['_id', '__v', 'hash', 'salt', 'path']);
   },
 
   /**
@@ -75,10 +72,10 @@ module.exports = {
    * DELETE /api/users/:slug
    */
   destroy: function *(next) {
-    var user = Promise.promisify(User.findOneAndRemove, User)({ slug: this.params.slug });
-    if (!user) return yield next; // 404 Not Found
+    if (!this.user) return yield next; // 404 Not Found
+    yield Promise.promisify(this.user.remove, this.user)();
     this.session = {};
-    this.body = yield cU.deleted('user', user, user.username);
+    this.body = yield cU.deleted('user', this.user, this.user.username);
   },
 
   /*------------------------------------*\
