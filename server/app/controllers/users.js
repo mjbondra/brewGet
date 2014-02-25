@@ -89,8 +89,7 @@ module.exports = {
      * POST /api/users/:slug/image
      */
     create: function *(next) {
-      var user = yield Promise.promisify(User.findOne, User)({ slug: this.params.slug });
-      if (!user) return yield next; // 404 Not Found
+      if (!this.user) return yield next; // 404 Not Found
       var image = new Image()
         , imageHiDPI = new Image()
         , imageLoDPI = new Image()
@@ -98,7 +97,7 @@ module.exports = {
         , imageSmLoDPI = new Image()
 
       // stream image from form data
-      yield image.stream(this, { alt: user.username, crop: true, type: 'users' });
+      yield image.stream(this, { alt: this.user.username, crop: true, type: 'users' });
       yield [ // resize multiple images asynchronously; yield until all are complete
         imageHiDPI.resize(image, { highDPI: true }), // 50% height / 50% width
         imageLoDPI.resize(image, { geometry: { height: 25, width: 25 }}), // 25% height / 25% width 
@@ -107,17 +106,17 @@ module.exports = {
       ];
 
       // remove old images
-      if (user.images.length > 0) {
-        var i = user.images.length;
+      if (this.user.images.length > 0) {
+        var i = this.user.images.length;
         while (i--) {
-          yield user.images[i].destroy();
+          yield this.user.images[i].destroy();
         }
       }
-      user.images = [ image, imageHiDPI, imageLoDPI, imageSmHiDPI, imageSmLoDPI ]; // limit user images to a single (current) image
+      this.user.images = [ image, imageHiDPI, imageLoDPI, imageSmHiDPI, imageSmLoDPI ]; // limit user images to a single (current) image
       
-      yield Promise.promisify(user.save, user)();
+      yield Promise.promisify(this.user.save, this.user)();
       this.status = 201;
-      this.body = yield cU.censor(user.images, [ '_id', 'path' ]);
+      this.body = yield cU.censor(this.user.images, [ '_id', 'path' ]);
     },
 
     /**
@@ -125,18 +124,17 @@ module.exports = {
      * DELETE /api/users/:slug/image
      */
     destroy: function *(next) {
-      var user = yield Promise.promisify(User.findOne, User)({ slug: this.params.slug });
-      if (!user) return yield next; // 404 Not Found
+      if (!this.user) return yield next; // 404 Not Found
 
       // remove images
-      if (user.images.length > 0) {
-        var i = user.images.length;
+      if (this.user.images.length > 0) {
+        var i = this.user.images.length;
         while (i--) {
-          yield user.images[i].destroy();
+          yield this.user.images[i].destroy();
         }
       }
-      user.images = [];
-      yield Promise.promisify(user.save, user)();
+      this.user.images = [];
+      yield Promise.promisify(this.user.save, this.user)();
       this.body = msg.image.deleted;
     }
   },
