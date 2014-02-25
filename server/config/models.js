@@ -10,7 +10,8 @@ var models = [
   'style',
   'beer',
   'user',
-  'post'
+  'post',
+  'cellar'
 ];
 
 module.exports = function (modelsPath) {

@@ -67,7 +67,9 @@ BeerSchema.methods = {
       this.style = style;
       next();
     }).catch(function (err) {
-      if (count >= limit) return next(err);
+      if (err.name === 'RejectionError' && err.cause) err = err.cause;
+      // pass error to next() if limit has been reached, or if the error is not an async-caused duplicate key error
+      if (count >= limit || ( err.code !== 11000 && err.code !== 11001 )) return next(err);
       this.processNest(next, limit, count);
     });
   }

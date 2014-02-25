@@ -21,7 +21,7 @@ var Image = mongoose.model('Image')
 var projection = { _id: 0, __v: 0, hash: 0, salt: 0, 'images._id': 0, 'images.__v': 0, 'images.path': 0 };
 
 module.exports = {
-  load: function *(next) {
+  findOne: function *(next) {
     this.user = yield Promise.promisify(User.findOne, User)({ slug: this.params.username });
     yield next;
     delete this.user;
