@@ -22,7 +22,7 @@ var projection = { _id: 0, __v: 0, hash: 0, salt: 0, 'images._id': 0, 'images.__
 
 module.exports = {
   load: function *(next) {
-    this.user = yield Promise.promisify(User.findOne, User)({ slug: this.params.slug });
+    this.user = yield Promise.promisify(User.findOne, User)({ slug: this.params.username });
     yield next;
     delete this.user;
   },
@@ -37,7 +37,7 @@ module.exports = {
 
   /**
    * Show
-   * GET /api/users/:slug
+   * GET /api/users/:username
    */
   show: function *(next) {
     if (!this.user) return yield next; // 404 Not Found
@@ -58,7 +58,7 @@ module.exports = {
 
   /**
    * Update
-   * PUT /api/users/:slug
+   * PUT /api/users/:username
    */
   update: function *(next) {
     if (!this.user) return yield next; // 404 Not Found
@@ -69,7 +69,7 @@ module.exports = {
 
   /**
    * Destroy
-   * DELETE /api/users/:slug
+   * DELETE /api/users/:username
    */
   destroy: function *(next) {
     if (!this.user) return yield next; // 404 Not Found
@@ -86,7 +86,7 @@ module.exports = {
 
     /**
      * CREATE
-     * POST /api/users/:slug/image
+     * POST /api/users/:username/image
      */
     create: function *(next) {
       if (!this.user) return yield next; // 404 Not Found
@@ -121,7 +121,7 @@ module.exports = {
 
     /**
      * DESTROY
-     * DELETE /api/users/:slug/image
+     * DELETE /api/users/:username/image
      */
     destroy: function *(next) {
       if (!this.user) return yield next; // 404 Not Found
