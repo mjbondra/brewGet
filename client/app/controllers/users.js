@@ -48,7 +48,7 @@ app.controller('users.edit', ['$scope', '$upload', 'API', 'Head', 'User', 'Usern
   $scope.ImageSelect = ImageSelect;
   $scope.loading = false;
   $scope.imageDelete = function () {
-    API('api/users/' + $scope.slug + '/images', 'DELETE').success(function (data, status, headers, config) {
+    API('users/' + $scope.slug + '/images', 'DELETE').success(function (data, status, headers, config) {
       $scope.user.images = [];
     });
   };

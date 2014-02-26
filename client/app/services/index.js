@@ -72,8 +72,20 @@ app.factory('PlacesAPI', ['$rootScope', function ($rootScope) {
  */
 app.factory('API', ['$http', function ($http) {
   return function (url, method) {
+    url = 'api/' + url;
     method = method || 'GET';
     return $http({ method: method, url: url, params: { t: new Date().getTime() }});
+  };
+}]);
+
+/**
+ * Autocomplete Service
+ */
+app.factory('Autocomplete', ['API', 'Slug', function (API, Slug) {
+  return function (url, input, strip) {
+    input = Slug(input, strip);
+    url = url + input;
+    return API(url, 'GET');
   };
 }]);
 

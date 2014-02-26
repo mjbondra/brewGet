@@ -23,7 +23,7 @@ app.controller('html.nav', ['$scope', '$location', 'API', function ($scope, $loc
 
   // load nav
   var loadNav = function () {
-    API('api/nav').success(function (data) {
+    API('nav').success(function (data) {
       $scope.Nav = data;
     });
   };
