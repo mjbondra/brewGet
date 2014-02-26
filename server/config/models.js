@@ -11,7 +11,9 @@ var models = [
   'beer',
   'user',
   'post',
-  'cellar'
+  'cellar',
+  'message',
+  'trade'
 ];
 
 module.exports = function (modelsPath) {
