@@ -84,7 +84,7 @@ app.factory('API', ['$http', function ($http) {
 app.factory('Autocomplete', ['API', 'Slug', function (API, Slug) {
   return function (url, input, strip) {
     input = Slug(input, strip);
-    url = url + input;
+    url = 'autocomplete/' + url + '/' + input;
     return API(url, 'GET');
   };
 }]);

@@ -12,7 +12,8 @@
       <label ng-class="{ active: beer.type === 'request' }"><input type="radio" value="request" ng-model="beer.type">Request</label>
       <label ng-class="{ active: beer.type === 'offer' }"><input type="radio" value="offer" ng-model="beer.type">Offer</label>
     </div>
-    <label>Beer<input type="text" ng-model="beer.name"></label>
+    <label>Beer<input type="text" ng-model="beer.name" ng-change="Autocomplete('beers', beer.name, $index)"></label>
+    {{ beer.autocomplete }}
     <label>Brewery<input type="text" ng-model="beer.brewery.name"></label>
     <label>Brewery Location<input type="text" id="{{ 'location[' + $index + ']' }}" ng-model="beer.brewery.location" places types="(cities)" placeholder=""></label>
     <label>Style<input type="text" ng-model="beer.style.name"></label>
