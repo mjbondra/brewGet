@@ -23,6 +23,14 @@ var projection = { _id: 0, __v: 0 };
 module.exports = {
 
   /**
+   * Autocomplete
+   * GET /api/autocomplete/beers/:beer
+   */
+  autocomplete: function *(next) {
+    this.body = yield Promise.promisify(Beer.find, Beer)({ 'aliases.slug': new RegExp(this.params.beer) }, { name: 1, 'brewery.name': 1, 'style.name': 1 });
+  },
+
+  /**
    * Index
    * GET /api/beers
    */
