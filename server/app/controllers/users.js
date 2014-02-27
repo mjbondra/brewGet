@@ -28,6 +28,14 @@ module.exports = {
   },
 
   /**
+   * Autocomplete
+   * GET /api/autocomplete/breweries/:brewery
+   */
+  autocomplete: function *(next) {
+    this.body = yield Promise.promisify(User.find, User)({ slug: new RegExp(this.params.user) }, { username: 1 });
+  },
+
+  /**
    * Index
    * GET /api/users
    */

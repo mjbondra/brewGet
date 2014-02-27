@@ -25,9 +25,6 @@ module.exports = function (app) {
     }
   })
 
-  // autocomplete
-  app.get('/api/autocomplete/beers/:beer', beers.autocomplete);
-
   // beers
   app.get('/api/beers', beers.index);
   app.get('/api/beers/:brewery/:beer', beers.show);

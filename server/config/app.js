@@ -13,7 +13,8 @@ var compress = require('koa-compress')
 /**
  * Middleware
  */
-var error = require('../app/middleware/error')
+var autocomplete = require('./autocomplete-routes')
+  , error = require('../app/middleware/error')
   , notFound = require('../app/middleware/404')
   , user = require('../app/controllers/users').sessions.show;
 
@@ -32,6 +33,9 @@ module.exports = function (app, config) {
 
   // error handling middleware
   app.use(error());
+
+  // autocomplete routes; before sessions middleware
+  app.use(autocomplete());
 
   // sessions 
   app.keys = config.secrets;
