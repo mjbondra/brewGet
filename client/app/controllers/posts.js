@@ -38,7 +38,7 @@ app.controller('posts.new', ['$scope', 'Head', 'Post', 'Autocomplete', function 
         $scope.post[type][index].autocomplete = data;
       });
     } else {
-      $scope.post[type][index].found = [];
+      $scope.post[type][index].autocomplete = [];
     }
   }
   $scope.addBeer = function () {
