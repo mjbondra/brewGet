@@ -27,7 +27,7 @@ module.exports = {
    * GET /api/autocomplete/beers/:beer
    */
   autocomplete: function *(next) {
-    this.body = yield Promise.promisify(Beer.find, Beer)({ 'aliases.slug': new RegExp(this.params.beer) }, { name: 1, 'brewery.name': 1, 'style.name': 1 });
+    this.body = yield Promise.promisify(Beer.find, Beer)({ 'aliases.slug': new RegExp(this.params.beer) }, { name: 1, abv: 1, ibu: 1, 'brewery.name': 1, 'brewery.location': 1, 'style.name': 1 });
   },
 
   /**
