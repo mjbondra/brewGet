@@ -26,13 +26,14 @@ module.exports = function (app, config) {
   // logger
   if (config.env !== 'test') app.use(logger());
 
+  // compression
   app.use(compress());
-
-  // static files 
-  app.use(static(config.path.static));
 
   // error handling middleware
   app.use(error());
+
+  // static files 
+  app.use(static(config.path.static));
 
   // autocomplete routes; before sessions middleware
   app.use(autocomplete.middleware());
@@ -47,7 +48,7 @@ module.exports = function (app, config) {
   }));
   app.use(user());
 
-  // routes 
+  // api routes 
   app.use(router(app));
 
   // 404 Not Found
