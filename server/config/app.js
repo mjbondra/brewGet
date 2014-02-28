@@ -35,7 +35,7 @@ module.exports = function (app, config) {
   app.use(error());
 
   // autocomplete routes; before sessions middleware
-  app.use(autocomplete());
+  app.use(autocomplete.middleware());
 
   // sessions 
   app.keys = config.secrets;
