@@ -13,10 +13,18 @@
       <label ng-class="{ active: beer.type === 'offer' }"><input type="radio" value="offer" ng-model="beer.type">Offer</label>
     </div>
     <label>Beer<input type="text" ng-model="beer.name" ng-change="Autocomplete('beers', beer.name, $index)"></label>
-    {{ beer.autocomplete }}
-    <label>Brewery<input type="text" ng-model="beer.brewery.name"></label>
+    <ul>
+      <li ng-repeat="beer in beer.autocomplete" ng-click="applyBeer($parent.$index, $index)">{{ beer }}</li>
+    </ul>
+    <label>Brewery<input type="text" ng-model="beer.brewery.name" ng-change="Autocomplete('breweries', beer.brewery.name, $index)"></label>
+    <ul>
+      <li ng-repeat="brewery in beer.brewery.autocomplete" ng-click="applyBrewery($parent.$index, $index)">{{ brewery }}</li>
+    </ul>
     <label>Brewery Location<input type="text" id="{{ 'location[' + $index + ']' }}" ng-model="beer.brewery.location" places types="(cities)" placeholder=""></label>
-    <label>Style<input type="text" ng-model="beer.style.name"></label>
+    <label>Style<input type="text" ng-model="beer.style.name" ng-change="Autocomplete('styles', beer.style.name, $index)"></label>
+    <ul>
+      <li ng-repeat="style in beer.style.autocomplete" ng-click="applyStyle($parent.$index, $index)">{{ style }}</li>
+    </ul>
     <label>ABV<input type="text" ng-model="beer.abv"></label>
     <label>IBU<input type="text" ng-model="beer.ibu"></label>
     <label>Date/Year<input type="text" ng-model="beer.date"></label>
