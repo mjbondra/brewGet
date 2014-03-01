@@ -1,70 +1,14 @@
 'use strict';
 
-  //////////////
- // SERVICES //
-//////////////
-
-var app = angular.module('brewGet.services', ['ngResource']);
+var app = angular.module('brewGet.services.utilities', []);
 
 /**
  * Module dependencies
  */
-var _ = require('underscore')
-  , gravatar = require('gravatar')
-  , slug = require('../../../server/assets/lib/slug-utilities').slug;
+var slug = require('../../../server/assets/lib/slug-utilities').slug;
 
 /*------------------------------------*\
-    EXTERNAL LIBRARY SERVICES
-\*------------------------------------*/
-
-/**
- * Underscore Service
- */
-app.factory('_', function () {
-  return _;
-});
-
-/**
- * Gravatar URL Generating Service
- */
-app.factory('Gravatar', ['HighDPI', function (HighDPI) {
-  return {
-    url: function (email, options, https) {
-      options = options || {};
-      options.s = options.s || 100;
-      if (email) return gravatar.url(email, options, https);
-    }
-  };
-}]);
-
-/**
- * Google Places API Service
- */
-app.factory('PlacesAPI', ['$rootScope', function ($rootScope) {
-  var maps = window.google.maps
-    , places = maps.places
-    , element;
-  return {
-    setElementByID: function (elementID, types) {
-      element = document.getElementById(elementID);
-      if (element !== null) {
-        var autocomplete = new places.Autocomplete(element, { types: [ types ] });
-        maps.event.addListener(autocomplete, 'place_changed', function () {
-          var place = autocomplete.getPlace();
-          if (!place.geometry) return;
-          $rootScope.$broadcast(elementID, place);
-        });
-      } else {
-        setTimeout(function () {
-          this.setElementByID(elementID, types);
-        }.bind(this), 300); // try again
-      }
-    }
-  };
-}]);
-
-/*------------------------------------*\
-    UTILITY SERVICES
+    GENERAL UTILITIES
 \*------------------------------------*/
 
 /**
@@ -155,36 +99,7 @@ app.factory('Slug', function () {
 });
 
 /*------------------------------------*\
-    REQUEST/RESPONSE SERVICES
-\*------------------------------------*/
-
-/** 
- * Response Service
- */
-app.config(['$provide', '$httpProvider', function ($provide, $httpProvider) { 
-  $provide.factory('brewGetInterceptor', ['$rootScope', '$q', function ($rootScope, $q) {
-    return {
-      response: function (res) {
-        /** response for content added */
-        if (res.status === 201 && res.data && res.data.messages) {
-          $rootScope.$broadcast('globalMessages', res.data.messages);
-        }
-        return res || $q.when(res);
-      },
-      responseError: function (res) {
-        /** response for authentication (401), validation (422), and uniqueness (409) errors */
-        if ((res.status === 400 || res.status === 401 || res.status === 409 || res.status === 422) && res.data && res.data.messages) {
-          $rootScope.$broadcast('validationErrors', res.data.messages);
-        }
-        return $q.reject(res);
-      }
-    };
-  }]);
-  $httpProvider.interceptors.push('brewGetInterceptor');
-}]);
-
-/*------------------------------------*\
-    ELEMENTAL SERVICES
+    ELEMENTAL UTILITIES
 \*------------------------------------*/
 
 /**
@@ -207,7 +122,7 @@ app.factory('Head', function () {
 });
 
 /*------------------------------------*\
-    DIRECTIVE SERVICES
+    DIRECTIVE UTILITIES
 \*------------------------------------*/
 
 /**
@@ -252,74 +167,7 @@ app.factory('DateHandler', ['_', function (_) {
 }]);
 
 /*------------------------------------*\
-    RESOURCE SERVICES
-\*------------------------------------*/
-
-/**
- * Post Service
- */
-app.factory('Post', ['$resource', '$location', function ($resource, $location) {
-  return $resource('api/posts/:slug', {}, {
-    save: {
-      method:'POST',
-      interceptor: {
-        response: function (res) {
-          console.log(res);
-          $location.path('/');
-        }
-      }
-    }
-  });
-}]);
-
-/**
- * User Service
- */
-app.factory('User', ['$rootScope', '$resource', '$location', function ($rootScope, $resource, $location) {
-  return $resource('api/users/:slug', {}, {
-    save: { 
-      method:'POST', 
-      interceptor: {
-        response: function (res) {
-          $rootScope.$broadcast('reloadNav');
-          $location.path('/');
-        }
-      }
-    },
-    signIn: {
-      method: 'POST',
-      params: { slug: 'sign-in' },
-      interceptor: {
-        response: function (res) {
-          $rootScope.$broadcast('reloadNav');
-          $location.path('/');
-        }
-      }
-    },
-    signOut: {
-      method: 'DELETE',
-      params: { slug: 'sign-out' },
-      interceptor: {
-        response: function (res) {
-          $rootScope.$broadcast('reloadNav');
-          $location.path('/');
-        }
-      }
-    },
-    update: { 
-      method:'PUT',
-      interceptor: {
-        response: function (res) {
-          $rootScope.$broadcast('reloadNav');
-          $location.path('/');
-        }
-      }
-    }
-  });
-}]);
-
-/*------------------------------------*\
-    AUTHENTICATION SERVICES
+    AUTHENTICATION UTILITIES
 \*------------------------------------*/
 
 /**
@@ -346,15 +194,4 @@ app.factory('Username', ['$cookies', '$q', function ($cookies, $q) {
     }, opts.time);
     return deferred.promise;
   }
-}]);
-
-/*------------------------------------*\
-    TEMP/PLACEHOLDER SERVICES
-\*------------------------------------*/
-
-/** 
- * Test Service for Bringing in JSON 
- */
-app.factory('MikeData', ['$resource', function ($resource) {
-  return $resource('test-api/:resourceId.json');
 }]);

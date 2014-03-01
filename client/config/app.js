@@ -43,7 +43,10 @@ require('../app/controllers/posts');
 require('../app/controllers/users');
 require('../app/directives');
 require('../app/filters');
-require('../app/services');
+require('../app/services/libraries');
+require('../app/services/resources');
+require('../app/services/responses');
+require('../app/services/utilities');
 
 // Router
 require('./routes');
@@ -61,7 +64,10 @@ var app = angular.module('brewGet', [
   'brewGet.controllers.messages',
   'brewGet.controllers.posts',
   'brewGet.controllers.users',
-  'brewGet.services',
+  'brewGet.services.libraries',
+  'brewGet.services.resources',
+  'brewGet.services.responses',
+  'brewGet.services.utilities',
   'brewGet.directives',
   'brewGet.filters',
   'brewGet.routes'
