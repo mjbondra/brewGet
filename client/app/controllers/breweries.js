@@ -7,9 +7,10 @@ var app = angular.module('brewGet.controllers.breweries', []);
  * ROUTE /#!/
  * TEMPLATE /partials/breweries/index.html
  */
-app.controller('breweries.index', ['$scope', 'Head', function ($scope, Head) {
+app.controller('breweries.index', ['$scope', 'Head', 'Brewery', function ($scope, Head, Brewery) {
   Head.title('Breweries');
   Head.description('Breweries');
+  $scope.breweries = Brewery.query();
 }]);
 
 /**
@@ -17,7 +18,7 @@ app.controller('breweries.index', ['$scope', 'Head', function ($scope, Head) {
  * ROUTE /#!/
  * TEMPLATE /partials/breweries/show.html
  */
-app.controller('breweries.show', ['$scope', 'Head', function ($scope, Head) {
+app.controller('breweries.show', ['$scope', 'Head', 'Brewery', function ($scope, Head, Brewery) {
   Head.title('Brewery');
   Head.description('Brewery');
 }]);
@@ -27,7 +28,7 @@ app.controller('breweries.show', ['$scope', 'Head', function ($scope, Head) {
  * ROUTE /#!/
  * TEMPLATE /partials/breweries/new.html
  */
-app.controller('breweries.new', ['$scope', 'Head', function ($scope, Head) {
+app.controller('breweries.new', ['$scope', 'Head', 'Brewery', function ($scope, Head, Brewery) {
   Head.title('Add Brewery');
   Head.description('Add Brewery');
 }]);
@@ -37,7 +38,7 @@ app.controller('breweries.new', ['$scope', 'Head', function ($scope, Head) {
  * ROUTE /#!/
  * TEMPLATE /partials/breweries/edit.html
  */
-app.controller('breweries.edit', ['$scope', 'Head', function ($scope, Head) {
+app.controller('breweries.edit', ['$scope', 'Head', 'Brewery', function ($scope, Head, Brewery) {
   Head.title('Edit Brewery');
   Head.description('Edit Brewery');
 }]);

@@ -3,6 +3,20 @@
 var app = angular.module('brewGet.services.resources', ['ngResource']);
 
 /**
+ * Beer Service
+ */
+app.factory('Beer', ['$resource', function ($resource) {
+  return $resource('api/beers/:beer');
+}]);
+
+/**
+ * Brewery Service
+ */
+app.factory('Brewery', ['$resource', function ($resource) {
+  return $resource('api/breweries/:brewery');
+}]);
+
+/**
  * Post Service
  */
 app.factory('Post', ['$resource', '$location', function ($resource, $location) {
@@ -16,6 +30,13 @@ app.factory('Post', ['$resource', '$location', function ($resource, $location) {
       }
     }
   });
+}]);
+
+/**
+ * Style Service
+ */
+app.factory('Style', ['$resource', function ($resource) {
+  return $resource('api/styles/:style');
 }]);
 
 /**
