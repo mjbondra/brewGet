@@ -107,6 +107,20 @@ app.config(['$routeProvider', '$locationProvider', function ($routeProvider, $lo
     controller: 'breweries.show'
   });
 
+  // style routes
+  $routeProvider.when('/styles', {
+    templateUrl: '/app/views/styles/index.html',
+    controller: 'styles.index'
+  });
+  $routeProvider.when('/styles/new', {
+    templateUrl: '/app/views/styles/new.html',
+    controller: 'styles.new'
+  });
+  $routeProvider.when('/styles/:slug', {
+    templateUrl: '/app/views/styles/show.html',
+    controller: 'styles.show'
+  });
+
   // default route
   $routeProvider.otherwise({ 
     redirectTo: '/'

@@ -40,6 +40,7 @@ require('../app/controllers/home');
 require('../app/controllers/html');
 require('../app/controllers/messages');
 require('../app/controllers/posts');
+require('../app/controllers/styles');
 require('../app/controllers/users');
 require('../app/directives');
 require('../app/filters');
@@ -63,6 +64,7 @@ var app = angular.module('brewGet', [
   'brewGet.controllers.html',
   'brewGet.controllers.messages',
   'brewGet.controllers.posts',
+  'brewGet.controllers.styles',
   'brewGet.controllers.users',
   'brewGet.services.libraries',
   'brewGet.services.resources',
