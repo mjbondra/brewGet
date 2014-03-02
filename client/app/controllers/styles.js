@@ -8,7 +8,7 @@ var app = angular.module('brewGet.controllers.styles', []);
  * TEMPLATE /partials/styles/index.html
  */
 app.controller('styles.index', ['$scope', 'Head', 'Style', function ($scope, Head, Style) {
-  Head.title('Style');
+  Head.title('Styles');
   Head.description('Styles');
   $scope.styles = Style.query();
 }]);

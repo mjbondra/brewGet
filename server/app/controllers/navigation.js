@@ -9,7 +9,8 @@ module.exports = function* () {
     { title: 'Posts', href: '/' },
     { title: 'Users', href: '/users'},
     { title: 'Beers', href: '/beers' },
-    { title: 'Breweries', href: '/breweries' }
+    { title: 'Breweries', href: '/breweries' },
+    { title: 'Styles', href: '/styles' }
   ];
   if (typeof this.session.user === 'object') {
     nav.actions = [
