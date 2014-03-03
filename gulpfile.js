@@ -3,8 +3,8 @@ var fs = require('fs')
   , bower = require('gulp-bower')
   , browserify = require('gulp-browserify')
   , compass = require('gulp-compass')
+  , csso = require('gulp-csso')
   , gulpif = require('gulp-if')
-  , minify = require('gulp-minify-css')
   , plumber = require('gulp-plumber')
   , rename = require('gulp-rename')
   , uglify = require('gulp-uglify');
@@ -29,7 +29,7 @@ gulp.task('compass', ['bower'], function () {
     .pipe(compass({ sass: './client/assets/scss', css: './client/assets/css' }))
     .pipe(gulp.dest('./client/assets/css/'))
     .pipe(rename('main.min.css'))
-    .pipe(minify())
+    .pipe(csso())
     .pipe(gulp.dest('./client/assets/css/'));
 });
 
