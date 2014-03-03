@@ -40,10 +40,10 @@ app.controller('users.show', ['$scope', '$routeParams', 'Head', 'User', 'ImageSe
  * ROUTE /#!/account/settings
  * TEMPLATE /partials/users/edit.html
  */
-app.controller('users.edit', ['$scope', '$upload', 'API', 'Head', 'User', 'Username', 'Slug', 'ImageSelect', function ($scope, $upload, API, Head, User, Username, Slug, ImageSelect) {
+app.controller('users.edit', ['$scope', '$upload', 'API', 'Head', 'User', 'Session', 'Slug', 'ImageSelect', function ($scope, $upload, API, Head, User, Session, Slug, ImageSelect) {
   Head.title('Account Details & Settings');
   Head.description('Edit the details and settings of your brewGet account.');
-  $scope.slug = Slug(Username(), true);
+  $scope.slug = Slug(Session(), true);
   $scope.user = User.get({ slug: $scope.slug });
   $scope.ImageSelect = ImageSelect;
   $scope.loading = false;

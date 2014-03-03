@@ -5,13 +5,6 @@
  */
 module.exports = function* () {
   var nav = {};
-  nav.content = [
-    { title: 'Posts', href: '/' },
-    { title: 'Users', href: '/users'},
-    { title: 'Beers', href: '/beers' },
-    { title: 'Breweries', href: '/breweries' },
-    { title: 'Styles', href: '/styles' }
-  ];
   if (typeof this.session.user === 'object') {
     nav.actions = [
       { title: 'Message', href: '/messages/new' },

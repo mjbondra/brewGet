@@ -54,7 +54,7 @@ require('./routes');
 
 // AngularJS/App modules
 var app = angular.module('brewGet', [
-  'ngAnimate',
+  // 'ngAnimate',
   'ngCookies',
   'ngRoute',
   'ngTouch',

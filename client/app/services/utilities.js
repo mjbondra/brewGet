@@ -121,6 +121,25 @@ app.factory('Head', function () {
   };
 });
 
+/**
+ * <nav> Service
+ */
+app.factory('Nav', function () {
+  return {
+    actions: [
+      { title: 'Sign up', href: '/account/sign-up' },
+      { title: 'Sign in', href: '/account/sign-in' }
+    ],
+    content: [
+      { title: 'Posts', href: '/' },
+      { title: 'Users', href: '/users'},
+      { title: 'Beers', href: '/beers' },
+      { title: 'Breweries', href: '/breweries' },
+      { title: 'Styles', href: '/styles' }
+    ]
+  }
+});
+
 /*------------------------------------*\
     DIRECTIVE UTILITIES
 \*------------------------------------*/
@@ -179,7 +198,7 @@ app.factory('DateHandler', ['_', function (_) {
  *
  * @returns {string|promise} - logged-in username
  */
-app.factory('Username', ['$cookies', '$q', function ($cookies, $q) {
+app.factory('Session', ['$cookies', '$q', function ($cookies, $q) {
 
   // this function is allowed to return a promise that accounts for cookie-setting delays
   // TODO: revisit this to see if this delay is removed or otherwise accounted for by Angular

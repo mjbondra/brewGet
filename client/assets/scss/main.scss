@@ -420,7 +420,8 @@ input-date {
 /*--Branding--*/
 
 h1.branding {
-  margin: 0;
+  float: left;
+  margin: 4px 0 0;
   a {
     @extend .ir;
     display: block;
@@ -493,9 +494,6 @@ nav.primary-nav {
             }
           }
           &.expanded-tree {
-            margin: {
-              bottom: 45px;
-            }
             background-color: $lt-brown;
             ul {
               z-index: 1;
@@ -515,7 +513,7 @@ nav.primary-nav {
         }
         &.action-nav-tree {
           background-color: transparent;
-          width: 49.99%;
+          width: 50%;
           h2 {
             display: none;
           }
@@ -526,31 +524,32 @@ nav.primary-nav {
           }
         }
         &.account-nav-tree {
-          position: absolute;
-          top: 1px;
-          right: 0;
+          float: right;
+          margin: {
+            top: 1px;
+          }
           background-color: $lt-yellow-green;
           h2 {
-            height: 41px;
-            @include font-details(null, $brown, null, 39px);
+            color: $brown;
           }
           ul {
             position: absolute;
-            width: 400%;
-            left: -300%;
+            margin: {
+              top: 45px;
+            }
             li {
-              background-color: $lt-yellow-green;
-              a {
-                color: $brown;
-              }
+              width: 100%;
             }
           }
           &.expanded-tree {
             background-color: $yellow-green;
-            ul {
-              li {
-                background-color: $lt-yellow-green;
-              }
+          }
+        }
+        &.content-nav-tree {
+          clear: left;
+          ul {
+            li {
+              width: 100%;
             }
           }
         }

@@ -13,7 +13,8 @@ app.controller('html.head', ['$scope', 'Head', function ($scope, Head) {
  * Navigation Controller
  * TEMPLATE /partials/nav/index.html
  */
-app.controller('html.nav', ['$scope', '$location', 'API', function ($scope, $location, API) {
+app.controller('html.nav', ['$scope', '$location', 'API', 'Nav', function ($scope, $location, API, Nav) {
+  $scope.content = Nav.content;
 
   /**
    * Navigation functions
@@ -23,8 +24,12 @@ app.controller('html.nav', ['$scope', '$location', 'API', function ($scope, $loc
 
   // load nav
   var loadNav = function () {
-    API('nav').success(function (data) {
-      $scope.Nav = data;
+    API('nav').success(function (nav) {
+      $scope.actions = nav.actions;
+      $scope.account = nav.account;
+    }).error(function () {
+      $scope.actions = Nav.actions;
+      if ($scope.account) delete $scope.account;
     });
   };
   // collapse expanded trees
