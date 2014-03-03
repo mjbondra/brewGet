@@ -528,10 +528,6 @@ nav.primary-nav {
           margin: {
             top: 1px;
           }
-          background-color: $lt-yellow-green;
-          h2 {
-            color: $brown;
-          }
           ul {
             position: absolute;
             margin: {
@@ -540,9 +536,6 @@ nav.primary-nav {
             li {
               width: 100%;
             }
-          }
-          &.expanded-tree {
-            background-color: $yellow-green;
           }
         }
         &.content-nav-tree {
