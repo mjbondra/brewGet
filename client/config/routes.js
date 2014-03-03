@@ -107,6 +107,20 @@ app.config(['$routeProvider', '$locationProvider', function ($routeProvider, $lo
     controller: 'breweries.show'
   });
 
+  // location routes
+  $routeProvider.when('/locations', {
+    templateUrl: '/app/views/locations/index.html',
+    controller: 'locations.index'
+  });
+  $routeProvider.when('/locations/new', {
+    templateUrl: '/app/views/locations/new.html',
+    controller: 'locations.new'
+  });
+  $routeProvider.when('/locations/:slug', {
+    templateUrl: '/app/views/locations/show.html',
+    controller: 'locations.show'
+  });
+
   // style routes
   $routeProvider.when('/styles', {
     templateUrl: '/app/views/styles/index.html',

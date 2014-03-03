@@ -135,6 +135,7 @@ app.factory('Nav', function () {
       { title: 'Users', href: '/users'},
       { title: 'Beers', href: '/beers' },
       { title: 'Breweries', href: '/breweries' },
+      { title: 'Locations', href: '/locations' },
       { title: 'Styles', href: '/styles' }
     ]
   }

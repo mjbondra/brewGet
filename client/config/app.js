@@ -38,6 +38,7 @@ require('../app/controllers/beers');
 require('../app/controllers/breweries');
 require('../app/controllers/home');
 require('../app/controllers/html');
+require('../app/controllers/locations');
 require('../app/controllers/messages');
 require('../app/controllers/posts');
 require('../app/controllers/styles');
@@ -62,6 +63,7 @@ var app = angular.module('brewGet', [
   'brewGet.controllers.breweries',
   'brewGet.controllers.home',
   'brewGet.controllers.html',
+  'brewGet.controllers.locations',
   'brewGet.controllers.messages',
   'brewGet.controllers.posts',
   'brewGet.controllers.styles',
