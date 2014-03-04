@@ -17,7 +17,7 @@ app.controller('users.index', ['$scope', 'Head', 'User', 'ImageSelect', 'Locatio
 
 /**
  * User show
- * ROUTE /#!/users/:slug
+ * ROUTE /#!/users/:username
  * TEMPLATE /partials/users/show.html
  */
 app.controller('users.show', ['$scope', '$routeParams', 'Head', 'User', 'ImageSelect', 'LocationParse', function ($scope, $routeParams, Head, User, ImageSelect, LocationParse) {
