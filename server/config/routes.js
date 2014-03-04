@@ -39,8 +39,8 @@ module.exports = function (app) {
 
   // locations
   app.get('/api/locations', locations.index);
-  app.get('/api/locations/:state', locations.state);
-  app.get('/api/locations/:state/:city', locations.city);
+  app.get('/api/locations/:state', locations.index);
+  app.get('/api/locations/:state/:city', locations.show);
 
   // navigation
   app.get('/api/nav', navigation);
