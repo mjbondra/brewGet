@@ -21,7 +21,7 @@ app.controller('users.index', ['$scope', 'Head', 'User', 'ImageSelect', 'Locatio
  * TEMPLATE /partials/users/show.html
  */
 app.controller('users.show', ['$scope', '$routeParams', 'Head', 'User', 'ImageSelect', 'LocationParse', function ($scope, $routeParams, Head, User, ImageSelect, LocationParse) {
-  $scope.user = User.get({ slug: $routeParams.slug });
+  $scope.user = User.get({ username: $routeParams.username });
   $scope.ImageSelect = ImageSelect;
   $scope.LocationParse = LocationParse;
   if ($scope.user.$promise) {
@@ -43,12 +43,12 @@ app.controller('users.show', ['$scope', '$routeParams', 'Head', 'User', 'ImageSe
 app.controller('users.edit', ['$scope', '$upload', 'API', 'Head', 'User', 'Session', 'Slug', 'ImageSelect', function ($scope, $upload, API, Head, User, Session, Slug, ImageSelect) {
   Head.title('Account Details & Settings');
   Head.description('Edit the details and settings of your brewGet account.');
-  $scope.slug = Slug(Session(), true);
-  $scope.user = User.get({ slug: $scope.slug });
+  $scope.username = Slug(Session(), true);
+  $scope.user = User.get({ username: $scope.username });
   $scope.ImageSelect = ImageSelect;
   $scope.loading = false;
   $scope.imageDelete = function () {
-    API('users/' + $scope.slug + '/images', 'DELETE').success(function (data, status, headers, config) {
+    API('users/' + $scope.username + '/images', 'DELETE').success(function (data, status, headers, config) {
       $scope.user.images = [];
     });
   };
@@ -56,7 +56,7 @@ app.controller('users.edit', ['$scope', '$upload', 'API', 'Head', 'User', 'Sessi
     for (var i = 0; i < $files.length; i++) {
       var file = $files[i];
       $scope.upload = $upload.upload({
-        url: 'api/users/' + $scope.slug + '/images',
+        url: 'api/users/' + $scope.username + '/images',
         data: { myObj: $scope.myModelObj },
         file: file,
         fileFormDataName: 'image',

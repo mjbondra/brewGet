@@ -27,7 +27,7 @@ app.factory('Location', ['$resource', function ($resource) {
  * Post Service
  */
 app.factory('Post', ['$resource', '$location', function ($resource, $location) {
-  return $resource('api/posts/:slug', {}, {
+  return $resource('api/posts/:post', {}, {
     save: {
       method:'POST',
       interceptor: {
@@ -50,7 +50,7 @@ app.factory('Style', ['$resource', function ($resource) {
  * User Service
  */
 app.factory('User', ['$rootScope', '$resource', '$location', function ($rootScope, $resource, $location) {
-  return $resource('api/users/:slug', {}, {
+  return $resource('api/users/:username', {}, {
     save: { 
       method:'POST', 
       interceptor: {
@@ -62,7 +62,7 @@ app.factory('User', ['$rootScope', '$resource', '$location', function ($rootScop
     },
     signIn: {
       method: 'POST',
-      params: { slug: 'sign-in' },
+      params: { username: 'sign-in' },
       interceptor: {
         response: function (res) {
           $rootScope.$broadcast('reloadNav');
@@ -72,7 +72,7 @@ app.factory('User', ['$rootScope', '$resource', '$location', function ($rootScop
     },
     signOut: {
       method: 'DELETE',
-      params: { slug: 'sign-out' },
+      params: { username: 'sign-out' },
       interceptor: {
         response: function (res) {
           $rootScope.$broadcast('reloadNav');
