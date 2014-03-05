@@ -19,16 +19,23 @@ var ImageSchema = mongoose.model('Image').schema
  */
 exports.location = {
   address: String,
-  city: String,
-  country: String,
+  city: {
+    name: String,
+    slug: String
+  },
+  country: {
+    abbreviation: String,
+    name: String,
+    slug: String
+  },
   formatted_address: String,
   latitude: Number,
   longitude: Number,
-  slug: {
-    city: String,
-    state: String
-  },
-  state: String
+  state: {
+    abbreviation: String,
+    name: String,
+    slug: String
+  }
 }
 
 /**

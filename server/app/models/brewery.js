@@ -49,8 +49,8 @@ BrewerySchema.methods = {
     else count++;
 
     var _location = new Location({ raw: this.location });
-    if (_location.slug && _location.slug.city && _location.slug.state) {
-      Promise.promisify(Location.findOne, Location)({ 'slug.city': _location.slug.city, 'slug.state': _location.slug.state }).bind(this).then(function (location) {
+    if (_location.city && _location.city.slug && _location.state && _location.state.slug) {
+      Promise.promisify(Location.findOne, Location)({ 'city.slug': _location.city.slug, 'state.slug': _location.state.slug }).bind(this).then(function (location) {
         if (!location) return Promise.promisify(_location.save, _location)();
         else return location;
       }).then(function (location) {

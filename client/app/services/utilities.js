@@ -79,8 +79,8 @@ app.factory('ImageSelect', ['Gravatar', 'HighDPI', function (Gravatar, HighDPI) 
  */
 app.factory('LocationParse', function () {
   return function (resource, opts) {
-    if (resource._location && resource._location.country === 'United States') {
-      return (resource._location.city ? resource._location.city + ', ' : '') + ( resource._location.state ? resource._location.state : '' );
+    if (resource._location && resource._location.country && resource._location.country.name === 'United States') {
+      return (resource._location.city && resource._location.city.name ? resource._location.city.name + ', ' : '') + ( resource._location.state && resource._location.state.abbreviation ? resource._location.state.abbreviation : '' );
     } else {
       return resource.location;
     }
