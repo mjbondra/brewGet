@@ -66,7 +66,7 @@ module.exports = {
      * GET /api/locations/:state/beers
      */
     state: function *(next) {
-      this.body = yield Promise.promisify(Beer.find, Beer)({ 'brewery._location.slug.state': this.params.state }, projection);
+      this.body = yield Promise.promisify(Beer.find, Beer)({ 'brewery._location.state.slug': this.params.state }, projection);
     },
 
     /**
@@ -74,7 +74,7 @@ module.exports = {
      * GET /api/locations/:state/:city/beers
      */
     city: function *(next) {
-      this.body = yield Promise.promisify(Beer.find, Beer)({ 'brewery._location.slug.state': this.params.state, 'brewery._location.slug.city': this.params.city }, projection);
+      this.body = yield Promise.promisify(Beer.find, Beer)({ 'brewery._location.state.slug': this.params.state, 'brewery._location.city.slug': this.params.city }, projection);
     }
   },
 

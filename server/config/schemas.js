@@ -29,8 +29,10 @@ exports.location = {
     slug: String
   },
   formatted_address: String,
-  latitude: Number,
-  longitude: Number,
+  geometry: {
+    latitude: Number,
+    longitude: Number
+  },
   state: {
     abbreviation: String,
     name: String,

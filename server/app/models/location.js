@@ -48,8 +48,7 @@ LocationSchema.virtual('raw').set(function (raw) {
     this._raw = raw;
 
     // latitude & longitude
-    if (typeof raw.latitude === 'number') this.latitude = raw.latitude;
-    if (typeof raw.longitude === 'number') this.longitude = raw.longitude;
+    if (raw.geometry) this.geometry = raw.geometry;
 
     this.address_components = raw.address_components;
     this.formatted_address = sanitize.escape(raw.formatted_address);
