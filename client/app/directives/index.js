@@ -18,7 +18,7 @@ app.directive('globalMessages', ['MessageHandler', '_', function (MessageHandler
     restrict: 'E',
     scope: true,
     link: function (scope) {
-      scope.$on('globalMessages', function (event, globalMessages) { 
+      scope.$on('globalMessages', function (event, globalMessages) {
         scope = _.extend(scope, MessageHandler.process(globalMessages));
       });
       scope.hideMessages = function () {
@@ -37,7 +37,7 @@ app.directive('validationMessages', ['MessageHandler', '_', function (MessageHan
     restrict: 'E',
     scope: true,
     link: function (scope) {
-      scope.$on('validationErrors', function (event, validationErrors) { 
+      scope.$on('validationErrors', function (event, validationErrors) {
         scope = _.extend(scope, MessageHandler.process(validationErrors));
       });
       scope.hideMessages = function () {
@@ -106,10 +106,6 @@ app.directive('places', ['PlacesAPI', function (PlacesAPI) {
       PlacesAPI.setElementByID(attrs.id, attrs.types);
       scope.$on(attrs.id, function (event, place) {
         place.formatted_address = element.val();
-        place.geometry = {
-          latitude: place.geometry.location.lat(),
-          longitude: place.geometry.location.lng()
-        };
         scope.ngModel = angular.toJson(place);
         scope.$apply('ngModel');
       });

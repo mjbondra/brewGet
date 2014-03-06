@@ -43,6 +43,8 @@ app.factory('PlacesAPI', ['$rootScope', function ($rootScope) {
         maps.event.addListener(autocomplete, 'place_changed', function () {
           var place = autocomplete.getPlace();
           if (!place.geometry) return;
+          place.geometry.latitude = place.geometry.location.lat();
+          place.geometry.longitude = place.geometry.location.lng();
           $rootScope.$broadcast(elementID, place);
         });
       } else {
