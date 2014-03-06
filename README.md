@@ -51,7 +51,7 @@ This project has been influenced (in direct code and/or philosophy) by the follo
 Copyright (c) 2010-2012 Google, Inc. < [http://angularjs.org](http://angularjs.org) >  
 The MIT License (MIT)
 
-[Nodejs Express Mongoose Demo](https://github.com/madhums/node-express-mongoose-demo)   
+[Nodejs Express Mongoose Demo](https://github.com/madhums/node-express-mongoose-demo)
 Copyright (c) 2012 Madhusudhan Srinivasa < [madhums8@gmail.com](mailto:madhums8@gmail.com) >  
 The MIT License (MIT)
 
@@ -63,10 +63,10 @@ The MIT License (MIT)
 * [Browserify](http://browserify.org/) / [Gulp-Browserify](https://github.com/deepak1556/gulp-browserify)
 * [Busboy](https://github.com/mscdex/busboy) / [Co-Busboy](https://github.com/cojs/busboy)
 * [Caja](https://code.google.com/p/google-caja/) / [Sanitizer](https://github.com/theSmaw/Caja-HTML-Sanitizer)
-* [Clean-CSS](https://github.com/GoalSmashers/clean-css) / [Gulp-Minify-CSS](https://github.com/jonathanepollack/gulp-minify-css)
 * [Co-Body](https://github.com/visionmedia/co-body)
 * [Co-Fs](https://github.com/visionmedia/co-fs)
 * [Compass](http://compass-style.org/) / [Gulp-Compass](https://github.com/appleboy/gulp-compass)
+* [CSSO](https://github.com/css/csso) / [Gulp-CSSO](https://github.com/ben-eb/gulp-csso)
 * [Font Awesome](http://fontawesome.io/)
 * [GraphicsMagick](http://www.graphicsmagick.org/) / [Gm](https://github.com/aheckmann/gm)
 * [Gravatar](https://github.com/emerleite/node-gravatar)
