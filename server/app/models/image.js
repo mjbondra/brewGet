@@ -35,7 +35,6 @@ var ImageSchema = new Schema({
     height: Number,
     width: Number
   },
-  highDPI: Boolean,
   mimetype: String,
   path: String,
   related: String,
@@ -75,7 +74,6 @@ ImageSchema.methods = {
     opts.geometry = opts.geometry || {};
     opts.geometry.height = opts.geometry.height || 50;
     opts.geometry.width = opts.geometry.width || 50;
-    opts.highDPI = ( opts.highDPI === true ? true : false );
     opts.percentage = ( opts.percentage === false ? false : true );
 
     var dir = config.path.upload + ( image.type ? '/' + image.type : '' )
@@ -98,7 +96,6 @@ ImageSchema.methods = {
     this.alt = image.alt;
     this.encoding = image.encoding;
     this.filename = filename;
-    this.highDPI = opts.highDPI;
     this.mimetype = image.mimetype;
     this.path = path;
     this.related = image.related;
@@ -143,7 +140,7 @@ ImageSchema.methods = {
     opts.limits = opts.limits || {};
     opts.limits.files = 1;
     opts.limits.fileSize = opts.limits.fileSize || 2097152 // 2 MB;
-  
+
     var parts = coBusboy(ctx, { limits: opts.limits });
 
     var dir = config.path.upload + ( opts.type ? '/' + opts.type : '' )
@@ -152,7 +149,7 @@ ImageSchema.methods = {
       , size = Promise.defer()
       , streamError = false
       , types = [ 'image/png', 'image/jpeg', 'image/gif' ];
-    
+
     var encoding, filename, mimetype, path;
 
     // reusable callback for graphicsmagick
@@ -228,7 +225,6 @@ ImageSchema.methods = {
     this.alt = opts.alt;
     this.encoding = encoding;
     this.filename = this.related = filename;
-    this.highDPI = true;
     this.mimetype = mimetype;
     this.path = path;
     this.src = '/assets/img/' + ( opts.type ? opts.type + '/' : '' ) + filename;
