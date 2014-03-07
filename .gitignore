@@ -2,6 +2,7 @@
 #################
 config.js
 sftp-config.json
+.jshintrc
 
 # NPM Packages #
 ################
