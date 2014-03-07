@@ -18,6 +18,7 @@ BrewerySchema.index({ 'aliases.slug': 1, '_location.city.slug': 1, '_location.st
  * Pre-validation hook; Sanitizers
  */
 BrewerySchema.pre('validate', function (next) {
+  if (this.location && this.location.name && this.location.slug === cU.slug(this.location.name)) return next();
   this.processNest(next, 2);
 });
 

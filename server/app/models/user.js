@@ -83,6 +83,7 @@ UserSchema.pre('validate', function (next) {
   this.email = sanitize.escape(this.email);
   this.username = sanitize.escape(this.username);
 
+  if (this.location && this.location.name && this.location.slug === cU.slug(this.location.name)) return next();
   this.processNest(next, 2);
 });
 
