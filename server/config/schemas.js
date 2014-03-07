@@ -28,11 +28,12 @@ exports.location = {
     name: String,
     slug: String
   },
-  formatted_address: String,
   geometry: {
     latitude: Number,
     longitude: Number
   },
+  name: String,
+  slug: String,
   state: {
     abbreviation: String,
     name: String,
@@ -57,8 +58,7 @@ exports.beer = {
     comments: [ CommentSchema ],
     images: [ ImageSchema ],
     info: String,
-    location: String,
-    _location: this.location,
+    location: this.location,
     name: String,
     rating: Number,
     slug: String

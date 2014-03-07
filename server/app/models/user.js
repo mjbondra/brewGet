@@ -31,28 +31,27 @@ var UserSchema = new Schema({
       { validator: validate.notNull, msg: msg.birthday.isNull }
     ]
   },
-  email: { 
+  email: {
     type: String,
-    validate: [ 
+    validate: [
       { validator: validate.isEmail, msg: msg.email.notEmail },
       { validator: validate.notNull, msg: msg.email.isNull }
     ]
   },
   hash: String,
   images: [ ImageSchema ],
-  location: String,
-  _location: LocationSchema,
-  role: { 
-    type: Number, 
-    default: 1 
+  location: LocationSchema,
+  role: {
+    type: Number,
+    default: 1
   },
   salt: String,
   slug: {
     type: String,
     index: { unique: true }
   },
-  username: { 
-    type: String, 
+  username: {
+    type: String,
     validate: [
       { validator: validate.notNull, msg: msg.username.isNull }
     ]
@@ -69,8 +68,8 @@ UserSchema.virtual('password')
     this.salt = this.makeSalt();
     this.hash = this.encrypt(this._password, this.salt);
   })
-  .get(function () { 
-    return this._password; 
+  .get(function () {
+    return this._password;
   });
 
 /**
@@ -84,8 +83,6 @@ UserSchema.pre('validate', function (next) {
   this.email = sanitize.escape(this.email);
   this.username = sanitize.escape(this.username);
 
-  // ensure that the nest is not processed if nothing has changed
-  if (this._location && this._location.formatted_address && this.location === this._location.formatted_address) return next();
   this.processNest(next, 2);
 });
 
@@ -107,7 +104,7 @@ UserSchema.pre('save', function (next) {
 });
 
 /**
- * Methods 
+ * Methods
  */
 UserSchema.methods = {
   authenticate: function (plainText, salt) {
@@ -136,25 +133,23 @@ UserSchema.methods = {
     if (!count) count = 1;
     else count++;
 
-    var _location = new Location({ raw: this.location });
+    var _location = new Location({ raw: this.location.name });
     if (_location.city && _location.city.slug && _location.state && _location.state.slug) {
       Promise.promisify(Location.findOne, Location)({ 'city.slug': _location.city.slug, 'state.slug': _location.state.slug }).bind(this).then(function (location) {
         if (!location) return Promise.promisify(_location.save, _location)();
         else return location;
       }).then(function (location) {
         if (location[0]) location = location[0];
-        this._location = location;
-        this.location = location.formatted_address;
+        this.location = location;
         next();
       }).catch(function (err) {
         if (err.name === 'RejectionError' && err.cause) err = err.cause;
         // pass error to next() if limit has been reached, or if the error is not an async-caused duplicate key error
         if (count >= limit || ( err.code !== 11000 && err.code !== 11001 )) return next(err);
         this.processNest(next, limit, count);
-      }); 
+      });
     } else {
-      this.location = sanitize.escape(this.location);
-      this._location = {};
+      this.location = _location;
       next();
     }
   }

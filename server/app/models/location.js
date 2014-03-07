@@ -38,8 +38,8 @@ LocationSchema.virtual('address_components').set(function (address_components) {
       this.country.slug = cU.slug(this.country.abbreviation);
     }
   }
-}).get(function () { 
-  return this._address_components; 
+}).get(function () {
+  return this._address_components;
 });
 
 LocationSchema.virtual('raw').set(function (raw) {
@@ -51,9 +51,15 @@ LocationSchema.virtual('raw').set(function (raw) {
     if (raw.geometry) this.geometry = raw.geometry;
 
     this.address_components = raw.address_components;
-    this.formatted_address = sanitize.escape(raw.formatted_address);
+    this.name = sanitize.escape(raw.formatted_address);
+    this.slug = cU.slug(this.name);
   } catch (err) {
     this._raw = raw;
+
+    if (raw && typeof raw === 'string') {
+      this.name = sanitize.escape(raw);
+      this.slug = cU.slug(this.name);
+    }
   }
 }).get(function () {
   return this._raw;

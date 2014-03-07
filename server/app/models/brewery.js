@@ -18,8 +18,6 @@ BrewerySchema.index({ 'aliases.slug': 1, '_location.city.slug': 1, '_location.st
  * Pre-validation hook; Sanitizers
  */
 BrewerySchema.pre('validate', function (next) {
-  // ensure that the nest is not processed if nothing has changed
-  if (this._location && this._location.formatted_address && this.location === this._location.formatted_address) return next();
   this.processNest(next, 2);
 });
 
@@ -48,15 +46,14 @@ BrewerySchema.methods = {
     if (!count) count = 1;
     else count++;
 
-    var _location = new Location({ raw: this.location });
+    var _location = new Location({ raw: this.location.name });
     if (_location.city && _location.city.slug && _location.state && _location.state.slug) {
       Promise.promisify(Location.findOne, Location)({ 'city.slug': _location.city.slug, 'state.slug': _location.state.slug }).bind(this).then(function (location) {
         if (!location) return Promise.promisify(_location.save, _location)();
         else return location;
       }).then(function (location) {
         if (location[0]) location = location[0];
-        this._location = location;
-        this.location = location.formatted_address;
+        this.location = location;
         next();
       }).catch(function (err) {
         if (err.name === 'RejectionError' && err.cause) err = err.cause;
@@ -65,8 +62,7 @@ BrewerySchema.methods = {
         this.processNest(next, limit, count);
       });
     } else {
-      this.location = sanitize.escape(this.location);
-      this._location = {};
+      this.location = _location;
       next();
     }
   }
