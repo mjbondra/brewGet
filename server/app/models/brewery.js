@@ -11,8 +11,8 @@ var cU = require('../../assets/lib/common-utilities')
 var BrewerySchema = new Schema(require('../../config/schemas').beer.brewery)
   , Location = mongoose.model('Location');
 
-BrewerySchema.index({ slug: 1 }, { unique: true });
-BrewerySchema.index({ 'aliases.slug': 1 }, { unique: true });
+BrewerySchema.index({ slug: 1, '_location.city.slug': 1, '_location.state.slug': 1, '_location.country.slug': 1 }, { unique: true });
+BrewerySchema.index({ 'aliases.slug': 1, '_location.city.slug': 1, '_location.state.slug': 1, '_location.country.slug': 1 }, { unique: true });
 
 /**
  * Pre-validation hook; Sanitizers
@@ -63,7 +63,7 @@ BrewerySchema.methods = {
         // pass error to next() if limit has been reached, or if the error is not an async-caused duplicate key error
         if (count >= limit || ( err.code !== 11000 && err.code !== 11001 )) return next(err);
         this.processNest(next, limit, count);
-      }); 
+      });
     } else {
       this.location = sanitize.escape(this.location);
       this._location = {};

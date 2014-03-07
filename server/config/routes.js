@@ -16,14 +16,14 @@ var beers = require('../app/controllers/beers')
   , users = require('../app/controllers/users');
 
 module.exports = function (app) {
-  
+
   // temporary test route
   app.get('/test-api/test.json', function *() {
     this.body = {
       name: 'brewGet',
       description: 'a node/koa app that facilitates the trading of beer'
     }
-  })
+  });
 
   // beers
   app.get('/api/beers', beers.index);
@@ -35,7 +35,12 @@ module.exports = function (app) {
 
   // breweries
   app.get('/api/breweries', breweries.index);
-  app.get('/api/breweries/:slug', breweries.show);
+  app.get('/api/breweries/id/:id', breweries.show);
+  app.get('/api/breweries/:country', breweries.index);
+  app.get('/api/breweries/:country/:state', breweries.index);
+  app.get('/api/breweries/:country/:state/:city', breweries.index);
+  app.get('/api/breweries/:country/:state/:city/:brewery', breweries.show);
+  // app.get('/api/breweries/:slug', breweries.show);
 
   // locations
   app.get('/api/locations', locations.index);
