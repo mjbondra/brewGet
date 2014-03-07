@@ -47,7 +47,7 @@ BrewerySchema.methods = {
     else count++;
 
     var _location = new Location({ raw: this.location.name });
-    if (_location.slug && _location.geometry) {
+    if (_location.slug && _location.geometry && _location.geometry.latitude && _location.geometry.longitude) {
       Promise.promisify(Location.findOne, Location)({ slug: _location.slug }).bind(this).then(function (location) {
         if (!location) return Promise.promisify(_location.save, _location)();
         else return location;

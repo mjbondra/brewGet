@@ -33,7 +33,7 @@ app.factory('Autocomplete', ['API', 'Slug', function (API, Slug) {
   };
 }]);
 
-/** 
+/**
  * HighDPI Service - inspired by RetinaJS (http://retinajs.com/)
  *
  * @return {boolean} - whether or not a screen is high density
@@ -50,7 +50,7 @@ app.factory('HighDPI', function () {
   }
 });
 
-/** 
+/**
  * Image selection service that will pull an appropriately sized image an array of images
  *
  * @param {array} - an array of images
@@ -74,15 +74,15 @@ app.factory('ImageSelect', ['Gravatar', 'HighDPI', function (Gravatar, HighDPI) 
   }
 }]);
 
-/** 
+/**
  * Location parsing service
  */
 app.factory('LocationParse', function () {
   return function (resource, opts) {
-    if (resource._location && resource._location.country && resource._location.country.name === 'United States') {
-      return (resource._location.city && resource._location.city.name ? resource._location.city.name + ', ' : '') + ( resource._location.state && resource._location.state.abbreviation ? resource._location.state.abbreviation : '' );
+    if (resource.location && resource.location.country && resource.location.country.name === 'United States') {
+      return (resource.location.city && resource.location.city.name ? resource.location.city.name + ', ' : '') + ( resource.location.state && resource.location.state.abbreviation ? resource.location.state.abbreviation : '' );
     } else {
-      return resource.location;
+      return resource.location.name;
     }
   }
 });
@@ -155,9 +155,9 @@ app.factory('MessageHandler', function () {
       if (alerts.length > 0) {
         cssClasses.push('active-messages');
       }
-      return { 
-        alerts: alerts, 
-        cssClasses: cssClasses 
+      return {
+        alerts: alerts,
+        cssClasses: cssClasses
       };
     }
   };
@@ -192,7 +192,7 @@ app.factory('DateHandler', ['_', function (_) {
 
 /**
  * Auth-checking Service
- * 
+ *
  * @param   {object}  [opts]
  * @param   {boolean} [opts.delay=false]
  * @param   {number}  [opts.time=300]
