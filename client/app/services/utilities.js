@@ -47,7 +47,7 @@ app.factory('HighDPI', function () {
     if (window.devicePixelRatio > 1) return true;
     if (window.matchMedia && window.matchMedia(mediaQuery).matches) return true;
     return false;
-  }
+  };
 });
 
 /**
@@ -59,9 +59,9 @@ app.factory('ImageSelect', ['Gravatar', 'HighDPI', function (Gravatar, HighDPI) 
   return function (images, size, opts) {
     if (!images) return 'assets/img/bottle.png';
     var i = images.length
-      , image = {}
-      , opts = opts || {}
-      , size = size || { height: 200, width: 200 };
+      , image = {};
+    opts = opts || {};
+    size = size || { height: 200, width: 200 };
     opts.https = ( opts.https === true ? true : false );
     size.height = ( HighDPI() ? size.height * 2 : size.height );
     size.width = ( HighDPI() ? size.width * 2 : size.width );
@@ -71,7 +71,7 @@ app.factory('ImageSelect', ['Gravatar', 'HighDPI', function (Gravatar, HighDPI) 
     if (image.src) return image.src;
     else if (opts.email) return Gravatar.url(opts.email, { s: size.width }, opts.https);
     else return 'assets/img/bottle.png';
-  }
+  };
 }]);
 
 /**
@@ -84,7 +84,7 @@ app.factory('LocationParse', function () {
     } else {
       return resource.location.name;
     }
-  }
+  };
 });
 
 /**
@@ -138,7 +138,7 @@ app.factory('Nav', function () {
       { title: 'Locations', href: '/locations' },
       { title: 'Styles', href: '/styles' }
     ]
-  }
+  };
 });
 
 /*------------------------------------*\
@@ -209,9 +209,9 @@ app.factory('Session', ['$cookies', '$q', function ($cookies, $q) {
     opts.time = opts.time || 300; // 300ms
     if (opts.delay === false) return $cookies.username;
     var deferred = $q.defer();
-    setTimeout(function () {
+    window.setTimeout(function () {
       deferred.resolve($cookies.username);
     }, opts.time);
     return deferred.promise;
-  }
+  };
 }]);

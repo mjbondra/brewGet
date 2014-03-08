@@ -48,7 +48,7 @@ app.factory('PlacesAPI', ['$rootScope', function ($rootScope) {
           $rootScope.$broadcast(elementID, place);
         });
       } else {
-        setTimeout(function () {
+        window.setTimeout(function () {
           this.setElementByID(elementID, types);
         }.bind(this), 300); // try again
       }

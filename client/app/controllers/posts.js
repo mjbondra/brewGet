@@ -34,7 +34,7 @@ app.controller('posts.new', ['$scope', 'Head', 'Post', 'Autocomplete', function 
   $scope.post.beers = [{}];
   $scope.addBeer = function () {
     $scope.post.beers.push({});
-  }
+  };
   $scope.Autocomplete = function (type, input, index) {
     if (input && input.length > 1) {
       Autocomplete(type, input).success(function (data) {
@@ -62,16 +62,16 @@ app.controller('posts.new', ['$scope', 'Head', 'Post', 'Autocomplete', function 
           $scope.post.beers[index].style.autocomplete = [];
       }
     }
-  }
+  };
   $scope.applyBeer = function (parentIndex, index) {
     $scope.post.beers[parentIndex] = $scope.post.beers[parentIndex].autocomplete[index];
-  }
+  };
   $scope.applyBrewery = function (parentIndex, index) {
     $scope.post.beers[parentIndex].brewery = $scope.post.beers[parentIndex].brewery.autocomplete[index];
-  }
+  };
   $scope.applyStyle = function (parentIndex, index) {
     $scope.post.beers[parentIndex].style = $scope.post.beers[parentIndex].style.autocomplete[index];
-  }
+  };
 }]);
 
 /**
