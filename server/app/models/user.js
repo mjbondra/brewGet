@@ -144,7 +144,10 @@ UserSchema.methods = {
     Promise.promisify(Location.findOne, Location)({ slug: cU.slug(this.location.name) }).bind(this).then(function (location) {
       if (location) return location;
       location = new Location(this._doc.location);
-      if (!location.country.abbreviation || !location.state.abbreviation || !location.city.name) return location;
+      if (!location.country.abbreviation || !location.state.abbreviation || !location.city.name) return {
+        name: location.name,
+        slug: cU.slug(location.name)
+      };
       return Promise.promisify(location.save, location)();
     }).then(function (location) {
       if (location[0]) location = location[0];
