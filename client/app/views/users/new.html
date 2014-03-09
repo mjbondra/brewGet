@@ -4,7 +4,8 @@
   <label>Username<input type="text" ng-model="user.username"></label>
   <label>Password<input type="password" ng-model="user.password"></label>
   <label>Email<input type="email" ng-model="user.email"></label>
-  <label>Location<input type="text" id="location" ng-model="user.location.name" places types="(cities)" placeholder=""></label>
+  <label>Location<input type="text" id="location" ng-model="user.location" places types="(cities)" placeholder=""></label>
+  {{ user.location }}
   <input-date label="Birthday" form-object="user" date-container="birthday"></input-date>
   <button ng-click="user.$save()">Sign up</button>
 </form>

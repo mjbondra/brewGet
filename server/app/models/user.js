@@ -82,8 +82,8 @@ UserSchema.pre('validate', function (next) {
 
   this.email = sanitize.escape(this.email);
   this.username = sanitize.escape(this.username);
+  console.log(this.location);
 
-  if (this.location && this.location.name && this.location.slug === cU.slug(this.location.name)) return next();
   this.processNest(next, 2);
 });
 
@@ -134,25 +134,29 @@ UserSchema.methods = {
     if (!count) count = 1;
     else count++;
 
-    var _location = new Location({ raw: this.location.name });
-    if (_location.slug && _location.geometry && _location.geometry.latitude && _location.geometry.longitude) {
-      Promise.promisify(Location.findOne, Location)({ slug: _location.slug }).bind(this).then(function (location) {
-        if (!location) return Promise.promisify(_location.save, _location)();
-        else return location;
-      }).then(function (location) {
-        if (location[0]) location = location[0];
-        this.location = location;
-        next();
-      }).catch(function (err) {
-        if (err.name === 'RejectionError' && err.cause) err = err.cause;
-        // pass error to next() if limit has been reached, or if the error is not an async-caused duplicate key error
-        if (count >= limit || ( err.code !== 11000 && err.code !== 11001 )) return next(err);
-        this.processNest(next, limit, count);
-      });
-    } else {
-      this.location = _location;
-      next();
+    if (typeof this._doc.location === 'string') this.location = {
+      name: this._doc.location
+    };
+    if (!this.location.name) {
+      this.location = {};
+      return next();
     }
+
+    Promise.promisify(Location.findOne, Location)({ slug: cU.slug(this.location.name) }).bind(this).then(function (location) {
+      if (location) return location;
+      location = new Location(this._doc.location);
+      if (!location.country.abbreviation || !location.state.abbreviation || !location.city.name) return location;
+      return Promise.promisify(location.save, location)();
+    }).then(function (location) {
+      if (location[0]) location = location[0];
+      this.location = location;
+      next();
+    }).catch(function (err) {
+      if (err.name === 'RejectionError' && err.cause) err = err.cause;
+      // pass error to next() if limit has been reached, or if the error is not an async-caused duplicate key error
+      if (count >= limit || ( err.code !== 11000 && err.code !== 11001 )) return next(err);
+      this.processNest(next, limit, count);
+    });
   }
 };
 

@@ -67,6 +67,12 @@ app.controller('users.edit', ['$scope', '$upload', 'API', 'Head', 'User', 'Sessi
       });
     }
   };
+  if ($scope.user.$promise) {
+    $scope.user.$promise.then(function (user) {
+      if (user.location && user.location.name) $scope.user.location = user.location.name;
+      else $scope.user.location = ''; 
+    });
+  }
 }]);
 
 /**

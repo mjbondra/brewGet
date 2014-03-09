@@ -105,8 +105,39 @@ app.directive('places', ['PlacesAPI', function (PlacesAPI) {
       attrs.types = attrs.types || 'geocode';
       PlacesAPI.setElementByID(attrs.id, attrs.types);
       scope.$on(attrs.id, function (event, place) {
-        place.formatted_address = element.val();
-        scope.ngModel = angular.toJson(place);
+
+        var _place = {
+          name: element.val()
+        };
+
+        if (place.address_components) {
+          var i = place.address_components.length;
+
+          while (i--) {
+            if (place.address_components[i].types[0] === 'locality') {
+              _place.city = {};
+              _place.city.name = place.address_components[i].long_name;
+            }
+            else if (place.address_components[i].types[0] === 'administrative_area_level_1') {
+              _place.state = {};
+              _place.state.abbreviation = place.address_components[i].short_name;
+              _place.state.name = place.address_components[i].long_name;
+            }
+            else if (place.address_components[i].types[0] === 'country') {
+              _place.country = {};
+              _place.country.abbreviation = place.address_components[i].short_name;
+              _place.country.name = place.address_components[i].long_name;
+            }
+          }
+        }
+
+        if (place.geometry && place.geometry.location) {
+          _place.geometry = {};
+          _place.geometry.latitude = place.geometry.location.lat();
+          _place.geometry.longitude = place.geometry.location.lng();
+        }
+
+        scope.ngModel = _place;
         scope.$apply('ngModel');
       });
     }

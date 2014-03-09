@@ -20,7 +20,7 @@
     <ul>
       <li ng-repeat="brewery in beer.brewery.autocomplete" ng-click="applyBrewery($parent.$index, $index)">{{ brewery }}</li>
     </ul>
-    <label>Brewery Location<input type="text" id="{{ 'location[' + $index + ']' }}" ng-model="beer.brewery.location.name" places types="(cities)" placeholder=""></label>
+    <label>Brewery Location<input type="text" id="{{ 'location[' + $index + ']' }}" ng-model="beer.brewery.location" places types="(cities)" placeholder=""></label>
     <label>Style<input type="text" ng-model="beer.style.name" ng-change="Autocomplete('styles', beer.style.name, $index)"></label>
     <ul>
       <li ng-repeat="style in beer.style.autocomplete" ng-click="applyStyle($parent.$index, $index)">{{ style }}</li>
