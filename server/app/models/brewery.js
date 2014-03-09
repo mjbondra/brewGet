@@ -11,8 +11,9 @@ var cU = require('../../assets/lib/common-utilities')
 var BrewerySchema = new Schema(require('../../config/schemas').beer.brewery)
   , Location = mongoose.model('Location');
 
-BrewerySchema.index({ slug: 1, '_location.city.slug': 1, '_location.state.slug': 1, '_location.country.slug': 1 }, { unique: true });
-BrewerySchema.index({ 'aliases.slug': 1, '_location.city.slug': 1, '_location.state.slug': 1, '_location.country.slug': 1 }, { unique: true });
+BrewerySchema.index({ 'aliases.slug': 1, 'location.slug': 1 }, { unique: true });
+// BrewerySchema.index({ slug: 1, '_location.city.slug': 1, '_location.state.slug': 1, '_location.country.slug': 1 }, { unique: true });
+// BrewerySchema.index({ 'aliases.slug': 1, '_location.city.slug': 1, '_location.state.slug': 1, '_location.country.slug': 1 }, { unique: true });
 
 /**
  * Pre-validation hook; Sanitizers
@@ -58,8 +59,8 @@ BrewerySchema.methods = {
       if (location) return location;
       location = new Location(this._doc.location);
       if (!location.country.abbreviation || !location.state.abbreviation || !location.city.name) return {
-        name: location.name,
-        slug: cU.slug(location.name)
+        name: sanitize.escape(location.name),
+        slug: cU.slug(sanitize.escape(location.name))
       };
       return Promise.promisify(location.save, location)();
     }).then(function (location) {

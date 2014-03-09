@@ -31,7 +31,8 @@ app.controller('posts.new', ['$scope', 'Head', 'Post', 'Autocomplete', function 
   Head.title('New Post');
   Head.description('New Post');
   $scope.post = new Post();
-  $scope.post.beers = [{}];
+
+  // functions
   $scope.addBeer = function () {
     $scope.post.beers.push({});
   };
@@ -60,17 +61,37 @@ app.controller('posts.new', ['$scope', 'Head', 'Post', 'Autocomplete', function 
           break;
         case 'styles':
           $scope.post.beers[index].style.autocomplete = [];
+          break;
       }
     }
   };
-  $scope.applyBeer = function (parentIndex, index) {
-    $scope.post.beers[parentIndex] = $scope.post.beers[parentIndex].autocomplete[index];
+  $scope.applyAutocomplete = function (type, parentIndex, index) {
+    switch (type) {
+    case 'beers':
+      if ($scope.post.beers[parentIndex].type) $scope.post.beers[parentIndex].autocomplete[index].type = $scope.post.beers[parentIndex].type;
+      $scope.post.beers[parentIndex] = $scope.post.beers[parentIndex].autocomplete[index];
+      break;
+    case 'breweries':
+      $scope.post.beers[parentIndex].brewery = $scope.post.beers[parentIndex].brewery.autocomplete[index];
+      break;
+    case 'styles':
+      $scope.post.beers[parentIndex].style = $scope.post.beers[parentIndex].style.autocomplete[index];
+      break;
+    }
+    if (type !== 'styles' && $scope.post.beers[parentIndex].brewery.location && $scope.post.beers[parentIndex].brewery.location.name) $scope.post.beers[parentIndex].brewery.location = $scope.post.beers[parentIndex].brewery.location.name;
   };
-  $scope.applyBrewery = function (parentIndex, index) {
-    $scope.post.beers[parentIndex].brewery = $scope.post.beers[parentIndex].brewery.autocomplete[index];
+  $scope.applyCategory = function () {
+    if ($scope.post.category === 'trade') $scope.post.beers = [{}];
+    else delete $scope.post.beers;
   };
-  $scope.applyStyle = function (parentIndex, index) {
-    $scope.post.beers[parentIndex].style = $scope.post.beers[parentIndex].style.autocomplete[index];
+  $scope.save = function () {
+    if ($scope.post.beers && $scope.post.beers.length > 0) {
+      var i = $scope.post.beers.length;
+      while (i--) if (typeof $scope.post.beers[i].brewery.location === 'string') $scope.post.beers[i].brewery.location = {
+        name: $scope.post.beers[i].brewery.location
+      };
+    }
+    $scope.post.$save();
   };
 }]);
 

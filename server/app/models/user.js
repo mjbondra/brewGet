@@ -145,8 +145,8 @@ UserSchema.methods = {
       if (location) return location;
       location = new Location(this._doc.location);
       if (!location.country.abbreviation || !location.state.abbreviation || !location.city.name) return {
-        name: location.name,
-        slug: cU.slug(location.name)
+        name: sanitize.escape(location.name),
+        slug: cU.slug(sanitize.escape(location.name))
       };
       return Promise.promisify(location.save, location)();
     }).then(function (location) {

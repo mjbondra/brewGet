@@ -17,6 +17,7 @@ LocationSchema.index({ slug: 1 }, { unique: true });
  * Pre-validation hook; Sanitizers
  */
 LocationSchema.pre('validate', function (next) {
+  this.name = sanitize.escape(this.name);
   if (this.city && this.city.name) this.city.name = sanitize.escape(this.city.name);
   if (this.state) {
     if (this.state.abbreviation) this.state.abbreviation = sanitize.escape(this.state.abbreviation);
