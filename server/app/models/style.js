@@ -9,7 +9,6 @@ var cU = require('../../assets/lib/common-utilities')
 
 var StyleSchema = new Schema(require('../../config/schemas').beer.style);
 
-StyleSchema.index({ slug: 1 }, { unique: true });
 StyleSchema.index({ 'aliases.slug': 1 }, { unique: true });
 
 /**
@@ -18,7 +17,7 @@ StyleSchema.index({ 'aliases.slug': 1 }, { unique: true });
 StyleSchema.pre('save', function (next) {
   this.slug = cU.slug(this.name);
   if (this.isNew) this.aliases.push({ name: this.name, slug: this.slug });
-  
+
   next();
 });
 

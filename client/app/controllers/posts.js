@@ -87,7 +87,7 @@ app.controller('posts.new', ['$scope', 'Head', 'Post', 'Autocomplete', function 
   $scope.save = function () {
     if ($scope.post.beers && $scope.post.beers.length > 0) {
       var i = $scope.post.beers.length;
-      while (i--) if (typeof $scope.post.beers[i].brewery.location === 'string') $scope.post.beers[i].brewery.location = {
+      while (i--) if ($scope.post.beers[i].brewery && typeof $scope.post.beers[i].brewery.location === 'string') $scope.post.beers[i].brewery.location = {
         name: $scope.post.beers[i].brewery.location
       };
     }

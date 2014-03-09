@@ -12,8 +12,8 @@ var BeerSchema = new Schema(require('../../config/schemas').beer)
   , Brewery = mongoose.model('Brewery')
   , Style = mongoose.model('Style');
 
-BeerSchema.index({ slug: 1, 'brewery.slug': 1 }, { unique: true });
-BeerSchema.index({ 'aliases.slug': 1, 'brewery.slug': 1 }, { unique: true });
+BeerSchema.index({ 'aliases.slug': 1, 'brewery.aliases.slug': 1, 'brewery.location.slug': 1 }, { unique: true });
+BeerSchema.index({ 'brewery.location.country.slug': 1, 'brewery.location.state.slug': 1, 'brewery.location.city.slug': 1 });
 
 /**
  * Pre-validation hook; Sanitizers
@@ -32,7 +32,7 @@ BeerSchema.pre('save', function (next) {
 });
 
 /**
- * Methods 
+ * Methods
  */
 BeerSchema.methods = {
 
@@ -48,7 +48,10 @@ BeerSchema.methods = {
     else count++;
 
     Promise.all([
-      Promise.promisify(Brewery.findOne, Brewery)({ 'aliases.slug': cU.slug(this.brewery.name) }),
+      Promise.promisify(Brewery.findOne, Brewery)({
+        'aliases.slug': cU.slug(this.brewery.name),
+        'location.slug': cU.slug(this.brewery.location.name)
+      }),
       Promise.promisify(Style.findOne, Style)({ 'aliases.slug': cU.slug(this.style.name) })
     ]).bind(this).spread(function (brewery, style) {
       if (!brewery) {

@@ -10,7 +10,6 @@ var cU = require('../../assets/lib/common-utilities')
 
 var LocationSchema = new Schema(require('../../config/schemas').location);
 
-LocationSchema.index({ 'city.slug': 1, 'state.slug': 1, 'country.slug': 1 }, { unique: true });
 LocationSchema.index({ slug: 1 }, { unique: true });
 
 /**

@@ -39,7 +39,7 @@ exports.location = {
     name: String,
     slug: String
   }
-}
+};
 
 /**
  * Beer/Brewery schema
@@ -83,4 +83,4 @@ exports.beer = {
     name: String,
     slug: String
   }
-}
+};

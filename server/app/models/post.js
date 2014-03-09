@@ -31,7 +31,7 @@ var PostSchema = new Schema({
   category: {
     index: true,
     type: String,
-    validate: [ 
+    validate: [
       { validator: validate.notNull, msg: msg.category.isNull }
     ]
   },
@@ -69,10 +69,10 @@ PostSchema.pre('save', function (next) {
 });
 
 /**
- * Methods 
+ * Methods
  */
 PostSchema.methods = {
-  
+
   /**
    * Process beers against beer model; retreive existing, save new
    *
@@ -87,9 +87,10 @@ PostSchema.methods = {
     var i = this.beers.length
       , beers = [];
     while (i--) {
-      beers.push(Promise.promisify(Beer.findOne, Beer)({ 
+      beers.push(Promise.promisify(Beer.findOne, Beer)({
         'aliases.slug': cU.slug(this.beers[i].name),
-        'brewery.aliases.slug': cU.slug(this.beers[i].brewery.name)
+        'brewery.aliases.slug': cU.slug(this.beers[i].brewery.name),
+        'brewery.location.slug': cU.slug(this.beers[i].brewery.location.name)
       }));
     }
     Promise.all(beers).bind(this).then(function (beers) {
