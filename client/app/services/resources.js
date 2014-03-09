@@ -51,8 +51,8 @@ app.factory('Style', ['$resource', function ($resource) {
  */
 app.factory('User', ['$rootScope', '$resource', '$location', function ($rootScope, $resource, $location) {
   return $resource('api/users/:username', {}, {
-    save: { 
-      method:'POST', 
+    save: {
+      method:'POST',
       interceptor: {
         response: function (res) {
           $rootScope.$broadcast('reloadNav');
@@ -80,7 +80,7 @@ app.factory('User', ['$rootScope', '$resource', '$location', function ($rootScop
         }
       }
     },
-    update: { 
+    update: {
       method:'PUT',
       interceptor: {
         response: function (res) {
@@ -96,8 +96,8 @@ app.factory('User', ['$rootScope', '$resource', '$location', function ($rootScop
     TEMP/PLACEHOLDER SERVICES
 \*------------------------------------*/
 
-/** 
- * Test Service for Bringing in JSON 
+/**
+ * Test Service for Bringing in JSON
  */
 app.factory('MikeData', ['$resource', function ($resource) {
   return $resource('test-api/:resourceId.json');

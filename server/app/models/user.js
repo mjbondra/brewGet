@@ -82,7 +82,6 @@ UserSchema.pre('validate', function (next) {
 
   this.email = sanitize.escape(this.email);
   this.username = sanitize.escape(this.username);
-  console.log(this.location);
 
   this.processNest(next, 2);
 });

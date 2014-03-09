@@ -47,6 +47,8 @@ app.controller('users.edit', ['$scope', '$upload', 'API', 'Head', 'User', 'Sessi
   $scope.user = User.get({ username: $scope.username });
   $scope.ImageSelect = ImageSelect;
   $scope.loading = false;
+
+  // functions
   $scope.imageDelete = function () {
     API('users/' + $scope.username + '/images', 'DELETE').success(function (data, status, headers, config) {
       $scope.user.images = [];
@@ -67,10 +69,18 @@ app.controller('users.edit', ['$scope', '$upload', 'API', 'Head', 'User', 'Sessi
       });
     }
   };
+  $scope.update = function (query) {
+    if (typeof $scope.user.location === 'string') $scope.user.location = {
+      name: $scope.user.location
+    };
+    $scope.user.$update(query);
+  };
+
+  // promises
   if ($scope.user.$promise) {
     $scope.user.$promise.then(function (user) {
       if (user.location && user.location.name) $scope.user.location = user.location.name;
-      else $scope.user.location = ''; 
+      else $scope.user.location = '';
     });
   }
 }]);
@@ -95,6 +105,14 @@ app.controller('users.new', ['$scope', 'Head', 'User', function ($scope, Head, U
   Head.title('Sign up');
   Head.description('Sign up for an account on brewGet.');
   $scope.user = new User();
+
+  // functions
+  $scope.save = function () {
+    if (typeof $scope.user.location === 'string') $scope.user.location = {
+      name: $scope.user.location
+    };
+    $scope.user.$save();
+  };
 }]);
 
 /**
