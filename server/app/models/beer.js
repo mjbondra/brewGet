@@ -12,7 +12,8 @@ var BeerSchema = new Schema(require('../../config/schemas').beer)
   , Brewery = mongoose.model('Brewery')
   , Style = mongoose.model('Style');
 
-BeerSchema.index({ 'aliases.slug': 1, 'brewery.aliases.slug': 1, 'brewery.location.slug': 1 }, { unique: true });
+BeerSchema.index({ slug: 1, 'brewery.slug': 1, 'brewery.location.slug': 1 }, { unique: true });
+BeerSchema.index({ 'aliases.slug': 1, 'brewery.slug': 1, 'brewery.location.slug': 1 });
 BeerSchema.index({ 'brewery.location.country.slug': 1, 'brewery.location.state.slug': 1, 'brewery.location.city.slug': 1 });
 
 /**

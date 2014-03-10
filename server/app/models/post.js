@@ -19,7 +19,16 @@ var ImageSchema = mongoose.model('Image').schema
   , BeerSchema = require('../../config/schemas').beer
   , CommentSchema = mongoose.model('Comment').schema;
 
+/**
+ * Sub-schema modifications
+ */
+BeerSchema.category = String;
 BeerSchema.date = Date;
+BeerSchema.quantity = {
+  count: Number,
+  unit: String,
+  volume: Number
+};
 BeerSchema.year = Number;
 
 /**

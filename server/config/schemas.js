@@ -68,11 +68,6 @@ exports.beer = {
   images: [ ImageSchema ],
   info: String,
   name: String,
-  qty: [{
-    count: Number,
-    unit: String,
-    volume: Number
-  }],
   rating: Number,
   slug: String,
   style: {

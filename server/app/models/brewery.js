@@ -11,7 +11,8 @@ var cU = require('../../assets/lib/common-utilities')
 var BrewerySchema = new Schema(require('../../config/schemas').beer.brewery)
   , Location = mongoose.model('Location');
 
-BrewerySchema.index({ 'aliases.slug': 1, 'location.slug': 1 }, { unique: true });
+BrewerySchema.index({ slug: 1, 'location.slug': 1 }, { unique: true });
+BrewerySchema.index({ 'aliases.slug': 1, 'location.slug': 1 });
 BrewerySchema.index({ 'location.country.slug': 1, 'location.state.slug': 1, 'location.city.slug': 1 });
 
 /**
