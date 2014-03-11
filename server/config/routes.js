@@ -22,16 +22,18 @@ module.exports = function (app) {
     this.body = {
       name: 'brewGet',
       description: 'a node/koa app that facilitates the trading of beer'
-    }
+    };
   });
 
   // beers
   app.get('/api/beers', beers.index);
-  app.get('/api/beers/:brewery/:beer', beers.show);
-  app.get('/api/breweries/:brewery/beers', beers.breweries.index);
-  app.get('/api/locations/:state/beers', beers.locations.state);
-  app.get('/api/locations/:state/:city/beers', beers.locations.city);
-  app.get('/api/styles/:style/beers', beers.styles.index);
+  app.get('/api/beers/id/:id', beers.show);
+
+  // app.get('/api/beers/:brewery/:beer', beers.show);
+  // app.get('/api/breweries/:brewery/beers', beers.breweries.index);
+  // app.get('/api/locations/:state/beers', beers.locations.state);
+  // app.get('/api/locations/:state/:city/beers', beers.locations.city);
+  // app.get('/api/styles/:style/beers', beers.styles.index);
 
   // breweries
   app.get('/api/breweries', breweries.index);
@@ -40,7 +42,6 @@ module.exports = function (app) {
   app.get('/api/breweries/:country/:state', breweries.index);
   app.get('/api/breweries/:country/:state/:city', breweries.index);
   app.get('/api/breweries/:country/:state/:city/:brewery', breweries.show);
-  // app.get('/api/breweries/:slug', breweries.show);
 
   // locations
   app.get('/api/locations', locations.index);
@@ -72,7 +73,7 @@ module.exports = function (app) {
   app.delete('/api/users/:username/images', users.findOne, requires.self, users.images.destroy);
 
   // redirect all remaining GET method routes to angular router
-  app.get('*', function* () {
+  app.get('*', function *() {
     this.redirect('/#!' + this.url);
   });
-}
+};

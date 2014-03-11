@@ -23,7 +23,7 @@ LocationSchema.pre('validate', function (next) {
     if (this.state.name) this.state.name = sanitize.escape(this.state.name);
   }
   if (this.country) {
-    if (this.country.abbreviation) this.country.abbreviation = sanitize.escape(this.country.aabbreviation);
+    if (this.country.abbreviation) this.country.abbreviation = sanitize.escape(this.country.abbreviation);
     if (this.country.name) this.country.name = sanitize.escape(this.country.name);
   }
   next();

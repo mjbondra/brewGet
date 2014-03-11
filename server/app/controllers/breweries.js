@@ -35,16 +35,26 @@ module.exports = {
    * GET /api/breweries
    */
   index: function *(next) {
-    this.body = yield Promise.promisify(Brewery.find, Brewery)({}, projection);
+    var query = {};
+    if (this.params.country) query['location.country.slug'] = this.params.country;
+    if (this.params.state) query['location.state.slug'] = this.params.state;
+    if (this.params.city) query['location.city.slug'] = this.params.city;
+    this.body = yield Promise.promisify(Brewery.find, Brewery)(query, projection);
   },
 
   /**
    * Show
    * GET /api/users/:slug
    */
-   show: function *(next) {
-      var brewery = yield Promise.promisify(Brewery.findOne, Brewery)({ 'aliases.slug': this.params.slug }, projection);
-      if (!brewery) return yield next; // 404 Not Found
-      this.body = brewery;
-   }
-}
+  show: function *(next) {
+    var query = {};
+    if (this.params.country) query['location.country.slug'] = this.params.country;
+    if (this.params.state) query['location.state.slug'] = this.params.state;
+    if (this.params.city) query['location.city.slug'] = this.params.city;
+    if (this.params.brewery) query.slug = this.params.brewery;
+    if (this.params.id) query._id = this.params.id;
+    var brewery = yield Promise.promisify(Brewery.findOne, Brewery)(query, projection);
+    if (!brewery) return yield next; // 404 Not Found
+    this.body = brewery;
+  }
+};
