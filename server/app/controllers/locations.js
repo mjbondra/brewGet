@@ -24,9 +24,10 @@ module.exports = {
    * GET /api/locations/:state
    */
   index: function *(next) {
-    var locations = yield Promise.promisify(Location.find, Location)(this.params.state ? { 'state.slug': this.params.state } : {}, projection);
-    if (!locations.length) return yield next; // 404 Not Found
-    this.body = locations;
+    var query = {};
+    if (this.params.country) query['country.slug'] = this.params.country;
+    if (this.params.state) query['state.slug'] = this.params.state;
+    this.body = yield Promise.promisify(Location.find, Location)(query, projection);
   },
 
   /**
@@ -34,8 +35,13 @@ module.exports = {
    * GET /api/locations/:state/:city
    */
   show: function *(next) {
-    var city = yield Promise.promisify(Location.findOne, Location)({ 'state.slug': this.params.state, 'city.slug': this.params.city }, projection);
-    if (!city) return yield next; // 404 Not Found
-    this.body = city;
+    var query = {};
+    if (this.params.country) query['country.slug'] = this.params.country;
+    if (this.params.state) query['state.slug'] = this.params.state;
+    if (this.params.city) query['city.slug'] = this.params.city;
+    if (this.params.id) query._id = this.params.id;
+    var location = yield Promise.promisify(Location.findOne, Location)(query, projection);
+    if (!location) return yield next; // 404 Not Found
+    this.body = location;
   }
-}
+};

@@ -70,4 +70,4 @@ module.exports = {
       this.body = yield Promise.promisify(Beer.find, Beer)({ 'style.aliases.slug': this.params.style }, projection);
     }
   }
-}
+};

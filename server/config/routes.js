@@ -41,12 +41,13 @@ module.exports = function (app) {
   app.get('/api/breweries/:country/:state', breweries.index);
   app.get('/api/breweries/:country/:state/:city', breweries.index);
   app.get('/api/breweries/:country/:state/:city/:brewery', breweries.show);
-  app.get('/api/breweries/:country/:state/:city/:brewery/beers', beers.index);
 
   // locations
   app.get('/api/locations', locations.index);
-  app.get('/api/locations/:state', locations.index);
-  app.get('/api/locations/:state/:city', locations.show);
+  app.get('/api/locations/id/:id', locations.show);
+  app.get('/api/locations/:country', locations.index);
+  app.get('/api/locations/:country/:state', locations.index);
+  app.get('/api/locations/:country/:state/:city', locations.show);
 
   // navigation
   app.get('/api/nav', navigation);
