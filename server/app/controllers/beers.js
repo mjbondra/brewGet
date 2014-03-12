@@ -35,7 +35,12 @@ module.exports = {
    * GET /api/beers
    */
   index: function *(next) {
-    this.body = yield Promise.promisify(Beer.find, Beer)({}, projection);
+    var query = {};
+    if (this.params.country) query['brewery.location.country.slug'] = this.params.country;
+    if (this.params.state) query['brewery.location.state.slug'] = this.params.state;
+    if (this.params.city) query['brewery.location.city.slug'] = this.params.city;
+    if (this.params.brewery) query['brewery.slug'] = this.params.brewery;
+    this.body = yield Promise.promisify(Beer.find, Beer)(query, projection);
   },
 
   /**
@@ -43,39 +48,16 @@ module.exports = {
    * GET /api/beers/:brewery/:beer
    */
   show: function *(next) {
-    var beer = yield Promise.promisify(Beer.findOne, Beer)({ 'brewery.aliases.slug': this.params.brewery, 'aliases.slug': this.params.beer }, projection);
+    var query = {};
+    if (this.params.country) query['brewery.location.country.slug'] = this.params.country;
+    if (this.params.state) query['brewery.location.state.slug'] = this.params.state;
+    if (this.params.city) query['brewery.location.city.slug'] = this.params.city;
+    if (this.params.brewery) query['brewery.slug'] = this.params.brewery;
+    if (this.params.beer) query.slug = this.params.beer;
+    if (this.params.id) query._id = this.params.id;
+    var beer = yield Promise.promisify(Beer.findOne, Beer)(query, projection);
     if (!beer) return yield next; // 404 Not Found
     this.body = beer;
-  },
-
-  breweries: {
-
-    /**
-     * Index (by brewery)
-     * GET /api/breweries/:brewery/beers
-     */
-    index: function *(next) {
-      this.body = yield Promise.promisify(Beer.find, Beer)({ 'brewery.aliases.slug': this.params.brewery }, projection);
-    }
-  },
-
-  locations: {
-
-    /**
-     * Index (by state)
-     * GET /api/locations/:state/beers
-     */
-    state: function *(next) {
-      this.body = yield Promise.promisify(Beer.find, Beer)({ 'brewery._location.state.slug': this.params.state }, projection);
-    },
-
-    /**
-     * Index (by city)
-     * GET /api/locations/:state/:city/beers
-     */
-    city: function *(next) {
-      this.body = yield Promise.promisify(Beer.find, Beer)({ 'brewery._location.state.slug': this.params.state, 'brewery._location.city.slug': this.params.city }, projection);
-    }
   },
 
   styles: {
