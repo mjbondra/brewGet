@@ -46,4 +46,4 @@ module.exports = {
     if (!style) return yield next; // 404 Not Found
     this.body = style;
   }
-}
+};

@@ -50,4 +50,4 @@ module.exports = {
 
   update: function *(next) {},
   destroy: function *(next) {}
-}
+};

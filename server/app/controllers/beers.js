@@ -40,6 +40,7 @@ module.exports = {
     if (this.params.state) query['brewery.location.state.slug'] = this.params.state;
     if (this.params.city) query['brewery.location.city.slug'] = this.params.city;
     if (this.params.brewery) query['brewery.slug'] = this.params.brewery;
+    if (this.params.style) query['style.slug'] = this.params.style;
     this.body = yield Promise.promisify(Beer.find, Beer)(query, projection);
   },
 
@@ -58,16 +59,5 @@ module.exports = {
     var beer = yield Promise.promisify(Beer.findOne, Beer)(query, projection);
     if (!beer) return yield next; // 404 Not Found
     this.body = beer;
-  },
-
-  styles: {
-
-    /**
-     * Index (by style)
-     * GET /api/styles/:style/beers
-     */
-    index: function *(next) {
-      this.body = yield Promise.promisify(Beer.find, Beer)({ 'style.aliases.slug': this.params.style }, projection);
-    }
   }
 };

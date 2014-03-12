@@ -27,7 +27,7 @@ module.exports = function (app) {
 
   // beers
   app.get('/api/beers', beers.index);
-  app.get('/api/beers/id/:id', beers.show);
+  app.get('/api/beers/_id/:id', beers.show);
   app.get('/api/beers/:country', beers.index);
   app.get('/api/beers/:country/:state', beers.index);
   app.get('/api/beers/:country/:state/:city', beers.index);
@@ -36,7 +36,7 @@ module.exports = function (app) {
 
   // breweries
   app.get('/api/breweries', breweries.index);
-  app.get('/api/breweries/id/:id', breweries.show);
+  app.get('/api/breweries/_id/:id', breweries.show);
   app.get('/api/breweries/:country', breweries.index);
   app.get('/api/breweries/:country/:state', breweries.index);
   app.get('/api/breweries/:country/:state/:city', breweries.index);
@@ -44,7 +44,7 @@ module.exports = function (app) {
 
   // locations
   app.get('/api/locations', locations.index);
-  app.get('/api/locations/id/:id', locations.show);
+  app.get('/api/locations/_id/:id', locations.show);
   app.get('/api/locations/:country', locations.index);
   app.get('/api/locations/:country/:state', locations.index);
   app.get('/api/locations/:country/:state/:city', locations.show);

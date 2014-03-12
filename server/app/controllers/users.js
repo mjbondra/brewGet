@@ -102,13 +102,13 @@ module.exports = {
         , imageHiDPI = new Image()
         , imageLoDPI = new Image()
         , imageSmHiDPI = new Image()
-        , imageSmLoDPI = new Image()
+        , imageSmLoDPI = new Image();
 
       // stream image from form data
       yield image.stream(this, { alt: this.user.username, crop: true, type: 'users' });
       yield [ // resize multiple images asynchronously; yield until all are complete
         imageHiDPI.resize(image, { highDPI: true }), // 50% height / 50% width
-        imageLoDPI.resize(image, { geometry: { height: 25, width: 25 }}), // 25% height / 25% width 
+        imageLoDPI.resize(image, { geometry: { height: 25, width: 25 }}), // 25% height / 25% width
         imageSmHiDPI.resize(image, { geometry: { height: 80, width: 80 }, highDPI: true, percentage: false }),
         imageSmLoDPI.resize(image, { geometry: { height: 40, width: 40 }, percentage: false })
       ];
@@ -121,7 +121,7 @@ module.exports = {
         }
       }
       this.user.images = [ image, imageHiDPI, imageLoDPI, imageSmHiDPI, imageSmLoDPI ]; // limit user images to a single (current) image
-      
+
       yield Promise.promisify(this.user.save, this.user)();
       this.status = 201;
       this.body = yield cU.censor(this.user.images, [ '_id', 'path' ]);
@@ -175,7 +175,7 @@ module.exports = {
         } else {
           this.cookies.set('username', null, { httpOnly: false, overwrite: true, signed: true });
         }
-      }
+      };
     },
 
     /**
@@ -215,6 +215,6 @@ module.exports = {
     destroy: function *(next) {
       this.session = null;
       this.body = yield cU.body(cU.msg('logout'));
-    } 
-  } 
-}
+    }
+  }
+};
