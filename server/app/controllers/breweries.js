@@ -33,6 +33,9 @@ module.exports = {
   /**
    * Index
    * GET /api/breweries
+   * GET /api/breweries/:country
+   * GET /api/breweries/:country/:state
+   * GET /api/breweries/:country/:state/:city
    */
   index: function *(next) {
     var query = {};
@@ -44,7 +47,8 @@ module.exports = {
 
   /**
    * Show
-   * GET /api/users/:slug
+   * GET /api/breweries/_id/:id
+   * GET /api/breweries/:country/:state/:city/:brewery
    */
   show: function *(next) {
     var query = {};

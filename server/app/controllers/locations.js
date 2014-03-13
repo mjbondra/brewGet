@@ -21,7 +21,8 @@ module.exports = {
   /**
    * Index
    * GET /api/locations
-   * GET /api/locations/:state
+   * GET /api/locations/:country
+   * GET /api/locations/:country/:state
    */
   index: function *(next) {
     var query = {};
@@ -32,7 +33,8 @@ module.exports = {
 
   /**
    * Show city
-   * GET /api/locations/:state/:city
+   * GET /api/locations/_id/:id
+   * GET /api/locations/:country/:state/:city
    */
   show: function *(next) {
     var query = {};
