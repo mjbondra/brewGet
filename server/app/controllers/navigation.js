@@ -7,12 +7,13 @@ module.exports = function* () {
   var nav = {};
   if (typeof this.session.user === 'object') {
     nav.actions = [
-      { title: 'Message', href: '/messages/new' },
+      { title: 'Chat', href: '/chat' },
       { title: 'Post', href: '/posts/new' }
     ];
     nav.account = [
       { title: 'Activity', href: '/account/activity' },
       { title: 'Inbox', href: '/account/inbox' },
+      { title: 'Message', href: '/messages/new' },
       { title: 'Settings', href: '/account/settings' },
       { title: 'Sign out', href: '/account/sign-out' }
     ];
