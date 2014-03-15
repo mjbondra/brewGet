@@ -27,7 +27,6 @@ ImageError.prototype = Error.prototype;
  */
 var ImageSchema = new Schema({
   alt: String,
-  class: [ String ],
   encoding: String,
   filename: String,
   geometry: {
@@ -112,8 +111,8 @@ ImageSchema.methods = {
       this.geometry.height = image.geometry.height * ( opts.geometry.height / 100 );
       this.geometry.width = image.geometry.width * ( opts.geometry.width / 100 );
     } else {
-      this.geometry.height = image.geometry.height;
-      this.geometry.width = image.geometry.width;
+      this.geometry.height = opts.geometry.height;
+      this.geometry.width = opts.geometry.width;
     }
 
     // (potentially) promised values
