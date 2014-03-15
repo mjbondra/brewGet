@@ -11,8 +11,7 @@ var coBusboy = require('co-busboy')
   , mongoose = require('mongoose')
   , msg = require('../../config/messages')
   , Promise = require('bluebird')
-  , Schema = mongoose.Schema
-  , uid = require('uid2');
+  , Schema = mongoose.Schema;
 
 /**
  * Image validation error
@@ -20,7 +19,7 @@ var coBusboy = require('co-busboy')
 var ImageError = function (message) {
   this.name = 'ImageError';
   this.message = message || '';
-}
+};
 ImageError.prototype = Error.prototype;
 
 /**
@@ -37,7 +36,10 @@ var ImageSchema = new Schema({
   },
   mimetype: String,
   path: String,
-  related: String,
+  related: {
+    type: Schema.ObjectId,
+    ref: 'Image'
+  },
   size: Number,
   src: String,
   type: String
@@ -78,7 +80,7 @@ ImageSchema.methods = {
 
     var dir = config.path.upload + ( image.type ? '/' + image.type : '' )
       , extension = mime.extension(image.mimetype)
-      , filename = new Date().valueOf() + '-' + uid(6) + '.' + ( extension === 'jpeg' ? 'jpg' : extension )
+      , filename = this.id + '.' + ( extension === 'jpeg' ? 'jpg' : extension )
       , path = dir + '/' + filename
       , readStream = fs.createReadStream(image.path)
       , size = Promise.defer();
@@ -86,7 +88,11 @@ ImageSchema.methods = {
     gm(readStream)
       .resize(opts.geometry.width, opts.geometry.height, ( opts.percentage === true ? '%' : ''))
       .stream(function (err, stdout, stderr) {
+        if (err) size.reject(err);
         var writeStream = fs.createWriteStream(path);
+        stdout.on('error', function (err) {
+          size.reject(err);
+        });
         stdout.on('end', function () {
           size.resolve(this.bytesRead);
         });
@@ -98,7 +104,7 @@ ImageSchema.methods = {
     this.filename = filename;
     this.mimetype = image.mimetype;
     this.path = path;
-    this.related = image.related;
+    this.related = image.id;
     this.src = '/assets/img/' + ( image.type ? image.type + '/' : '' ) + filename;
     this.type = image.type;
 
@@ -139,7 +145,7 @@ ImageSchema.methods = {
     opts.type = opts.type || '';
     opts.limits = opts.limits || {};
     opts.limits.files = 1;
-    opts.limits.fileSize = opts.limits.fileSize || 2097152 // 2 MB;
+    opts.limits.fileSize = opts.limits.fileSize || 2097152; // 2 MB
 
     var parts = coBusboy(ctx, { limits: opts.limits });
 
@@ -158,7 +164,7 @@ ImageSchema.methods = {
       stdout.on('error', function (err) {
         fs.unlink(path);
         streamError = err;
-        size.reject(new Error(err));
+        size.reject(err);
       });
       stdout.on('end', function () {
         size.resolve(this.bytesRead);
@@ -168,7 +174,7 @@ ImageSchema.methods = {
             if (err) {
               fs.unlink(path);
               streamError = err;
-              geometry.reject(new Error(err));
+              geometry.reject(err);
             } else {
               geometry.resolve(size);
             }
@@ -176,7 +182,7 @@ ImageSchema.methods = {
         }
       });
       stdout.pipe(writeStream);
-    }
+    };
 
     while (part = yield parts) {
       if (!part.length) {
@@ -186,7 +192,7 @@ ImageSchema.methods = {
           var extension = mime.extension(part.mime);
 
           encoding = part.encoding;
-          filename = new Date().valueOf() + '-' + uid(6) + '.' + ( extension === 'jpeg' ? 'jpg' : extension );
+          filename = this.id + '.' + ( extension === 'jpeg' ? 'jpg' : extension );
           mimetype = part.mime;
           path = dir + '/' + filename;
 
@@ -194,9 +200,11 @@ ImageSchema.methods = {
           part.on('error', function (err) {
             streamError = err;
           });
-          part.on('limit', function () {
-            limitExceeded = true;
-            fs.unlink(path);
+          part.on('end', function () {
+            if (this.truncated) {
+              limitExceeded = true;
+              fs.unlink(path);
+            }
           });
 
           if (opts.crop === true) {
@@ -224,7 +232,7 @@ ImageSchema.methods = {
 
     this.alt = opts.alt;
     this.encoding = encoding;
-    this.filename = this.related = filename;
+    this.filename = filename;
     this.mimetype = mimetype;
     this.path = path;
     this.src = '/assets/img/' + ( opts.type ? opts.type + '/' : '' ) + filename;
@@ -242,6 +250,6 @@ ImageSchema.methods = {
 
     this.geometry = ( typeof geometry.promise !== 'undefined' ? yield geometry.promise : geometry );
   }
-}
+};
 
 mongoose.model('Image', ImageSchema);
