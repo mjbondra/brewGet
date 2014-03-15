@@ -1,17 +1,17 @@
 'use strict';
 
 /**
- *                     ___           ___           ___           ___           ___                 
- *      _____         /  /\         /  /\         /__/\         /  /\         /  /\          ___   
- *     /  /::\       /  /::\       /  /:/_       _\_ \:\       /  /:/_       /  /:/_        /  /\  
- *    /  /:/\:\     /  /:/\:\     /  /:/ /\     /__/\ \:\     /  /:/ /\     /  /:/ /\      /  /:/  
- *   /  /:/~/::\   /  /:/~/:/    /  /:/ /:/_   _\_ \:\ \:\   /  /:/_/::\   /  /:/ /:/_    /  /:/   
- *  /__/:/ /:/\:| /__/:/ /:/___ /__/:/ /:/ /\ /__/\ \:\ \:\ /__/:/__\/\:\ /__/:/ /:/ /\  /  /::\   
- *  \  \:\/:/~/:/ \  \:\/:::::/ \  \:\/:/ /:/ \  \:\ \:\/:/ \  \:\ /~~/:/ \  \:\/:/ /:/ /__/:/\:\  
- *   \  \::/ /:/   \  \::/~~~~   \  \::/ /:/   \  \:\ \::/   \  \:\  /:/   \  \::/ /:/  \__\/  \:\ 
+ *                     ___           ___           ___           ___           ___
+ *      _____         /  /\         /  /\         /__/\         /  /\         /  /\          ___
+ *     /  /::\       /  /::\       /  /:/_       _\_ \:\       /  /:/_       /  /:/_        /  /\
+ *    /  /:/\:\     /  /:/\:\     /  /:/ /\     /__/\ \:\     /  /:/ /\     /  /:/ /\      /  /:/
+ *   /  /:/~/::\   /  /:/~/:/    /  /:/ /:/_   _\_ \:\ \:\   /  /:/_/::\   /  /:/ /:/_    /  /:/
+ *  /__/:/ /:/\:| /__/:/ /:/___ /__/:/ /:/ /\ /__/\ \:\ \:\ /__/:/__\/\:\ /__/:/ /:/ /\  /  /::\
+ *  \  \:\/:/~/:/ \  \:\/:::::/ \  \:\/:/ /:/ \  \:\ \:\/:/ \  \:\ /~~/:/ \  \:\/:/ /:/ /__/:/\:\
+ *   \  \::/ /:/   \  \::/~~~~   \  \::/ /:/   \  \:\ \::/   \  \:\  /:/   \  \::/ /:/  \__\/  \:\
  *    \  \:\/:/     \  \:\        \  \:\/:/     \  \:\/:/     \  \:\/:/     \  \:\/:/        \  \:\
  *     \  \::/       \  \:\        \  \::/       \  \::/       \  \::/       \  \::/          \__\/
- *      \__\/         \__\/         \__\/         \__\/         \__\/         \__\/                
+ *      \__\/         \__\/         \__\/         \__\/         \__\/         \__\/
  *
  */
 
@@ -22,7 +22,7 @@ window.FileAPI = {
 };
 require('../assets/lib/ng-file-upload/angular-file-upload-shim');
 
-// Core Angular modules 
+// Core Angular modules
 require('../assets/lib/angular/angular');
 // require('../assets/lib/angular-animate/angular-animate');
 require('../assets/lib/angular-cookies/angular-cookies');
@@ -36,6 +36,7 @@ require('../assets/lib/ng-file-upload/angular-file-upload');
 // App Dependencies
 require('../app/controllers/beers');
 require('../app/controllers/breweries');
+require('../app/controllers/chat');
 require('../app/controllers/home');
 require('../app/controllers/html');
 require('../app/controllers/locations');
@@ -61,6 +62,7 @@ var app = angular.module('brewGet', [
   'ngTouch',
   'brewGet.controllers.beers',
   'brewGet.controllers.breweries',
+  'brewGet.controllers.chat',
   'brewGet.controllers.home',
   'brewGet.controllers.html',
   'brewGet.controllers.locations',

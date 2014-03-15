@@ -6,8 +6,8 @@
 
 var app = angular.module('brewGet.routes', []);
 
-/** 
- * Routes 
+/**
+ * Routes
  */
 app.config(['$routeProvider', '$locationProvider', function ($routeProvider, $locationProvider) {
   $locationProvider.html5Mode(true);
@@ -16,6 +16,12 @@ app.config(['$routeProvider', '$locationProvider', function ($routeProvider, $lo
   $routeProvider.when('/', {
     templateUrl: '/app/views/home.html',
     controller: 'HomeCtrl'
+  });
+
+  // chat
+  $routeProvider.when('/chat', {
+    templateUrl: '/app/views/chat/index.html',
+    controller: 'chat.index'
   });
 
   // user / account routes
@@ -164,7 +170,7 @@ app.config(['$routeProvider', '$locationProvider', function ($routeProvider, $lo
   });
 
   // default route
-  $routeProvider.otherwise({ 
+  $routeProvider.otherwise({
     redirectTo: '/'
   });
 }]);
