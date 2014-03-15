@@ -18,7 +18,7 @@ var Image = mongoose.model('Image')
 /**
  * Mongo projection paramater; includes or excludes fields
  */
-var projection = { _id: 0, __v: 0, hash: 0, salt: 0, 'images._id': 0, 'images.__v': 0, 'images.path': 0 };
+var projection = { _id: 0, __v: 0, email: 0, hash: 0, salt: 0, 'images._id': 0, 'images.__v': 0, 'images.path': 0 };
 
 module.exports = {
   findOne: function *(next) {

@@ -2,6 +2,5 @@
 <article class="user" ng-repeat="user in users">
   <h2><a ng-href="{{ '/users/' + user.slug }}">{{ user.username }}</a></h2>
   <a ng-href="{{ '/users/' + user.slug }}"><img class="user-image" ng-src="{{ ImageSelect(user.images, { width: 100, height: 100 }, { email: user.email }) }}"></a>
-  <span class="user-email"><a ng-href="{{ 'mailto:' + user.email }}">{{ user.email }}</a></span>
   <span class="user-location">{{ LocationParse(user) }}</span>
 </article>
