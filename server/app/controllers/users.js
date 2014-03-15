@@ -18,7 +18,7 @@ var Image = mongoose.model('Image')
 /**
  * Mongo projection paramater; includes or excludes fields
  */
-var projection = { _id: 0, __v: 0, email: 0, hash: 0, salt: 0, 'images._id': 0, 'images.__v': 0, 'images.path': 0 };
+var projection = { _id: 0, __v: 0, hash: 0, salt: 0, 'images._id': 0, 'images.__v': 0, 'images.path': 0 };
 
 module.exports = {
   findOne: function *(next) {
@@ -99,28 +99,26 @@ module.exports = {
     create: function *(next) {
       if (!this.user) return yield next; // 404 Not Found
       var image = new Image()
-        , imageHiDPI = new Image()
-        , imageLoDPI = new Image()
-        , imageSmHiDPI = new Image()
-        , imageSmLoDPI = new Image();
+        , imageLrg = new Image()
+        , imageMed = new Image()
+        , imageSm = new Image()
+        , imageExSm = new Image();
 
       // stream image from form data
-      yield image.stream(this, { alt: this.user.username, crop: true, type: 'users' });
+      yield image.stream(this, { alt: this.user.username, crop: true, type: 'users' }); // 400px height / 400px width
       yield [ // resize multiple images asynchronously; yield until all are complete
-        imageHiDPI.resize(image, { highDPI: true }), // 50% height / 50% width
-        imageLoDPI.resize(image, { geometry: { height: 25, width: 25 }}), // 25% height / 25% width
-        imageSmHiDPI.resize(image, { geometry: { height: 80, width: 80 }, highDPI: true, percentage: false }),
-        imageSmLoDPI.resize(image, { geometry: { height: 40, width: 40 }, percentage: false })
+        imageLrg.resize(image), // 50% height / 50% width
+        imageMed.resize(image, { geometry: { height: 25, width: 25 }}), // 25% height / 25% width
+        imageSm.resize(image, { geometry: { height: 50, width: 50 }, percentage: false }), // 50px height / 50px width
+        imageExSm.resize(image, { geometry: { height: 25, width: 25 }, percentage: false }) // 25px height / 25px width
       ];
 
       // remove old images
       if (this.user.images.length > 0) {
         var i = this.user.images.length;
-        while (i--) {
-          yield this.user.images[i].destroy();
-        }
+        while (i--) yield this.user.images[i].destroy();
       }
-      this.user.images = [ image, imageHiDPI, imageLoDPI, imageSmHiDPI, imageSmLoDPI ]; // limit user images to a single (current) image
+      this.user.images = [ image, imageLrg, imageMed, imageSm, imageExSm ]; // limit user images to a single (current) image
 
       yield Promise.promisify(this.user.save, this.user)();
       this.status = 201;
@@ -137,9 +135,7 @@ module.exports = {
       // remove images
       if (this.user.images.length > 0) {
         var i = this.user.images.length;
-        while (i--) {
-          yield this.user.images[i].destroy();
-        }
+        while (i--) yield this.user.images[i].destroy();
       }
       this.user.images = [];
       yield Promise.promisify(this.user.save, this.user)();
