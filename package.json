@@ -48,6 +48,7 @@
     "sockjs": "0.3.8",
     "underscore": "1.6.0",
     "uid2": "0.0.3",
-    "validator": "3.4.0"
+    "validator": "3.4.0",
+    "websocket-multiplex": "0.1.0"
   }
 }
