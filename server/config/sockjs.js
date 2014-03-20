@@ -9,7 +9,9 @@ module.exports = function (server) {
     console.log('connected!');
     connections.push(conn);
     conn.on('data', function (message) {
-      conn.write(message);
+      console.log(message);
+      var i = connections.length;
+      while (i--) connections[i].write(message);
     });
     conn.on('close', function () {
       console.log('closed!');
