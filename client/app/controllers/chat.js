@@ -7,7 +7,8 @@ var app = angular.module('brewGet.controllers.chat', []);
  * ROUTE /#!/chat
  * TEMPLATE /partials/chat/index.html
  */
-app.controller('chat.index', ['Head', function (Head) {
+app.controller('chat.index', ['$scope', 'Head', 'SockJS', function ($scope, Head, SockJS) {
   Head.title('Chat');
-  Head.description('Cbat');
+  Head.description('Chat');
+  SockJS();
 }]);

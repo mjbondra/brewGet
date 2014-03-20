@@ -4,14 +4,14 @@ var fs = require('fs')
   , browserify = require('gulp-browserify')
   , compass = require('gulp-compass')
   , csso = require('gulp-csso')
-  , exec = require('gulp-exec')
   , gulpif = require('gulp-if')
   , plumber = require('gulp-plumber')
   , rename = require('gulp-rename')
   , uglify = require('gulp-uglify');
 
 gulp.task('bower', function () {
-  return bower();
+  return bower()
+    .pipe(gulp.dest('./client/assets/lib/'));
 });
 
 gulp.task('browserify', ['bower'], function () {

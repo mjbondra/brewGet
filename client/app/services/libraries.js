@@ -53,3 +53,17 @@ app.factory('PlacesAPI', ['$rootScope', function ($rootScope) {
     }
   };
 }]);
+
+/**
+ * SockJS Service
+ */
+app.factory('SockJS', ['$rootScope', function ($rootScope) {
+  return function () {
+    var sockjs_url = '/socket'
+      , sockjs = new SockJS(sockjs_url);
+    $rootScope.$on('$locationChangeStart', function () {
+      sockjs.close();
+    });
+    return sockjs;
+  };
+}]);
