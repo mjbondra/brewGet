@@ -7,7 +7,7 @@ var compress = require('koa-compress')
   , mongoose = require('mongoose')
   , mongooseStore = require('koa-session-mongoose')
   , router = require('koa-router')
-  , session = require('koa-session-store')
+  , session = require('koa-sess')
   , static = require('koa-static');
 
 /**
@@ -32,23 +32,24 @@ module.exports = function (app, config) {
   // error handling middleware
   app.use(error());
 
-  // static files 
+  // static files
   app.use(static(config.path.static));
 
   // autocomplete routes; before sessions middleware
   app.use(autocomplete.middleware());
 
-  // sessions 
+  // sessions
   app.keys = config.secrets;
   app.use(session({
     cookie: {
+      httpOnly: false,
       maxage: 1000 * 60 * 60 * 24 * 14 // 2 weeks
     },
     store: mongooseStore.create()
   }));
   app.use(user());
 
-  // api routes 
+  // api routes
   app.use(router(app));
 
   // 404 Not Found

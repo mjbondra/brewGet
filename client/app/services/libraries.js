@@ -6,7 +6,9 @@ var app = angular.module('brewGet.services.libraries', []);
  * Module dependencies
  */
 var _ = require('underscore')
-  , gravatar = require('gravatar');
+  , gravatar = require('gravatar')
+  , sockjs_url = '/socket'
+  , sockjs = new SockJS(sockjs_url);
 
 /**
  * Underscore Service
@@ -57,13 +59,16 @@ app.factory('PlacesAPI', ['$rootScope', function ($rootScope) {
 /**
  * SockJS Service
  */
-app.factory('SockJS', ['$rootScope', function ($rootScope) {
-  return function () {
-    var sockjs_url = '/socket'
-      , sockjs = new SockJS(sockjs_url);
-    $rootScope.$on('$locationChangeStart', function () {
-      sockjs.close();
-    });
-    return sockjs;
+app.factory('SockJS', ['$rootScope', '$cookies', function ($rootScope, $cookies) {
+  return {
+    context: function (context, opts) {
+      $rootScope.$on('$locationChangeStart', function () {
+        sockjs.close();
+      });
+      return {
+        close: function () {},
+        send: function (data) {}
+      };
+    }
   };
 }]);
