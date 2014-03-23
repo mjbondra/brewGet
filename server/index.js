@@ -26,6 +26,10 @@ var http = require('http')
 var env = process.env.NODE_ENV || 'development'
   , config = require('./config/config')[env];
 
+// SockJS EventEmitter
+var events = require('events')
+  , sockJSEmitter = new events.EventEmitter();
+
 // global utilities
 require('./assets/lib/console-utilities');
 
@@ -39,12 +43,12 @@ require('./config/models')(__dirname + '/app/models/');
 require('./config/app')(app, config);
 
 // server routes
-require('./config/routes')(app);
+require('./config/routes')(app, sockJSEmitter);
 
 var server = http.createServer(app.callback());
 
 // sockjs configuration
-require('./config/sockjs')(server);
+require('./config/sockjs')(server, sockJSEmitter);
 
 // listen
 server.listen(config.port);

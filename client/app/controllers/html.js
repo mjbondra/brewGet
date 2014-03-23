@@ -3,6 +3,13 @@
 var app = angular.module('brewGet.controllers.html', []);
 
 /**
+ * Body Controller
+ */
+app.controller('html.body', ['SockJS', function (SockJS) {
+  SockJS.init();
+}]);
+
+/**
  * Head Controller
  */
 app.controller('html.head', ['$scope', 'Head', function ($scope, Head) {

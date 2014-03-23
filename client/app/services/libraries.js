@@ -62,12 +62,32 @@ app.factory('PlacesAPI', ['$rootScope', function ($rootScope) {
 app.factory('SockJS', ['$rootScope', '$cookies', function ($rootScope, $cookies) {
   return {
     context: function (context, opts) {
-      $rootScope.$on('$locationChangeStart', function () {
-        sockjs.close();
-      });
+      sockjs.send(angular.toJson({
+        action: 'open',
+        context: context,
+        session: $cookies['koa.sid']
+      }));
       return {
         close: function () {},
-        send: function (data) {}
+        send: function (message) {
+          sockjs.send(angular.toJson({
+            action: 'post',
+            context: context,
+            message: message,
+            session: $cookies['koa.sid']
+          }));
+        }
+      };
+    },
+    init: function () {
+      sockjs.onmessage = function (e) {
+        var data;
+        try {
+          data = angular.fromJson(e.data);
+        } catch (err) {
+          return;
+        }
+        $rootScope.$broadcast('socket:' + data.context, data.message);
       };
     }
   };

@@ -15,7 +15,7 @@
     <script type="text/javascript" src="assets/js/app.min.js"></script>
     <title ng-bind="Head.title()">brewGet</title>
   </head>
-  <body>
+  <body ng-controller="html.body">
     <header>
       <h1 class="branding"><a href="/">brewGet</a></h1>
       <nav class="primary-nav" ng-include="'app/views/navigation/index.html'" ng-controller="html.nav"></nav>
