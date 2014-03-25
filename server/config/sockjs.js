@@ -25,7 +25,6 @@ module.exports = function (server, sockJSEmitter) {
   socket.on('connection', function (conn) {
     connections.global.push(conn);
     conn.on('data', function (data) {
-      console.log(data);
       try {
         var dataObj = JSON.parse(data);
         if (dataObj.action === 'open') sockJSEmitter.emit('context.open', conn, dataObj.context);
@@ -33,7 +32,9 @@ module.exports = function (server, sockJSEmitter) {
       } catch (err) {}
     });
     conn.on('close', function () {
-      connections.global.splice(connections.global.indexOf(conn), 1);
+      var keys = Object.keys(connections)
+        , i = keys.length;
+      while (i--) if (connections[keys[i]] && connections[keys[i]].indexOf(conn) >= 0) connections[keys[i]].splice(connections[keys[i]].indexOf(conn), 1);
     });
   });
 
