@@ -23,7 +23,6 @@
     "gulp-if": "^0.0.5",
     "gulp-plumber": "^0.5.6",
     "gulp-rename": "^1.2.0",
-    "gulp-spawn": "^0.3.0",
     "gulp-uglify": "^0.2.1",
     "mocha": "^1.18.0",
     "should": "^3.1.3",
