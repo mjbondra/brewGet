@@ -1,7 +1,17 @@
 
 var mongoose = require('mongoose')
   , sockjs = require('sockjs')
-  , socket = sockjs.createServer();
+  , socket = sockjs.createServer()
+  , _ = require('underscore');
+
+/**
+ * Socket connection model
+ */
+var Schema = mongoose.Schema
+  , ConnectionSchema = new Schema({
+    connection: Schema.Types.Mixed
+  }), Connection = mongoose.model('SocketConnection', ConnectionSchema);
+
 
 module.exports = function (server, sockJSEmitter) {
   var connections = {
@@ -24,6 +34,10 @@ module.exports = function (server, sockJSEmitter) {
 
   socket.on('connection', function (conn) {
     connections.global.push(conn);
+    var connection = new Connection({ connection: conn });
+    connection.save(function (err) {
+      console.log(err);
+    });
     conn.on('data', function (data) {
       try {
         var dataObj = JSON.parse(data);
@@ -32,6 +46,7 @@ module.exports = function (server, sockJSEmitter) {
       } catch (err) {}
     });
     conn.on('close', function () {
+      Connection.findOneAndRemove({ connection: conn });
       var keys = Object.keys(connections)
         , i = keys.length;
       while (i--) if (connections[keys[i]] && connections[keys[i]].indexOf(conn) >= 0) connections[keys[i]].splice(connections[keys[i]].indexOf(conn), 1);
