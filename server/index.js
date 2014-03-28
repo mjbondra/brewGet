@@ -18,8 +18,7 @@
  * Koa core
  * 0.x
  */
-var http = require('http')
-  , koa = require('koa')
+var koa = require('koa')
   , app = koa();
 
 // use environment-specific configuration; default to 'development' if unspecified
@@ -28,7 +27,7 @@ var env = process.env.NODE_ENV || 'development'
 
 // SockJS EventEmitter
 var events = require('events')
-  , sockJSEmitter = new events.EventEmitter();
+  , socketEmitter = new events.EventEmitter();
 
 // global utilities
 require('./assets/lib/console-utilities');
@@ -43,13 +42,12 @@ require('./config/models')(__dirname + '/app/models/');
 require('./config/app')(app, config);
 
 // server routes
-require('./config/routes')(app, sockJSEmitter);
+require('./config/routes')(app, socketEmitter);
 
-var server = http.createServer(app.callback());
-
-// sockjs configuration
-require('./config/sockjs')(server, sockJSEmitter);
+// socket configuration
+require('./config/socket')(socketEmitter);
 
 // listen
-server.listen(config.port);
-console.success('Listening for Connections', { port: config.port });
+app.listen(config.port, function () {
+  console.success('Listening for Connections', { port: config.port });
+});

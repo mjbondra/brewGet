@@ -7,7 +7,7 @@ var app = angular.module('brewGet.services.libraries', []);
  */
 var _ = require('underscore')
   , gravatar = require('gravatar')
-  , sockjs_url = '/socket'
+  , sockjs_url = window.location.protocol + '//' + window.location.hostname + ":4000/ws"
   , sockjs = new SockJS(sockjs_url);
 
 /**
