@@ -79,11 +79,17 @@ app.factory('ImageSelect', ['Gravatar', 'HighDPI', function (Gravatar, HighDPI) 
  */
 app.factory('LocationParse', function () {
   return function (resource, opts) {
+    var location = '';
     if (resource.location && resource.location.country && resource.location.country.name === 'United States') {
-      return (resource.location.city && resource.location.city.name ? resource.location.city.name + ', ' : '') + ( resource.location.state && resource.location.state.abbreviation ? resource.location.state.abbreviation : '' );
-    } else {
-      return resource.location.name;
+      if (resource.location.state && resource.location.state.abbreviation) {
+        if (resource.location.city && resource.location.city.name) location = resource.location.city.name + ', ' + resource.location.state.abbreviation;
+        else if (resource.location.state.name) location = resource.location.state.name;
+        else location = resource.location.state.abbreviation;
+      } else if (resource.location.city && resource.location.city.name) location = resource.location.city.name;
+      else if (resource.location.name) location = resource.location.name;
     }
+    else if (resource.location && resource.location.name) location = resource.location.name;
+    return location;
   };
 });
 

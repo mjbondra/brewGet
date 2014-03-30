@@ -27,16 +27,46 @@ module.exports = function (socketEmitter) {
     Promise.promisify(Session.findOne, Session)({ sid: 'koa:sess:' + sid }).then(function (session) {
       if (!session || !session.blob) return;
       session = JSON.parse(session.blob);
-      return Promise.promisify(User.findById, User)(session.user);
+      return Promise.promisify(User.findById, User)(session.user, { images: 1, slug: 1, username: 1, location: 1 });
     }).then(function (user) {
-      if (!user) return;
-      client.write(JSON.stringify(user._doc));
+      if (!user) return client.write(JSON.stringify({
+        cid: cid,
+        event: 'session.populate',
+        sid: sid
+      }));
+      var images = []
+        , location = '';
+      user = user._doc;
+      if (user.images && user.images.length > 0) {
+        var i = user.images.length;
+        while (i--) if (user.images[i].geometry.width === 50 || user.images[i].geometry.width === 100) images.push({
+          geometry: user.images[i].geometry,
+          src: user.images[i].src
+        });
+      }
+      if (user.location && user.location.country && user.location.country.name === 'United States') {
+        if (user.location.state && user.location.state.abbreviation) {
+          if (user.location.city && user.location.city.name) location = user.location.city.name + ', ' + user.location.state.abbreviation;
+          else if (user.location.state.name) location = user.location.state.name;
+          else location = user.location.state.abbreviation;
+        } else if (user.location.city && user.location.city.name) location = user.location.city.name;
+        else if (user.location.name) location = user.location.name;
+      }
+      else if (user.location && user.location.name) location = user.location.name;
+      user.images = images;
+      user.location = location;
+      client.write(JSON.stringify({
+        cid: cid,
+        event: 'session.populate',
+        sid: sid,
+        user: user
+      }));
     }).fail(function (err) {
       console.error(err);
     });
-
-    // Session.findOne({ sid: sid });
   });
+  socketEmitter.on('user.update', function (user) {});
+
 
   client.on('data', function (data) {
     try {
