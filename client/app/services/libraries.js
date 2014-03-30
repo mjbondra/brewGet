@@ -8,7 +8,7 @@ var app = angular.module('brewGet.services.libraries', []);
 var _ = require('underscore')
   , gravatar = require('gravatar')
   , sockjs_url = window.location.protocol + '//' + window.location.hostname + ":4000/ws"
-  , sockjs = new SockJS(sockjs_url);
+  , sockjs;
 
 /**
  * Underscore Service
@@ -63,23 +63,28 @@ app.factory('SockJS', ['$rootScope', '$cookies', function ($rootScope, $cookies)
   return {
     context: function (context, opts) {
       sockjs.send(angular.toJson({
-        action: 'open',
-        context: context,
-        session: $cookies['koa.sid']
+        event: 'context.open',
+        context: context
       }));
       return {
         close: function () {},
         send: function (message) {
           sockjs.send(angular.toJson({
-            action: 'post',
+            event: 'message',
             context: context,
-            message: message,
-            session: $cookies['koa.sid']
+            message: message
           }));
         }
       };
     },
     init: function () {
+      sockjs = new SockJS(sockjs_url);
+      sockjs.onopen = function () {
+        sockjs.send(angular.toJson({
+          event: 'session.find',
+          sid: $cookies['koa.sid']
+        }));
+      };
       sockjs.onmessage = function (e) {
         var data;
         try {
