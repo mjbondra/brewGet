@@ -10,6 +10,11 @@ var Session = mongoose.model('SessionStore')
   , User = mongoose.model('User');
 
 /**
+ * Helper functions
+ */
+var user_compact = function (user) {};
+
+/**
  * Web socket client
  */
 var client = net.connect({ port: 4001 }, function () {
