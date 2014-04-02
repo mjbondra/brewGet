@@ -28,7 +28,7 @@ var client = net.connect({ port: 4001 }, function () {
  * Events
  */
 module.exports = function (socketEmitter) {
-  socketEmitter.on('session.find', function (cid, sid) {
+  socketEmitter.on('session.find', function (sid, cid) {
     Promise.promisify(Session.findOne, Session)({ sid: 'koa:sess:' + sid }).then(function (session) {
       if (!session || !session.blob) return;
       session = JSON.parse(session.blob);
@@ -70,14 +70,20 @@ module.exports = function (socketEmitter) {
       console.error(err);
     });
   });
-  socketEmitter.on('user.update', function (user) {});
+  socketEmitter.on('session.update', function (sid, session) {
+    if (!sid) return;
+    console.log(sid);
+    // client.write(JSON.stringify({
+    //
+    // }));
+  });
 
 
   client.on('data', function (data) {
     try {
       var dataObj = JSON.parse(data);
       if (dataObj.event === 'console.log') console.log(dataObj.message);
-      else if (dataObj.event === 'session.find') socketEmitter.emit('session.find', dataObj.cid, dataObj.sid);
+      else if (dataObj.event === 'session.find') socketEmitter.emit('session.find', dataObj.sid, dataObj.cid);
     } catch (err) {}
   });
   client.on('end', function () {

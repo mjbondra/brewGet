@@ -54,4 +54,4 @@ module.exports = function (app, config) {
 
   // 404 Not Found
   app.use(notFound());
-}
+};

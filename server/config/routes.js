@@ -15,7 +15,7 @@ var beers = require('../app/controllers/beers')
   , styles = require('../app/controllers/styles')
   , users = require('../app/controllers/users');
 
-module.exports = function (app) {
+module.exports = function (app, socketEmitter) {
 
   // temporary test route
   app.get('/test-api/test.json', function *() {
@@ -61,8 +61,8 @@ module.exports = function (app) {
   app.get('/api/styles/:slug', styles.show);
 
   // users sessions
-  app.post('/api/users/sign-in', users.sessions.create);
-  app.delete('/api/users/sign-out', users.sessions.destroy);
+  app.post('/api/users/sign-in', users.sessions.create(socketEmitter));
+  app.delete('/api/users/sign-out', users.sessions.destroy(socketEmitter));
 
   // users
   app.get('/api/users', users.index);
