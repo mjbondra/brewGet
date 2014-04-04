@@ -28,6 +28,7 @@ var client = net.connect({ port: 4001 }, function () {
  * Events
  */
 module.exports = function (socketEmitter) {
+  socketEmitter.on('connection.id', function (sid, cid) {});
   socketEmitter.on('session.find', function (sid, cid) {
     Promise.promisify(Session.findOne, Session)({ sid: 'koa:sess:' + sid }).then(function (session) {
       if (!session || !session.blob) return;
