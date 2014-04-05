@@ -20,9 +20,6 @@ var autocomplete = require('./autocomplete-routes')
 
 module.exports = function (app, config) {
 
-  // collapse JSON responses
-  app.jsonSpaces = 0;
-
   // logger
   if (config.env !== 'test') app.use(logger());
 
