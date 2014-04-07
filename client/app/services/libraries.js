@@ -81,7 +81,7 @@ app.factory('SockJS', ['$rootScope', '$cookies', function ($rootScope, $cookies)
       sockjs = new SockJS(sockjs_url);
       sockjs.onopen = function () {
         sockjs.send(angular.toJson({
-          event: 'session.find',
+          event: 'session.connection.add',
           sid: $cookies['koa.sid']
         }));
       };

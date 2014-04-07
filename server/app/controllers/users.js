@@ -156,6 +156,9 @@ module.exports = {
     show: function () {
       return function *(next) {
 
+        // if session ip is not set, set it
+        if (!this.session.ip) this.session.ip = this.ip;
+
         // deserialize user object in session
         if (typeof this.session.user === 'string') {
           this.session.user = yield Promise.promisify(User.findById, User)(this.session.user).catch(function (err) {
@@ -201,7 +204,7 @@ module.exports = {
           return;
         }
         this.session.user = user;
-        socketEmitter.emit('session.update', this.cookies.get('koa.sid'), this.session);
+        socketEmitter.emit('connection.session.update', this.cookies.get('koa.sid'), this.session);
         this.status = 201; // 201 Created
         this.body = yield cU.body(cU.msg(msg.authentication.success(user.username), 'success', 'user', cU.censor(user, ['_id', '__v', 'hash', 'salt']))); // 201 Created
       };
@@ -213,8 +216,8 @@ module.exports = {
      */
     destroy: function (socketEmitter) {
       return function *(next) {
-        this.session = null;
-        socketEmitter.emit('session.update', this.cookies.get('koa.sid'), this.session);
+        if (this.session.user) delete this.session.user;
+        socketEmitter.emit('connection.session.update', this.cookies.get('koa.sid'), this.session);
         this.body = yield cU.body(cU.msg('logout'));
       };
     }

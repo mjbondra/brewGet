@@ -116,7 +116,7 @@ describe('Users & Authentication', function () {
             done();
           });
         });
-      }); 
+      });
     });
 
     describe('Valid session (self)', function () {
@@ -206,10 +206,10 @@ describe('Users & Authentication', function () {
           .expect('Content-Type', /json/)
           .expect(200, done);
       });
-      it('should remove session document', function (done) {
+      it('should remove user from session document', function (done) {
         var ObjectID = require('mongoose/node_modules/mongodb').ObjectID;
         mongoose.connection.db.collection('sessions').findOne({ _id: sessionId }, function (err, session) {
-          should.equal(session, null);
+          should.equal(JSON.parse(session.blob).user, null);
           done();
         });
       });

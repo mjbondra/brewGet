@@ -64,15 +64,39 @@ module.exports = function (socketEmitter) {
   /** Events of internal origin */
 
   /**
-   * Add web socket connection id to session
+   * Update session in web socket connection metadata through tcp socket
+   */
+  socketEmitter.on('connection.session.update', function (sid, session) {
+    if (!sid) return;
+    console.log(sid);
+    // client.write(JSON.stringify({
+    //
+    // }));
+  });
+
+  /**
+   * Add web socket connection id to session; write session info to web socket connection metadata through tcp socket
    */
   socketEmitter.on('session.connection.add', function (sid, cid) {
+    if (!sid || !cid) return;
+    var _session = {
+      cid: cid,
+      event: 'connection.session.add'
+    };
     Promise.promisify(Session.findOne, Session)({ sid: 'koa:sess:' + sid }).then(function (session) {
-      if (!session) {
-        if (!cid) return;
-      }
+      if (!session || !session.blob) return;
+      _session.sid = sid;
+      var blob = JSON.parse(session.blob);
+      blob.cid = cid;
+      session.blob = JSON.stringify(blob);
+      session.updatedAt = new Date();
+      session.save();
+      return Promise.promisify(User.findById, User)(blob.user, { images: 1, slug: 1, username: 1, location: 1 });
+    }).then(function (user) {
+      if (user) _session.user = userCompact(user);
+      client.write(JSON.stringify(_session));
     }).fail(function (err) {
-      console.error(err);
+      console.error(err.stack || err);
     });
   });
 
@@ -81,46 +105,16 @@ module.exports = function (socketEmitter) {
    */
   socketEmitter.on('session.connection.remove', function (sid) {
     Promise.promisify(Session.findOne, Session)({ sid: 'koa:sess:' + sid }).then(function (session) {
-      if (!session) return;
-    }).fail(function (err) {
-      console.error(err);
-    });
-  });
-
-  /**
-   * Find session to add to web socket connection metadata
-   */
-  socketEmitter.on('session.find', function (sid, cid) {
-    Promise.promisify(Session.findOne, Session)({ sid: 'koa:sess:' + sid }).then(function (session) {
       if (!session || !session.blob) return;
-      session = JSON.parse(session.blob);
-      return Promise.promisify(User.findById, User)(session.user, { images: 1, slug: 1, username: 1, location: 1 });
-    }).then(function (user) {
-      if (!user) return client.write(JSON.stringify({
-        cid: cid,
-        event: 'session.populate',
-        sid: sid
-      }));
-      client.write(JSON.stringify({
-        cid: cid,
-        event: 'session.populate',
-        sid: sid,
-        user: userCompact(user)
-      }));
+      var blob = JSON.parse(session.blob);
+      if (!blob.cid) return;
+      delete blob.cid;
+      session.blob = JSON.stringify(blob);
+      session.updatedAt = new Date();
+      session.save();
     }).fail(function (err) {
       console.error(err.stack || err);
     });
-  });
-
-  /**
-   * Update session in web socket connection metadata
-   */
-  socketEmitter.on('session.update', function (sid, session) {
-    if (!sid) return;
-    console.log(sid);
-    // client.write(JSON.stringify({
-    //
-    // }));
   });
 
   /**
@@ -139,7 +133,8 @@ module.exports = function (socketEmitter) {
     try {
       var dataObj = JSON.parse(data);
       if (dataObj.event === 'console.log') console.log(dataObj.message);
-      else if (dataObj.event === 'session.find') socketEmitter.emit('session.find', dataObj.sid, dataObj.cid);
+      else if (dataObj.event === 'session.connection.add') socketEmitter.emit('session.connection.add', dataObj.sid, dataObj.cid);
+      else if (dataObj.event === 'session.connection.remove') socketEmitter.emit('session.connection.remove', dataObj.sid);
     } catch (err) {}
   });
 
