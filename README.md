@@ -5,6 +5,9 @@ brewGet
 
 brewGet is a web application that supports the non-monetary exchange of regionally-limited or otherwise difficult to acquire beer. Built with [Node.js](https://nodejs.org/), [Koa](http://koajs.com/), and [AngularJS](http://angularjs.org/).
 
+##Roadmap to Alpha
+[Tasks/Issues](https://docs.google.com/spreadsheet/ccc?key=0An_WvOoahndNdDlnTm40S1YwWkVwRldRMUVoNW52cUE&usp=sharing)
+
 ##Installing and Running Locally
 
 Instructions and requirements for installing this web application.
@@ -89,8 +92,8 @@ The MIT License (MIT)
 * [Node-Validator](https://github.com/chriso/node-validator)
 * [Normalize.css](http://necolas.github.io/normalize.css/)
 * [Should](https://github.com/visionmedia/should.js)
+* [SockJS](https://github.com/sockjs)
 * [Supertest](https://github.com/visionmedia/supertest)
-* [Socket.IO](http://socket.io/)
 * [Sass](http://sass-lang.com/)
 * [Susy](http://susy.oddbird.net/)
 * [UglifyJS](http://lisperator.net/uglifyjs/) / [Gulp-Uglify](https://github.com/terinjokes/gulp-uglify)
@@ -174,7 +177,8 @@ brewGet
 |	|	|--messages.js (global messages file)
 |	|	|--mongo.js (MongoDB configuration)
 |	|	|--passport.js (Passport configuration)
-|	|	+--routes.js (Koa routes)
+|	|	|--routes.js (Koa routes)
+|	|	+--socket.js (socket events and emitters)
 |	|
 |	|--test
 |	|	+--[testing files]

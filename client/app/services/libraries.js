@@ -63,15 +63,20 @@ app.factory('SockJS', ['$rootScope', '$cookies', function ($rootScope, $cookies)
   return {
     context: function (context, opts) {
       sockjs.send(angular.toJson({
-        event: 'context.open',
-        context: context
+        context: context,
+        event: 'context.open'
       }));
       return {
-        close: function () {},
+        close: function () {
+          sockjs.send(angular.toJson({
+            context: context,
+            event: 'context.close'
+          }));
+        },
         send: function (message) {
           sockjs.send(angular.toJson({
-            event: 'message',
             context: context,
+            event: 'message',
             message: message
           }));
         }
