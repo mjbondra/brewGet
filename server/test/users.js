@@ -323,7 +323,7 @@ describe('Users & Authentication', function () {
         it('should remove user from session', function (done) {
           var ObjectID = require('mongoose/node_modules/mongodb').ObjectID;
           mongoose.connection.db.collection('sessions').findOne({ _id: sessionId }, function (err, session) {
-            should.equal(session.blob, '{}');
+            should.equal(JSON.parse(session.blob).user, null);
             done();
           });
         });

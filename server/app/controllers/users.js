@@ -57,11 +57,10 @@ module.exports = {
    * POST /api/users
    */
   create: function *(next) {
-    var user = new User(yield coBody(this));
-    yield Promise.promisify(user.save, user)();
-    this.session.user = user;
+    this.user = new User(yield coBody(this));
+    yield Promise.promisify(this.user.save, this.user)();
     this.status = 201; // 201 Created
-    this.body = yield cU.created('user', user, user.username);
+    this.body = yield cU.created('user', this.user, this.user.username);
   },
 
   /**
@@ -82,8 +81,8 @@ module.exports = {
   destroy: function *(next) {
     if (!this.user) return yield next; // 404 Not Found
     yield Promise.promisify(this.user.remove, this.user)();
-    this.session = {};
     this.body = yield cU.deleted('user', this.user, this.user.username);
+    delete this.user;
   },
 
   /*------------------------------------*\
@@ -181,32 +180,42 @@ module.exports = {
      * Sign in
      * POST /api/users/sign-in
      */
-    create: function (socketEmitter) {
+    create: function *(next) {
+      var body = yield coBody(this);
+      var msgJSONArray = [];
+      if (typeof body.username === 'undefined') msgJSONArray.push(cU.msg(msg.username.isNull, 'validation', 'username'));
+      if (typeof body.password === 'undefined') msgJSONArray.push(cU.msg(msg.password.isNull, 'validation', 'password'));
+      if (msgJSONArray.length > 0) {
+        this.status = 422; // 422 Unprocessable Entity
+        this.body = yield cU.body(msgJSONArray);
+        return;
+      }
+      var user = yield Promise.promisify(User.findOne, User)({ $or: [ { username: body.username }, { email: body.username } ] });
+      if (!user) {
+        this.status = 401; // 401 Unauthorized
+        this.body = yield cU.body(cU.msg(msg.authentication.incorrect.user(body.username), 'authentication', 'user'));
+        return;
+      }
+      if (!user.authenticate(body.password, user.salt)) {
+        this.status = 401; // 401 Unauthorized
+        this.body = yield cU.body(cU.msg(msg.authentication.incorrect.password, 'authentication', 'user'));
+        return;
+      }
+      this.user = user;
+      this.status = 201; // 201 Created
+      this.body = yield cU.body(cU.msg(msg.authentication.success(user.username), 'success', 'user', cU.censor(user, ['_id', '__v', 'hash', 'salt']))); // 201 Created
+    },
+
+    /**
+     * Update user in this.session.user
+     * Emit update to socket
+     */
+    update: function (socketEmitter) {
       return function *(next) {
-        var body = yield coBody(this);
-        var msgJSONArray = [];
-        if (typeof body.username === 'undefined') msgJSONArray.push(cU.msg(msg.username.isNull, 'validation', 'username'));
-        if (typeof body.password === 'undefined') msgJSONArray.push(cU.msg(msg.password.isNull, 'validation', 'password'));
-        if (msgJSONArray.length > 0) {
-          this.status = 422; // 422 Unprocessable Entity
-          this.body = yield cU.body(msgJSONArray);
-          return;
-        }
-        var user = yield Promise.promisify(User.findOne, User)({ $or: [ { username: body.username }, { email: body.username } ] });
-        if (!user) {
-          this.status = 401; // 401 Unauthorized
-          this.body = yield cU.body(cU.msg(msg.authentication.incorrect.user(body.username), 'authentication', 'user'));
-          return;
-        }
-        if (!user.authenticate(body.password, user.salt)) {
-          this.status = 401; // 401 Unauthorized
-          this.body = yield cU.body(cU.msg(msg.authentication.incorrect.password, 'authentication', 'user'));
-          return;
-        }
-        this.session.user = user;
+        yield next;
+        if (this.user) this.session.user = this.user;
+        else if (this.session.user) delete this.session.user;
         socketEmitter.emit('connection.session.update', this.cookies.get('koa.sid'), this.session);
-        this.status = 201; // 201 Created
-        this.body = yield cU.body(cU.msg(msg.authentication.success(user.username), 'success', 'user', cU.censor(user, ['_id', '__v', 'hash', 'salt']))); // 201 Created
       };
     },
 
@@ -214,12 +223,9 @@ module.exports = {
      * Sign out
      * DELETE /api/users/sign-out
      */
-    destroy: function (socketEmitter) {
-      return function *(next) {
-        if (this.session.user) delete this.session.user;
-        socketEmitter.emit('connection.session.update', this.cookies.get('koa.sid'), this.session);
-        this.body = yield cU.body(cU.msg('logout'));
-      };
+    destroy: function *(next) {
+      delete this.user;
+      this.body = yield cU.body(cU.msg('logout'));
     }
   }
 };

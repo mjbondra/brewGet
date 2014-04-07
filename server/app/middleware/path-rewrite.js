@@ -10,5 +10,5 @@ module.exports = function (path, rewrite) {
   return function *(next) {
     if (this.path === path) this.path = rewrite;
     yield next;
-  }
-}
+  };
+};

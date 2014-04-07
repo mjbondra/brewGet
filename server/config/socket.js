@@ -4,7 +4,8 @@
  */
 var mongoose = require('mongoose')
   , net = require('net')
-  , Promise = require('bluebird');
+  , Promise = require('bluebird')
+  , _ = require('underscore');
 
 var Session = mongoose.model('SessionStore')
   , User = mongoose.model('User');
@@ -22,7 +23,7 @@ var Session = mongoose.model('SessionStore')
 var userCompact = function (user) {
   var images = []
     , location = '';
-  user = user._doc || user;
+  user = _.pick(user._doc || user, ['_id', 'images', 'location', 'slug', 'username']);
   if (user.images && user.images.length > 0) {
     var i = user.images.length;
     while (i--) if (user.images[i].geometry.width === 50 || user.images[i].geometry.width === 100) images.push({
@@ -67,11 +68,19 @@ module.exports = function (socketEmitter) {
    * Update session in web socket connection metadata through tcp socket
    */
   socketEmitter.on('connection.session.update', function (sid, session) {
-    if (!sid) return;
-    console.log(sid);
-    // client.write(JSON.stringify({
-    //
-    // }));
+    if (!sid || !session || !session.connections || session.connections.length === 0) return;
+    var _session = {
+      event: 'connection.session.add',
+      sid: sid
+    };
+    if (typeof session.user === 'object') _session.user = userCompact(session.user);
+    else _session.user = {};
+    var i = session.connections.length;
+    setInterval(function() { // update all connections, but with slight delay between updates
+      if (i-- === 0) return clearInterval(this);
+      _session.cid = session.connections[i];
+      client.write(JSON.stringify(_session));
+    }, 100);
   });
 
   /**
@@ -87,7 +96,8 @@ module.exports = function (socketEmitter) {
       if (!session || !session.blob) return;
       _session.sid = sid;
       var blob = JSON.parse(session.blob);
-      blob.cid = cid;
+      if (!blob.connections) blob.connections = [];
+      blob.connections.push(cid);
       session.blob = JSON.stringify(blob);
       session.updatedAt = new Date();
       session.save();
@@ -103,12 +113,13 @@ module.exports = function (socketEmitter) {
   /**
    * Remove web socket connection id from session
    */
-  socketEmitter.on('session.connection.remove', function (sid) {
+  socketEmitter.on('session.connection.remove', function (sid, cid) {
+    if (!sid || !cid) return;
     Promise.promisify(Session.findOne, Session)({ sid: 'koa:sess:' + sid }).then(function (session) {
       if (!session || !session.blob) return;
       var blob = JSON.parse(session.blob);
-      if (!blob.cid) return;
-      delete blob.cid;
+      if (!blob.connections || blob.connections.indexOf(cid) < 0) return;
+      blob.connections.splice(blob.connections.indexOf(cid), 1);
       session.blob = JSON.stringify(blob);
       session.updatedAt = new Date();
       session.save();
@@ -134,7 +145,7 @@ module.exports = function (socketEmitter) {
       var dataObj = JSON.parse(data);
       if (dataObj.event === 'console.log') console.log(dataObj.message);
       else if (dataObj.event === 'session.connection.add') socketEmitter.emit('session.connection.add', dataObj.sid, dataObj.cid);
-      else if (dataObj.event === 'session.connection.remove') socketEmitter.emit('session.connection.remove', dataObj.sid);
+      else if (dataObj.event === 'session.connection.remove') socketEmitter.emit('session.connection.remove', dataObj.sid, dataObj.cid);
     } catch (err) {}
   });
 

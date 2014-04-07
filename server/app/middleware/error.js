@@ -19,19 +19,19 @@ var Schema = mongoose.Schema
     stack: String,
     status: Number,
     url: String,
-    user: { 
-      type : Schema.ObjectId, 
-      ref : 'User' 
+    user: {
+      type : Schema.ObjectId,
+      ref : 'User'
     },
     userIP: String
   }), _Error = mongoose.model('Error', ErrorSchema);
 
-/** 
- * Validation error names 
+/**
+ * Validation error names
  */
 var validationsError = [
   'ImageError',
-  'MongoError', 
+  'MongoError',
   'ValidationError'
 ];
 
@@ -71,7 +71,7 @@ module.exports = function () {
           });
           this.status = 422; // 422 Unprocessable Entity
           this.body = yield cU.body(msgJSONArray);
-        
+
         // Image validation errors
         } else if (err.name === 'ImageError' && err.message) {
           this.status = 400;
@@ -83,7 +83,7 @@ module.exports = function () {
         try {
 
           // record errors as Mongoose-modeled documents
-          var _error = new _Error({ 
+          var _error = new _Error({
             method: this.method,
             params: typeof this.request.body !== 'undefined' ? _.omit(this.request.body, 'password') : {},
             referer: this.header.referer,
@@ -96,12 +96,12 @@ module.exports = function () {
           yield Promise.promisify(_error.save, _error)();
         } catch (err) {
           // print error logging error to console, but do not overwrite original error
-          console.failure(err.stack);
+          console.failure(err.stack || err);
         }
 
         this.status = err.status || 500;
         this.body = yield cU.body(cU.msg(msg.status[err.status || 500], 'error'));
       }
     }
-  }
-}
+  };
+};

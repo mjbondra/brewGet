@@ -9,5 +9,5 @@ module.exports = function () {
   return function *() {
     this.status = 404;
     this.body = yield cU.body(cU.msg(msg.status[404]));
-  }
-}
+  };
+};
