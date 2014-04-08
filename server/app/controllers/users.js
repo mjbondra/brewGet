@@ -16,9 +16,10 @@ var Image = mongoose.model('Image')
   , User = mongoose.model('User');
 
 /**
- * Mongo projection paramater; includes or excludes fields
+ * Censor blacklist and Mongo projection paramater; includes or excludes fields
  */
-var projection = { _id: 0, __v: 0, email: 0, hash: 0, salt: 0, 'images._id': 0, 'images.__v': 0, 'images.path': 0 };
+var blacklist = ['id', '__v', 'birthday', 'email', 'hash', 'role', 'salt', 'path']
+  , projection = { _id: 0, __v: 0, birthday: 0, email: 0, hash: 0, role: 0, salt: 0, 'images._id': 0, 'images.__v': 0, 'images.path': 0 };
 
 module.exports = {
   findOne: function *(next) {
@@ -40,11 +41,7 @@ module.exports = {
    * GET /api/users
    */
   index: function *(next) {
-    this.body = yield Promise.promisify(User.find, User)({}, projection, {
-      sort: {
-        slug: 1
-      }
-    });
+    this.body = yield Promise.promisify(User.find, User)({}, projection, { sort: { slug: 1 }});
   },
 
   /**
