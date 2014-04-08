@@ -3,7 +3,7 @@
 <form novalidate>
   Avatar
   <section class="input-image" ng-class="{ loading: loading === true }">
-    <img class="user-image" ng-src="{{ ImageSelect(user.images, { width: 100, height: 100 }, { email: user.email }) }}">
+    <img class="user-image" ng-src="{{ UserImageSelect.src(user, { geometry: { width: 100 }, liveUpdate: true }) }}">
     <a class="button" href="//gravatar.com/emails" target="_blank" ng-if="!user.images || user.images.length === 0">Manage Gravatar</a>
     <label class="button">Upload Image<input id="image" type="file" ng-file-select="onFileSelect($files)"></label>
     <button ng-click="imageDelete()" ng-if="user.images">Delete Image</button>

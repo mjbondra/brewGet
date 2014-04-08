@@ -255,6 +255,7 @@ a {
       right: 10px solid $ltr-brown;
     }
     width: 110px;
+    height: 100px;
     background: {
       color: white;
     }
@@ -295,11 +296,7 @@ a {
   border: {
     top: 1px solid $ltr-brown;
   }
-}
-
-.user {
-  @extend .row;
-  min-height: 120px;
+  min-height: 70px;
   h2 {
     float: left;
     margin: {
@@ -315,6 +312,8 @@ a {
   img {
     position: absolute;
     right: 25px;
+    height: 50px;
+    width: 50px;
   }
   span {
     display: block;
@@ -322,15 +321,16 @@ a {
       right: 110px;
     }
     clear: left;
-    &.user-email {
-      word-wrap: break-word;
-    }
   }
 }
 
+.user {
+  @extend .row;
+}
+
 .user-image {
-  height: 100px;
-  width: 100px;
+  height: 200px;
+  width: 200px;
 }
 
 /*--Angular Directives--*/

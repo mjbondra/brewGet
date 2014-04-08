@@ -7,10 +7,10 @@ var app = angular.module('brewGet.controllers.users', ['angularFileUpload']);
  * ROUTE /#!/users
  * TEMPLATE /partials/users/index.html
  */
-app.controller('users.index', ['$scope', 'Head', 'User', 'ImageSelect', 'LocationParse', function ($scope, Head, User, ImageSelect, LocationParse) {
+app.controller('users.index', ['$scope', 'Head', 'User', 'UserImageSelect', 'LocationParse', function ($scope, Head, User, UserImageSelect, LocationParse) {
   Head.title('Users');
   Head.description('An index of users on brewGet.');
-  $scope.ImageSelect = ImageSelect;
+  $scope.UserImageSelect = UserImageSelect;
   $scope.LocationParse = LocationParse;
   $scope.users = User.query();
 }]);
@@ -20,9 +20,9 @@ app.controller('users.index', ['$scope', 'Head', 'User', 'ImageSelect', 'Locatio
  * ROUTE /#!/users/:username
  * TEMPLATE /partials/users/show.html
  */
-app.controller('users.show', ['$scope', '$routeParams', 'Head', 'User', 'ImageSelect', 'LocationParse', function ($scope, $routeParams, Head, User, ImageSelect, LocationParse) {
+app.controller('users.show', ['$scope', '$routeParams', 'Head', 'User', 'UserImageSelect', 'LocationParse', function ($scope, $routeParams, Head, User, UserImageSelect, LocationParse) {
   $scope.user = User.get({ username: $routeParams.username });
-  $scope.ImageSelect = ImageSelect;
+  $scope.UserImageSelect = UserImageSelect;
   $scope.LocationParse = LocationParse;
   if ($scope.user.$promise) {
     $scope.user.$promise.then(function (user) {
@@ -40,12 +40,12 @@ app.controller('users.show', ['$scope', '$routeParams', 'Head', 'User', 'ImageSe
  * ROUTE /#!/account/settings
  * TEMPLATE /partials/users/edit.html
  */
-app.controller('users.edit', ['$scope', '$upload', 'API', 'Head', 'User', 'Session', 'Slug', 'ImageSelect', function ($scope, $upload, API, Head, User, Session, Slug, ImageSelect) {
+app.controller('users.edit', ['$scope', '$upload', 'API', 'Head', 'User', 'Session', 'Slug', 'UserImageSelect', function ($scope, $upload, API, Head, User, Session, Slug, UserImageSelect) {
   Head.title('Account Details & Settings');
   Head.description('Edit the details and settings of your brewGet account.');
   $scope.username = Slug(Session(), true);
   $scope.user = User.get({ username: $scope.username });
-  $scope.ImageSelect = ImageSelect;
+  $scope.UserImageSelect = UserImageSelect;
   $scope.loading = false;
 
   // functions

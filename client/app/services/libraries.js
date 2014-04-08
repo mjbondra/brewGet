@@ -22,10 +22,15 @@ app.factory('_', function () {
  */
 app.factory('Gravatar', ['HighDPI', function (HighDPI) {
   return {
-    url: function (email, options, https) {
-      options = options || {};
-      options.s = options.s || 100;
-      if (email) return gravatar.url(email, options, https);
+    src: function (user, opts) {
+      if (!user) return 'assets/img/bottle.png';
+      opts = opts || {};
+      if (user.gravatar) {
+        var qs = '';
+        if (opts.s) qs = 's=' + opts.s;
+        if (opts.d) qs = ( qs === '' ? qs : qs + '&' ) + 'd=' + opts.d;
+        return user.gravatar + '?' + qs;
+      } else if (user.email) return gravatar.url(user.email, opts).replace('http:', '');
     }
   };
 }]);

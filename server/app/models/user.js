@@ -4,6 +4,7 @@
  */
 var crypto = require('crypto')
   , cU = require('../../assets/lib/common-utilities')
+  , gravatar = require('gravatar')
   , mongoose = require('mongoose')
   , msg = require('../../config/messages')
   , Promise = require('bluebird')
@@ -38,6 +39,7 @@ var UserSchema = new Schema({
       { validator: validate.notNull, msg: msg.email.isNull }
     ]
   },
+  gravatar: String,
   hash: String,
   images: [ ImageSchema ],
   location: LocationSchema,
@@ -99,6 +101,7 @@ UserSchema.path('hash').validate(function (v) {
  * Pre-save hook
  */
 UserSchema.pre('save', function (next) {
+  this.gravatar = gravatar.url(this.email).replace('http:', '');
   this.slug = cU.slug(this.username, true);
   next();
 });

@@ -55,22 +55,19 @@ app.factory('HighDPI', function () {
  *
  * @param {array} - an array of images
  */
-app.factory('ImageSelect', ['Gravatar', 'HighDPI', function (Gravatar, HighDPI) {
-  return function (images, size, opts) {
-    if (!images) return 'assets/img/bottle.png';
+app.factory('ImageSelect', ['HighDPI', function (HighDPI) {
+  return function (images, opts) {
+    if (!images) return [];
     var i = images.length
-      , image = {};
+      , _images = [];
     opts = opts || {};
-    size = size || { height: 200, width: 200 };
-    opts.https = ( opts.https === true ? true : false );
-    size.height = ( HighDPI() ? size.height * 2 : size.height );
-    size.width = ( HighDPI() ? size.width * 2 : size.width );
-    while (i--) {
-      if (images[i].geometry.width === size.width && images[i].geometry.height === size.height) image = images[i];
-    }
-    if (image.src) return image.src;
-    else if (opts.email) return Gravatar.url(opts.email, { s: size.width }, opts.https);
-    else return 'assets/img/bottle.png';
+    opts.geometry = opts.geometry || { width: 50 }; // default dimension
+    if (opts.geometry.width) opts.geometry.width = HighDPI() ? opts.geometry.width * 2 : opts.geometry.width;
+    if (opts.geometry.height) opts.geometry.height = HighDPI() ? opts.geometry.height * 2 : opts.geometry.height;
+    while (i--) if ((opts.geometry.width && !opts.geometry.height && images[i].geometry.width === opts.geometry.width) ||
+      (opts.geometry.width && opts.geometry.height && images[i].geometry.width === opts.geometry.width && images[i].geometry.height === opts.geometry.height) ||
+      (opts.geometry.height && !opts.geometry.width && images[i].geometry.height === opts.geometry.height)) _images.push(images[i]);
+    return _images;
   };
 }]);
 
@@ -103,6 +100,20 @@ app.factory('LocationParse', function () {
 app.factory('Slug', function () {
   return slug;
 });
+
+app.factory('UserImageSelect', ['ImageSelect', 'Gravatar', function (ImageSelect, Gravatar) {
+  return {
+    src: function (user, opts) {
+      if (!user) return 'assets/img/bottle.png';
+      opts = opts || {};
+      opts.geometry = opts.geometry || { width: 50 }; // default dimension
+      if (opts.liveUpdate === true && user.gravatar) delete user.gravatar;
+      var images = ImageSelect(user.images, opts);
+      if (images && images[0] && images[0].src) return images[0].src;
+      else return Gravatar.src(user, { s: opts.geometry.width || opts.geometry.height || 50 });
+    }
+  };
+}]);
 
 /*------------------------------------*\
     ELEMENTAL UTILITIES
