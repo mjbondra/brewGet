@@ -23,7 +23,7 @@ app.factory('_', function () {
 app.factory('Gravatar', ['HighDPI', function (HighDPI) {
   return {
     src: function (user, opts) {
-      if (!user) return 'assets/img/bottle.png';
+      if (!user) return;
       opts = opts || {};
       if (user.gravatar) {
         var qs = '';
@@ -31,6 +31,7 @@ app.factory('Gravatar', ['HighDPI', function (HighDPI) {
         if (opts.d) qs = ( qs === '' ? qs : qs + '&' ) + 'd=' + opts.d;
         return user.gravatar + '?' + qs;
       } else if (user.email) return gravatar.url(user.email, opts).replace('http:', '');
+      else return;
     }
   };
 }]);

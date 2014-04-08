@@ -104,13 +104,13 @@ app.factory('Slug', function () {
 app.factory('UserImageSelect', ['ImageSelect', 'Gravatar', function (ImageSelect, Gravatar) {
   return {
     src: function (user, opts) {
-      if (!user) return 'assets/img/bottle.png';
       opts = opts || {};
       opts.geometry = opts.geometry || { width: 50 }; // default dimension
+      if (!user) return 'assets/img/bottle-' + ( opts.geometry.width || opts.geometry.height || 50 ) + '.png';
       if (opts.liveUpdate === true && user.gravatar) delete user.gravatar;
       var images = ImageSelect(user.images, opts);
       if (images && images[0] && images[0].src) return images[0].src;
-      else return Gravatar.src(user, { s: opts.geometry.width || opts.geometry.height || 50 });
+      else return Gravatar.src(user, { s: opts.geometry.width || opts.geometry.height || 50 }) || 'assets/img/bottle-' + ( opts.geometry.width || opts.geometry.height || 50 ) + '.png';
     }
   };
 }]);
