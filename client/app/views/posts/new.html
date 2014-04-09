@@ -3,30 +3,40 @@
 <form novalidate>
   Category
   <div class="input-post-category">
-    <label ng-class="{ active: post.category === 'trade' }" ng-click="applyCategory()"><input type="radio" value="trade" ng-model="post.category">Trade</label>
-    <label ng-class="{ active: post.category === 'discussion' }" ng-click="applyCategory()"><input type="radio" value="discussion" ng-model="post.category">Discussion</label>
+    <label ng-class="{ active: post.category === 'trade' }"><input type="radio" value="trade" ng-model="post.category">Trade</label>
+    <label ng-class="{ active: post.category === 'discussion' }"><input type="radio" value="discussion" ng-model="post.category">Discussion</label>
   </div>
-  <section class="input-beer" ng-repeat="beer in post.beers">
+  <section class="input-beer" ng-if="post.category === 'trade'" ng-repeat="beer in post.beers">
     Type
     <div class="input-trade-type">
       <label ng-class="{ active: beer.type === 'request' }"><input type="radio" value="request" ng-model="beer.type">Request</label>
       <label ng-class="{ active: beer.type === 'offer' }"><input type="radio" value="offer" ng-model="beer.type">Offer</label>
     </div>
-    <label>Beer<input type="text" ng-model="beer.name" ng-change="Autocomplete('beers', beer.name, $index)"></label>
-    <ul>
-      <li ng-repeat="beer in beer.autocomplete" ng-click="applyAutocomplete('beers', $parent.$index, $index)">{{ beer }}</li>
-    </ul>
-    <label>Brewery<input type="text" ng-model="beer.brewery.name" ng-change="Autocomplete('breweries', beer.brewery.name, $index)"></label>
-    <ul>
-      <li ng-repeat="brewery in beer.brewery.autocomplete" ng-click="applyAutocomplete('breweries', $parent.$index, $index)">{{ brewery }}</li>
-    </ul>
-    <label>Brewery Location<input type="text" id="{{ 'location[' + $index + ']' }}" ng-model="beer.brewery.location" places types="(cities)" placeholder=""></label>
-    <label>Style<input type="text" ng-model="beer.style.name" ng-change="Autocomplete('styles', beer.style.name, $index)"></label>
-    <ul>
-      <li ng-repeat="style in beer.style.autocomplete" ng-click="applyAutocomplete('styles', $parent.$index, $index)">{{ style }}</li>
-    </ul>
-    <label>ABV<input type="text" ng-model="beer.abv"></label>
-    <label>IBU<input type="text" ng-model="beer.ibu"></label>
+    <div class="beer" ng-if="beer._id">
+      <h2><a ng-href="{{ '/beers/id/' + beer._id }}">{{ beer.name }}</a></h2>
+      <a ng-href="{{ '/beers/id/' + beer._id }}"><img class="user-image" ng-src="{{ CoverImageSelect.src(beer.images, { geometry: { width: 50 } }) }}"></a>
+      <h3>{{ beer.brewery.name }}</h3>
+      <span>{{ beer.brewery.location }}</span>
+      <span>{{ beer.style.name }}</span>
+      <span>{{ beer.abv }}% / {{ beer.ibu }} IBU</span>
+    </div>
+    <div ng-if="!beer._id">
+      <label>Beer<input type="text" ng-model="beer.name" ng-change="Autocomplete('beers', beer.name, $index)"></label>
+      <ul>
+        <li ng-repeat="beer in beer.autocomplete" ng-click="applyAutocomplete('beers', $parent.$index, $index)">{{ beer }}</li>
+      </ul>
+      <label>Brewery<input type="text" ng-model="beer.brewery.name" ng-change="Autocomplete('breweries', beer.brewery.name, $index)"></label>
+      <ul>
+        <li ng-repeat="brewery in beer.brewery.autocomplete" ng-click="applyAutocomplete('breweries', $parent.$index, $index)">{{ brewery }}</li>
+      </ul>
+      <label>Brewery Location<input type="text" id="{{ 'location[' + $index + ']' }}" ng-model="beer.brewery.location" places types="(cities)" placeholder=""></label>
+      <label>Style<input type="text" ng-model="beer.style.name" ng-change="Autocomplete('styles', beer.style.name, $index)"></label>
+      <ul>
+        <li ng-repeat="style in beer.style.autocomplete" ng-click="applyAutocomplete('styles', $parent.$index, $index)">{{ style }}</li>
+      </ul>
+      <label>ABV<input type="text" ng-model="beer.abv"></label>
+      <label>IBU<input type="text" ng-model="beer.ibu"></label>
+    </div>
     <label>Date/Year<input type="text" ng-model="beer.date"></label>
     <button ng-click="addBeer()" ng-if="post.beers.length === $index + 1">Add Another</button>
   </section>

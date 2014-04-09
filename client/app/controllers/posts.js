@@ -27,10 +27,13 @@ app.controller('posts.show', ['$scope', 'Head', function ($scope, Head) {
  * ROUTE /#!/
  * TEMPLATE /partials/posts/new.html
  */
-app.controller('posts.new', ['$scope', 'Head', 'Post', 'Autocomplete', function ($scope, Head, Post, Autocomplete) {
+app.controller('posts.new', ['$scope', 'Head', 'Post', 'Autocomplete', 'CoverImageSelect', function ($scope, Head, Post, Autocomplete, CoverImageSelect) {
   Head.title('New Post');
   Head.description('New Post');
   $scope.post = new Post();
+  $scope.post.beers = [{}];
+
+  $scope.CoverImageSelect = CoverImageSelect;
 
   // functions
   $scope.addBeer = function () {
@@ -79,10 +82,6 @@ app.controller('posts.new', ['$scope', 'Head', 'Post', 'Autocomplete', function 
       break;
     }
     if (type !== 'styles' && $scope.post.beers[parentIndex].brewery.location && $scope.post.beers[parentIndex].brewery.location.name) $scope.post.beers[parentIndex].brewery.location = $scope.post.beers[parentIndex].brewery.location.name;
-  };
-  $scope.applyCategory = function () {
-    if ($scope.post.category === 'trade') $scope.post.beers = [{}];
-    else delete $scope.post.beers;
   };
   $scope.save = function () {
     if ($scope.post.beers && $scope.post.beers.length > 0) {

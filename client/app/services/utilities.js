@@ -51,27 +51,6 @@ app.factory('HighDPI', function () {
 });
 
 /**
- * Image selection service that will pull an appropriately sized image an array of images
- *
- * @param {array} - an array of images
- */
-app.factory('ImageSelect', ['HighDPI', function (HighDPI) {
-  return function (images, opts) {
-    if (!images) return [];
-    var i = images.length
-      , _images = [];
-    opts = opts || {};
-    opts.geometry = opts.geometry || { width: 50 }; // default dimension
-    if (opts.geometry.width) opts.geometry.width = HighDPI() ? opts.geometry.width * 2 : opts.geometry.width;
-    if (opts.geometry.height) opts.geometry.height = HighDPI() ? opts.geometry.height * 2 : opts.geometry.height;
-    while (i--) if ((opts.geometry.width && !opts.geometry.height && images[i].geometry.width === opts.geometry.width) ||
-      (opts.geometry.width && opts.geometry.height && images[i].geometry.width === opts.geometry.width && images[i].geometry.height === opts.geometry.height) ||
-      (opts.geometry.height && !opts.geometry.width && images[i].geometry.height === opts.geometry.height)) _images.push(images[i]);
-    return _images;
-  };
-}]);
-
-/**
  * Location parsing service
  */
 app.factory('LocationParse', function () {
@@ -101,16 +80,63 @@ app.factory('Slug', function () {
   return slug;
 });
 
+/*------------------------------------*\
+    IMAGE UTILITIES
+\*------------------------------------*/
+
+/**
+ * Cover image selector
+ */
+app.factory('CoverImageSelect', ['ImageSelect', function (ImageSelect) {
+  return {
+    src: function (images, opts) {
+      opts = opts || {};
+      opts.geometry = opts.geometry || { width: 50 }; // default dimension
+      return '/assets/img/bottle-' + ( opts.geometry.width || opts.geometry.height || 50 ) + '.png';
+    }
+  };
+}]);
+
+/**
+ * Image selection service that will return an array of images that conform to a particular geometry
+ *
+ * @param {array} images - an array of images
+ * @param {object} opts
+ * @returns {array} - an array of images that conform to a particular geometry
+ */
+app.factory('ImageSelect', ['HighDPI', function (HighDPI) {
+  return function (images, opts) {
+    if (!images) return [];
+    var i = images.length
+      , _images = [];
+    opts = opts || {};
+    opts.geometry = opts.geometry || { width: 50 }; // default dimension
+    if (opts.geometry.width) opts.geometry.width = HighDPI() ? opts.geometry.width * 2 : opts.geometry.width;
+    if (opts.geometry.height) opts.geometry.height = HighDPI() ? opts.geometry.height * 2 : opts.geometry.height;
+    while (i--) if ((opts.geometry.width && !opts.geometry.height && images[i].geometry.width === opts.geometry.width) ||
+      (opts.geometry.width && opts.geometry.height && images[i].geometry.width === opts.geometry.width && images[i].geometry.height === opts.geometry.height) ||
+      (opts.geometry.height && !opts.geometry.width && images[i].geometry.height === opts.geometry.height)) _images.push(images[i]);
+    return _images;
+  };
+}]);
+
+/**
+ * User image selection utility
+ *
+ * @param {object} user - complete user object
+ * @param {object} opts
+ * @return {string} - image src
+ */
 app.factory('UserImageSelect', ['ImageSelect', 'Gravatar', function (ImageSelect, Gravatar) {
   return {
     src: function (user, opts) {
       opts = opts || {};
       opts.geometry = opts.geometry || { width: 50 }; // default dimension
-      if (!user) return 'assets/img/bottle-' + ( opts.geometry.width || opts.geometry.height || 50 ) + '.png';
+      if (!user) return '/assets/img/bottle-' + ( opts.geometry.width || opts.geometry.height || 50 ) + '.png';
       if (opts.liveUpdate === true && user.gravatar) delete user.gravatar;
       var images = ImageSelect(user.images, opts);
       if (images && images[0] && images[0].src) return images[0].src;
-      else return Gravatar.src(user, { s: opts.geometry.width || opts.geometry.height || 50 }) || 'assets/img/bottle-' + ( opts.geometry.width || opts.geometry.height || 50 ) + '.png';
+      else return Gravatar.src(user, { s: opts.geometry.width || opts.geometry.height || 50 }) || '/assets/img/bottle-' + ( opts.geometry.width || opts.geometry.height || 50 ) + '.png';
     }
   };
 }]);
