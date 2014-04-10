@@ -11,6 +11,17 @@ var app = angular.module('brewGet.directives', []);
 \*------------------------------------*/
 
 /**
+ * <beer> Directive
+ */
+app.directive('beer', [function () {
+  return {
+    restrict: 'E',
+    scope: true,
+    templateUrl: '/app/views/directives/beer.html'
+  };
+}]);
+
+/**
  * <global-messages> Directive
  */
 app.directive('globalMessages', ['MessageHandler', '_', function (MessageHandler, _) {

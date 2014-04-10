@@ -12,14 +12,7 @@
       <label ng-class="{ active: beer.type === 'request' }"><input type="radio" value="request" ng-model="beer.type">Request</label>
       <label ng-class="{ active: beer.type === 'offer' }"><input type="radio" value="offer" ng-model="beer.type">Offer</label>
     </div>
-    <div class="beer" ng-if="beer._id">
-      <h2><a ng-href="{{ '/beers/id/' + beer._id }}">{{ beer.name }}</a></h2>
-      <a ng-href="{{ '/beers/id/' + beer._id }}"><img class="user-image" ng-src="{{ CoverImageSelect.src(beer.images, { geometry: { width: 50 } }) }}"></a>
-      <h3>{{ beer.brewery.name }}</h3>
-      <span>{{ beer.brewery.location }}</span>
-      <span>{{ beer.style.name }}</span>
-      <span>{{ beer.abv }}% / {{ beer.ibu }} IBU</span>
-    </div>
+    <beer ng-if="beer._id"></beer>
     <div ng-if="!beer._id">
       <label>Beer<input type="text" ng-model="beer.name" ng-change="Autocomplete('beers', beer.name, $index)"></label>
       <ul>

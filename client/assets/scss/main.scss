@@ -219,6 +219,7 @@ a {
 }
 
 .container {
+  display: block;
   padding: 10px;
 }
 
@@ -334,7 +335,7 @@ a {
   }
 }
 
-.user, .beer {
+.user, beer {
   @extend .row;
 }
 
@@ -623,7 +624,7 @@ main {
     border: {
       top: 1px solid $ltr-brown;
     }
-    .beer {
+    beer {
       border: {
         top: none;
       }
