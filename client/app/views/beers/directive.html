@@ -1,0 +1,10 @@
+<header>
+  <h2><a ng-href="{{ '/beers/id/' + beer._id }}">{{ beer.name }}</a></h2>
+  <h3>{{ beer.brewery.name }}</h3>
+  <h4>{{ LocationParse(beer.brewery) }}</h4>
+</header>
+<a ng-href="{{ '/beers/id/' + beer._id }}"><img ng-src="{{ CoverImageSelect.src(beer.images, { geometry: { width: 50 } }) }}"></a>
+<section>
+  <span>{{ beer.style.name }}</span>
+  <span>{{ beer.abv }}% / {{ beer.ibu }} IBU</span>
+</section>

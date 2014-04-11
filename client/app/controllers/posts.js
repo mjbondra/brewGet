@@ -27,13 +27,11 @@ app.controller('posts.show', ['$scope', 'Head', function ($scope, Head) {
  * ROUTE /#!/
  * TEMPLATE /partials/posts/new.html
  */
-app.controller('posts.new', ['$scope', 'Head', 'Post', 'Autocomplete', 'CoverImageSelect', function ($scope, Head, Post, Autocomplete, CoverImageSelect) {
+app.controller('posts.new', ['$scope', 'Head', 'Post', 'Autocomplete', function ($scope, Head, Post, Autocomplete) {
   Head.title('New Post');
   Head.description('New Post');
   $scope.post = new Post();
   $scope.post.beers = [{}];
-
-  $scope.CoverImageSelect = CoverImageSelect;
 
   // functions
   $scope.addBeer = function () {

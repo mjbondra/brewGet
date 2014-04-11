@@ -219,6 +219,7 @@ a {
 }
 
 .container {
+  @extend .clearfix;
   display: block;
   padding: 10px;
 }
@@ -298,30 +299,22 @@ a {
     top: 1px solid $ltr-brown;
   }
   min-height: 70px;
-  h2, h3, span {
-    clear: left;
+  header {
+    display: inline-block;
+    float: left;
     margin: {
       left: 65px;
     }
-  }
-  h2, h3 {
-    float: left;
-    margin: {
-      top: 0;
-      bottom: 0;
+    h2, h3, h4 {
+      margin: 0;
+      a {
+        text-decoration: none;
+      }
     }
-    a {
-      text-decoration: none;
-    }
-  }
-  h2 {
-    a {
-      color: $brown;
-    }
-  }
-  h3 {
-    a {
-      color: $lt-brown;
+    h2 {
+      a {
+        color: $brown;
+      }
     }
   }
   img {
@@ -330,8 +323,14 @@ a {
     height: 50px;
     width: 50px;
   }
-  span {
-    display: block;
+  section {
+    clear: left;
+    margin: {
+      left: 65px;
+    }
+    span {
+      display: block;
+    }
   }
 }
 
@@ -673,6 +672,16 @@ main {
 \*------------------------------------*/
 
 /*--Screen Width--*/
+
+// Tablet
+@media only screen and (min-width: 768px) {
+  @import 'tablet';
+}
+
+// Desktop
+@media only screen and (min-width: 960px) {
+  @import 'desktop';
+}
 
 /*--Pixel Density--*/
 

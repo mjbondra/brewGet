@@ -56,7 +56,8 @@ app.factory('HighDPI', function () {
 app.factory('LocationParse', function () {
   return function (resource, opts) {
     var location = '';
-    if (resource.location && resource.location.country && resource.location.country.name === 'United States') {
+    if (typeof resource.location === 'string') location = resource.location;
+    else if (resource.location && resource.location.country && resource.location.country.name === 'United States') {
       if (resource.location.state && resource.location.state.abbreviation) {
         if (resource.location.city && resource.location.city.name) location = resource.location.city.name + ', ' + resource.location.state.abbreviation;
         else if (resource.location.state.name) location = resource.location.state.name;

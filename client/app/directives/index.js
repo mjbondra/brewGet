@@ -13,11 +13,15 @@ var app = angular.module('brewGet.directives', []);
 /**
  * <beer> Directive
  */
-app.directive('beer', [function () {
+app.directive('beer', ['CoverImageSelect', 'LocationParse', function (CoverImageSelect, LocationParse) {
   return {
     restrict: 'E',
     scope: true,
-    templateUrl: '/app/views/directives/beer.html'
+    link: function (scope) {
+      scope.CoverImageSelect = CoverImageSelect;
+      scope.LocationParse = LocationParse;
+    },
+    templateUrl: '/app/views/beers/directive.html'
   };
 }]);
 
