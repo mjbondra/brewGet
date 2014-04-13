@@ -11,10 +11,17 @@
     &.details {
       clear: none;
       float: right;
+      text-align: right;
+    }
+  }
+}
+
+.row-with-image {
+  div {
+    &.details {
       margin: {
         left: 0;
       }
-      text-align: right;
     }
   }
 }

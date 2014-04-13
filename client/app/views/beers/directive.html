@@ -1,6 +1,6 @@
 <header>
   <h2><a ng-href="{{ '/beers/_id/' + beer._id }}">{{ beer.name }}</a></h2>
-  <h3>{{ beer.brewery.name }}</h3>
+  <h3><a ng-href="{{ '/breweries/_id/' + beer.brewery._id }}">{{ beer.brewery.name }}</a></h3>
   <h4>{{ LocationParse(beer.brewery) }}</h4>
 </header>
 <a ng-href="{{ '/beers/_id/' + beer._id }}"><img ng-src="{{ CoverImageSelect.src(beer.images, { geometry: { width: 50 } }) }}"></a>

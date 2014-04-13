@@ -298,13 +298,9 @@ a {
   border: {
     top: 1px solid $ltr-brown;
   }
-  min-height: 70px;
   header {
     display: inline-block;
     float: left;
-    margin: {
-      left: 65px;
-    }
     h2, h3, h4 {
       margin: 0;
       a {
@@ -317,6 +313,24 @@ a {
       }
     }
   }
+  div {
+    &.details {
+      clear: left;
+      span {
+        display: block;
+      }
+    }
+  }
+}
+
+.row-with-image {
+  @extend .row;
+  min-height: 70px;
+  header {
+    margin: {
+      left: 65px;
+    }
+  }
   img {
     position: absolute;
     left: 25px;
@@ -325,19 +339,19 @@ a {
   }
   div {
     &.details {
-      clear: left;
       margin: {
         left: 65px;
-      }
-      span {
-        display: block;
       }
     }
   }
 }
 
-beer, brewery, location, beer-style, user {
+location, beer-style {
   @extend .row;
+}
+
+beer, brewery, user {
+  @extend .row-with-image;
 }
 
 /*--Angular Directives--*/

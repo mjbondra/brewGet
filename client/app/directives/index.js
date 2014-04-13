@@ -45,12 +45,11 @@ app.directive('brewery', ['CoverImageSelect', 'LocationParse', function (CoverIm
 /**
  * <location> Directive
  */
-app.directive('location', ['CoverImageSelect', 'LocationParse', function (CoverImageSelect, LocationParse) {
+app.directive('location', ['LocationParse', function (LocationParse) {
   return {
     restrict: 'E',
     scope: true,
     link: function (scope) {
-      scope.CoverImageSelect = CoverImageSelect;
       scope.LocationParse = LocationParse;
     },
     templateUrl: '/app/views/locations/directive.html'
@@ -60,12 +59,11 @@ app.directive('location', ['CoverImageSelect', 'LocationParse', function (CoverI
 /**
  * <beer-style> Directive
  */
-app.directive('beerStyle', ['CoverImageSelect', 'LocationParse', function (CoverImageSelect, LocationParse) {
+app.directive('beerStyle', ['LocationParse', function (LocationParse) {
   return {
     restrict: 'E',
     scope: true,
     link: function (scope) {
-      scope.CoverImageSelect = CoverImageSelect;
       scope.LocationParse = LocationParse;
     },
     templateUrl: '/app/views/styles/directive.html'

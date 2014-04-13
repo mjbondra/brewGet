@@ -7,9 +7,10 @@ var app = angular.module('brewGet.controllers.posts', []);
  * ROUTE /#!/
  * TEMPLATE /partials/posts/index.html
  */
-app.controller('posts.index', ['$scope', 'Head', function ($scope, Head) {
+app.controller('posts.index', ['$scope', 'Head', 'Post', function ($scope, Head, Post) {
   Head.title('Posts');
   Head.description('Posts');
+  $scope.posts = Post.query();
 }]);
 
 /**
@@ -17,7 +18,7 @@ app.controller('posts.index', ['$scope', 'Head', function ($scope, Head) {
  * ROUTE /#!/
  * TEMPLATE /partials/posts/show.html
  */
-app.controller('posts.show', ['$scope', 'Head', function ($scope, Head) {
+app.controller('posts.show', ['$scope', 'Head', 'Post', function ($scope, Head, Post) {
   Head.title('Post');
   Head.description('Post');
 }]);

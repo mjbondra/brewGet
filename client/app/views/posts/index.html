@@ -1,1 +1,9 @@
 <h1>Posts</h1>
+<form novalidate>
+  Category
+  <div class="input-post-category">
+    <label ng-class="{ active: post.category === 'trade' }"><input type="radio" value="trade" ng-model="post.category">Trade</label>
+    <label ng-class="{ active: post.category === 'discussion' }"><input type="radio" value="discussion" ng-model="post.category">Discussion</label>
+  </div>
+</form>
+<article class="row" ng-repeat="post in posts">{{ post }}</article>
