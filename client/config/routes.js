@@ -102,7 +102,7 @@ app.config(['$routeProvider', '$locationProvider', function ($routeProvider, $lo
     templateUrl: '/app/views/beers/new.html',
     controller: 'beers.new'
   });
-  $routeProvider.when('/beers/:brewery/:beer', {
+  $routeProvider.when('/beers/_id/:beer', {
     templateUrl: '/app/views/beers/show.html',
     controller: 'beers.show'
   });
@@ -120,7 +120,7 @@ app.config(['$routeProvider', '$locationProvider', function ($routeProvider, $lo
     templateUrl: '/app/views/breweries/new.html',
     controller: 'breweries.new'
   });
-  $routeProvider.when('/breweries/:brewery', {
+  $routeProvider.when('/breweries/_id/:brewery', {
     templateUrl: '/app/views/breweries/show.html',
     controller: 'breweries.show'
   });
@@ -160,7 +160,7 @@ app.config(['$routeProvider', '$locationProvider', function ($routeProvider, $lo
     templateUrl: '/app/views/styles/new.html',
     controller: 'styles.new'
   });
-  $routeProvider.when('/styles/:style', {
+  $routeProvider.when('/styles/_id/:style', {
     templateUrl: '/app/views/styles/show.html',
     controller: 'styles.show'
   });

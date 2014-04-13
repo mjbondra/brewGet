@@ -18,7 +18,7 @@ var Image = mongoose.model('Image')
 /**
  * Mongo projection paramater; includes or excludes fields
  */
-var projection = { _id: 0, __v: 0 };
+var projection = { __v: 0 };
 
 module.exports = {
 

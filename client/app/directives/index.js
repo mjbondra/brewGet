@@ -10,6 +10,8 @@ var app = angular.module('brewGet.directives', []);
     ELEMENTAL DIRECTIVES
 \*------------------------------------*/
 
+/*--Content Directives--*/
+
 /**
  * <beer> Directive
  */
@@ -24,6 +26,69 @@ app.directive('beer', ['CoverImageSelect', 'LocationParse', function (CoverImage
     templateUrl: '/app/views/beers/directive.html'
   };
 }]);
+
+/**
+ * <brewery> Directive
+ */
+app.directive('brewery', ['CoverImageSelect', 'LocationParse', function (CoverImageSelect, LocationParse) {
+  return {
+    restrict: 'E',
+    scope: true,
+    link: function (scope) {
+      scope.CoverImageSelect = CoverImageSelect;
+      scope.LocationParse = LocationParse;
+    },
+    templateUrl: '/app/views/breweries/directive.html'
+  };
+}]);
+
+/**
+ * <location> Directive
+ */
+app.directive('location', ['CoverImageSelect', 'LocationParse', function (CoverImageSelect, LocationParse) {
+  return {
+    restrict: 'E',
+    scope: true,
+    link: function (scope) {
+      scope.CoverImageSelect = CoverImageSelect;
+      scope.LocationParse = LocationParse;
+    },
+    templateUrl: '/app/views/locations/directive.html'
+  };
+}]);
+
+/**
+ * <beer-style> Directive
+ */
+app.directive('beerStyle', ['CoverImageSelect', 'LocationParse', function (CoverImageSelect, LocationParse) {
+  return {
+    restrict: 'E',
+    scope: true,
+    link: function (scope) {
+      scope.CoverImageSelect = CoverImageSelect;
+      scope.LocationParse = LocationParse;
+    },
+    templateUrl: '/app/views/styles/directive.html'
+  };
+}]);
+
+
+/**
+ * <user> Directive
+ */
+app.directive('user', ['UserImageSelect', 'LocationParse', function (UserImageSelect, LocationParse) {
+  return {
+    restrict: 'E',
+    scope: true,
+    link: function (scope) {
+      scope.UserImageSelect = UserImageSelect;
+      scope.LocationParse = LocationParse;
+    },
+    templateUrl: '/app/views/users/directive.html'
+  };
+}]);
+
+/*--Message Directives--*/
 
 /**
  * <global-messages> Directive
@@ -62,6 +127,8 @@ app.directive('validationMessages', ['MessageHandler', '_', function (MessageHan
     templateUrl: '/app/views/directives/messages.html'
   };
 }]);
+
+/*--Input Directives--*/
 
 /**
  * <input-date> Directive

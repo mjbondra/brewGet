@@ -57,8 +57,8 @@
 /*--Third Party Libraries--*/
 @import "normalize"; // symlinked css as scss from ../lib/normalize-css/normalize.css
 @import "html5-boilerplate"; // symlinked css as scss from ../lib/html5-boilerplate/css/main.css
-@import "compass"; // requires compass -- 'gem install compass', or use CodeKit
-@import "../lib/susy/sass/susy";
+@import "compass"; // requires compass -- 'gem install compass' or 'bundle install'
+@import "susy"; // requires suss -- 'gem install susy' or 'bundle install'
 @import "../lib/font-awesome/scss/font-awesome";
 
 /*--brewGet Libraries--*/
@@ -323,24 +323,21 @@ a {
     height: 50px;
     width: 50px;
   }
-  section {
-    clear: left;
-    margin: {
-      left: 65px;
-    }
-    span {
-      display: block;
+  div {
+    &.details {
+      clear: left;
+      margin: {
+        left: 65px;
+      }
+      span {
+        display: block;
+      }
     }
   }
 }
 
-.user, beer {
+beer, brewery, location, beer-style, user {
   @extend .row;
-}
-
-.user-image {
-  height: 200px;
-  width: 200px;
 }
 
 /*--Angular Directives--*/
