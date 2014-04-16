@@ -1,4 +1,9 @@
 
+/**
+ * Module dependencies
+ */
+var msg = require('../../config/messages');
+
 exports.requires = {
   authentication: function *(next) {
     if (this.session.user) return yield next;
