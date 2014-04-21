@@ -20,6 +20,7 @@ exports.requires = {
   self: function *(next) {
     if (this.user && this.session.user && this.user.slug === this.session.user.slug) return yield next;
     this.status = 401;
-    this.body = { msg: 'not self' };
+    if (this.user && this.user.username) this.body = { msg: msg.authentication.requires.self(this.user.username, this.path) };
+    else this.body = { msg: 'invalid user' };
   }
 };
